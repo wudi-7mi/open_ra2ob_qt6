@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>icon_highres.png</file>
+    </qresource>
+    <qresource prefix="/i18n">
+        <file>open_ra2ob_qt6_zh_CN.qm</file>
+    </qresource>
+</RCC>
