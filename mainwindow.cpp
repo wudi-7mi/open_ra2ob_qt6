@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include <QMessageBox>
+#include <QTranslator>
+#include <QProcess>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -10,6 +12,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->setWindowIcon(QIcon(":/icon/icon_highres.png"));
     this->setWindowTitle(tr("open_ra2ob - An Opensource Ra2 observer"));
+    this->setWindowFlags(Qt::WindowStaysOnTopHint);
+
+    initLanguage();
+    ui->btn_reload->hide();
+    connect(ui->rb_English, &QRadioButton::toggled, this, &MainWindow::onRadioButtonToggled);
+    connect(ui->btn_reload, &QPushButton::clicked, this, &MainWindow::onReloadButtonClicked);
 
     QSystemTrayIcon *m_trayicon = new QSystemTrayIcon(this);
 
@@ -53,6 +61,26 @@ void MainWindow::iconActived(QSystemTrayIcon::ActivationReason reason)
         break;
     }
     return;
+}
+
+void MainWindow::initLanguage()
+{
+    ui->rb_Chinese->setChecked(true);
+}
+
+void MainWindow::onRadioButtonToggled()
+{
+    ui->btn_reload->show();
+}
+
+void MainWindow::onReloadButtonClicked()
+{
+    QTranslator translator;
+
+    qApp->removeTranslator(&translator);
+
+    qApp->quit();
+    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
 
 void MainWindow::showSetting()

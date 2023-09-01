@@ -22,6 +22,9 @@ private:
 
 private slots:
     void iconActived(QSystemTrayIcon::ActivationReason reason);
+    void initLanguage();
+    void onReloadButtonClicked();
+    void onRadioButtonToggled();
     void showSetting();
     void quit();
 };
