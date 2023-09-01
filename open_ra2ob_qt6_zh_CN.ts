@@ -5,31 +5,66 @@
     <name>MainWindow</name>
     <message>
         <source>MainWindow</source>
-        <translation type="vanished">发</translation>
+        <translation>发</translation>
     </message>
     <message>
         <source>Hello, World!</source>
-        <translation type="vanished">你好，世界！</translation>
+        <translation>你好，世界！</translation>
     </message>
     <message>
         <source>Setting</source>
-        <translation type="vanished">设置</translation>
+        <translation>设置</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation type="vanished">退出</translation>
+        <translation>退出</translation>
     </message>
     <message>
         <source>Notice</source>
-        <translation type="vanished">提醒</translation>
+        <translation>提醒</translation>
     </message>
     <message>
         <source>Do you want to Exit?</source>
-        <translation type="vanished">是否退出？</translation>
+        <translation>是否退出？</translation>
     </message>
     <message>
         <source>open_ra2ob - An Opensource Ra2 observer</source>
-        <translation type="vanished">open_ra2ob - 一个开源的Ra2观战工具</translation>
+        <translation>open_ra2ob - 一个开源的Ra2观战工具</translation>
+    </message>
+    <message>
+        <source>简体中文</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>English</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Language:</source>
+        <translation>语言：</translation>
+    </message>
+    <message>
+        <source>Reload</source>
+        <translation>重新加载</translation>
+    </message>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>基本设置</translation>
+    </message>
+    <message>
+        <source>About</source>
+        <translation>关于</translation>
+    </message>
+</context>
+<context>
+    <name>Ob</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
