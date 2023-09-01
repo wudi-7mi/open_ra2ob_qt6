@@ -50,7 +50,7 @@
     </property>
     <widget class="QWidget" name="General">
      <attribute name="title">
-      <string>Tab 1</string>
+      <string>General</string>
      </attribute>
      <widget class="QRadioButton" name="rb_Chinese">
       <property name="geometry">
@@ -107,7 +107,7 @@
     </widget>
     <widget class="QWidget" name="About">
      <attribute name="title">
-      <string>Tab 2</string>
+      <string>About</string>
      </attribute>
      <widget class="QLabel" name="label_2">
       <property name="geometry">
