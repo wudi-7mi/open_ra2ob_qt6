@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "tray.h"
+
 #include <QMainWindow>
 #include <QSystemTrayIcon>
 #include "configmanager.h"
@@ -20,11 +22,11 @@ public:
 private:
     Ui::MainWindow *ui;
     ConfigManager *_cfgm;
+    Tray *tray;
     void changeEvent(QEvent *event) override;
     void RadioButtonToggled();
 
 private slots:
-    void iconActived(QSystemTrayIcon::ActivationReason reason);
     void initLanguage(QString language);
     void onRbEnglishClicked();
     void onRbChineseClicked();
@@ -35,4 +37,5 @@ private slots:
 protected:
     void closeEvent(QCloseEvent *event) override;
 };
+
 #endif // MAINWINDOW_H

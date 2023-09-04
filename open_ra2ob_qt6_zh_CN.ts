@@ -13,11 +13,11 @@
     </message>
     <message>
         <source>Setting</source>
-        <translation>设置</translation>
+        <translation type="vanished">设置</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation>退出</translation>
+        <translation type="vanished">退出</translation>
     </message>
     <message>
         <source>Notice</source>
@@ -69,6 +69,21 @@
     <message>
         <source>Form</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Tray</name>
+    <message>
+        <source>Open_Ra2ob</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Setting</source>
+        <translation>设置</translation>
+    </message>
+    <message>
+        <source>Quit</source>
+        <translation>退出</translation>
     </message>
 </context>
 </TS>
