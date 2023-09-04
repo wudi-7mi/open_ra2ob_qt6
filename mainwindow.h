@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "tray.h"
+
 #include <QMainWindow>
 #include <QSystemTrayIcon>
 
@@ -18,11 +20,12 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    Tray *tray;
     void changeEvent(QEvent *event);
 
 private slots:
-    void iconActived(QSystemTrayIcon::ActivationReason reason);
     void showSetting();
     void quit();
 };
+
 #endif // MAINWINDOW_H
