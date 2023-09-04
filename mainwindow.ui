@@ -42,7 +42,7 @@
       <x>10</x>
       <y>10</y>
       <width>371</width>
-      <height>231</height>
+      <height>241</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -101,7 +101,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Reload</string>
+       <string>重新加载</string>
       </property>
      </widget>
     </widget>
@@ -112,14 +112,20 @@
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>40</y>
-        <width>91</width>
-        <height>41</height>
+        <x>90</x>
+        <y>20</y>
+        <width>171</width>
+        <height>171</height>
        </rect>
       </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="resources.qrc">:/icon/icon_highres.png</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>
@@ -131,12 +137,14 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

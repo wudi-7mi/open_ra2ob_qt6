@@ -1,10 +1,13 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include <QMessageBox>
-#include <QTranslator>
-#include <QProcess>
+#include "configmanager.h"
+#include "ob.h"
 
-MainWindow::MainWindow(QWidget *parent)
+#include <QMessageBox>
+#include <QProcess>
+#include <QCloseEvent>
+
+MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
@@ -14,10 +17,19 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowTitle(tr("open_ra2ob - An Opensource Ra2 observer"));
     this->setWindowFlags(Qt::WindowStaysOnTopHint);
 
-    initLanguage();
+    _cfgm = cfgm;
+    if (cfgm == nullptr)
+    {
+        _cfgm = new ConfigManager();
+        _cfgm->checkConfig();
+        qDebug() << "Abnormal cfgm rebuild.";
+    }
+
+    initLanguage(_cfgm->getLanguage());
     ui->btn_reload->hide();
-    connect(ui->rb_English, &QRadioButton::toggled, this, &MainWindow::onRadioButtonToggled);
-    connect(ui->btn_reload, &QPushButton::clicked, this, &MainWindow::onReloadButtonClicked);
+    connect(ui->rb_English, &QRadioButton::toggled, this, &MainWindow::onRbEnglishClicked);
+    connect(ui->rb_Chinese, &QRadioButton::toggled, this, &MainWindow::onRbChineseClicked);
+    connect(ui->btn_reload, &QPushButton::clicked, this, &MainWindow::onBtnReloadClicked);
 
     QSystemTrayIcon *m_trayicon = new QSystemTrayIcon(this);
 
@@ -47,8 +59,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(action_show_setting, SIGNAL(triggered()), this, SLOT(showSetting()));
     connect(action_quit, SIGNAL(triggered()), this, SLOT(quit()));
-
 }
+
 
 void MainWindow::iconActived(QSystemTrayIcon::ActivationReason reason)
 {
@@ -63,25 +75,43 @@ void MainWindow::iconActived(QSystemTrayIcon::ActivationReason reason)
     return;
 }
 
-void MainWindow::initLanguage()
+
+void MainWindow::initLanguage(QString language)
 {
-    ui->rb_Chinese->setChecked(true);
+    if (language == "zh_CN")
+    {
+        ui->rb_Chinese->setChecked(true);
+        return;
+    }
+    ui->rb_English->setChecked(true);
 }
 
-void MainWindow::onRadioButtonToggled()
+
+void MainWindow::RadioButtonToggled()
 {
     ui->btn_reload->show();
 }
 
-void MainWindow::onReloadButtonClicked()
+
+void MainWindow::onRbEnglishClicked()
 {
-    QTranslator translator;
+    ui->btn_reload->show();
+    _cfgm->setLanguage("en_US");
+}
 
-    qApp->removeTranslator(&translator);
+void MainWindow::onRbChineseClicked()
+{
+    ui->btn_reload->show();
+    _cfgm->setLanguage("zh_CN");
+}
 
+
+void MainWindow::onBtnReloadClicked()
+{    
     qApp->quit();
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
+
 
 void MainWindow::showSetting()
 {
@@ -89,12 +119,14 @@ void MainWindow::showSetting()
     this->activateWindow();
 }
 
+
 void MainWindow::quit()
 {
     if (QMessageBox::question(this, tr("Notice"), tr("Do you want to Exit?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
         QApplication::exit(0);
     }
 }
+
 
 void MainWindow::changeEvent(QEvent *event)
 {
@@ -105,6 +137,14 @@ void MainWindow::changeEvent(QEvent *event)
         this->hide();
     }
 }
+
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    this->hide();
+    event->ignore();
+}
+
 
 MainWindow::~MainWindow()
 {

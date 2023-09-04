@@ -45,7 +45,7 @@
     </message>
     <message>
         <source>Reload</source>
-        <translation>重新加载</translation>
+        <translation type="vanished">重新加载</translation>
     </message>
     <message>
         <source>TextLabel</source>
@@ -58,6 +58,10 @@
     <message>
         <source>About</source>
         <translation>关于</translation>
+    </message>
+    <message>
+        <source>重新加载</source>
+        <translation>Reload</translation>
     </message>
 </context>
 <context>

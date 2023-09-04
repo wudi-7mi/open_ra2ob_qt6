@@ -5,4 +5,7 @@
     <qresource prefix="/i18n">
         <file>open_ra2ob_qt6_zh_CN.qm</file>
     </qresource>
+    <qresource prefix="/panels">
+        <file alias="right_panel">assets/panels/right_panel.png</file>
+    </qresource>
 </RCC>

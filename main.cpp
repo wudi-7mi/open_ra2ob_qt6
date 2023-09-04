@@ -4,22 +4,30 @@
 #include <QLocale>
 #include <QTranslator>
 #include <QDebug>
+//#include "ob.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    ConfigManager *cfgm = new ConfigManager();
+    cfgm->checkConfig();
+
     QTranslator translator;
-    const QStringList uiLanguages = QLocale::system().uiLanguages();
-    for (const QString &locale : uiLanguages) {
-        const QString baseName = "open_ra2ob_qt6_" + QLocale(locale).name();
-        if (translator.load(":/i18n/" + baseName)) {
+    if (cfgm->getLanguage() == "zh_CN")
+    {
+        if (translator.load(":/i18n/open_ra2ob_qt6_zh_CN"))
+        {
             a.installTranslator(&translator);
-            break;
         }
     }
-    MainWindow w;
+
+    MainWindow w(nullptr, cfgm);
     w.show();
+
+//    Ob ob(nullptr);
+//    ob.show();
+
 //    w.showFullScreen();
     return a.exec();
 }
