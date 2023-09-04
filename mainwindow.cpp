@@ -1,8 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "configmanager.h"
-#include "ob.h"
-
 #include "tray.h"
 
 #include <QMessageBox>

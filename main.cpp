@@ -4,7 +4,7 @@
 #include <QLocale>
 #include <QTranslator>
 #include <QDebug>
-//#include "ob.h"
+#include "ob.h"
 
 int main(int argc, char *argv[])
 {
@@ -25,9 +25,8 @@ int main(int argc, char *argv[])
     MainWindow w(nullptr, cfgm);
     w.show();
 
-//    Ob ob(nullptr);
-//    ob.show();
+    Ob ob(nullptr);
+    ob.show();
 
-//    w.showFullScreen();
     return a.exec();
 }
