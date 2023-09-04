@@ -48,6 +48,26 @@ void MainWindow::onReloadButtonClicked()
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
 
+void MainWindow::initLanguage()
+{
+    ui->rb_Chinese->setChecked(true);
+}
+
+void MainWindow::onRadioButtonToggled()
+{
+    ui->btn_reload->show();
+}
+
+void MainWindow::onReloadButtonClicked()
+{
+    QTranslator translator;
+
+    qApp->removeTranslator(&translator);
+
+    qApp->quit();
+    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+}
+
 void MainWindow::showSetting()
 {
     this->showNormal();
