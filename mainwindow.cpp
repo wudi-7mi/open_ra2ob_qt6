@@ -3,6 +3,8 @@
 #include "tray.h"
 
 #include <QMessageBox>
+#include <QTranslator>
+#include <QProcess>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -12,12 +14,38 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->setWindowIcon(QIcon(":/icon/icon_highres.png"));
     this->setWindowTitle(tr("open_ra2ob - An Opensource Ra2 observer"));
+    this->setWindowFlags(Qt::WindowStaysOnTopHint);
+
+    initLanguage();
+    ui->btn_reload->hide();
+    connect(ui->rb_English, &QRadioButton::toggled, this, &MainWindow::onRadioButtonToggled);
+    connect(ui->btn_reload, &QPushButton::clicked, this, &MainWindow::onReloadButtonClicked);
 
     tray = new Tray(this);
     connect(tray, SIGNAL(showSetting()), this, SLOT(showSetting()));
     connect(tray, SIGNAL(quit()), this, SLOT(quit()));
 
     tray->setupTray();
+}
+
+void MainWindow::initLanguage()
+{
+    ui->rb_Chinese->setChecked(true);
+}
+
+void MainWindow::onRadioButtonToggled()
+{
+    ui->btn_reload->show();
+}
+
+void MainWindow::onReloadButtonClicked()
+{
+    QTranslator translator;
+
+    qApp->removeTranslator(&translator);
+
+    qApp->quit();
+    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
 
 void MainWindow::showSetting()

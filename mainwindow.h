@@ -24,6 +24,9 @@ private:
     void changeEvent(QEvent *event);
 
 private slots:
+    void initLanguage();
+    void onReloadButtonClicked();
+    void onRadioButtonToggled();
     void showSetting();
     void quit();
 };
