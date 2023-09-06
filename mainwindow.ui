@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>441</width>
     <height>332</height>
    </rect>
   </property>
@@ -17,8 +17,8 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>240</y>
+      <x>120</x>
+      <y>250</y>
       <width>211</width>
       <height>61</height>
      </rect>
@@ -41,7 +41,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>371</width>
+      <width>421</width>
       <height>241</height>
      </rect>
     </property>
@@ -112,7 +112,7 @@
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>130</x>
         <y>20</y>
         <width>171</width>
         <height>171</height>
@@ -136,12 +136,11 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
+     <width>441</width>
      <height>20</height>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
   <include location="resources.qrc"/>

@@ -25,7 +25,7 @@ void Tray::setupTray()
 {
     // Setup trayicon.
     m_trayicon->setToolTip(tr("Open_Ra2ob"));
-    m_trayicon->setIcon(QIcon(":/icon/icon_highres.png"));
+    m_trayicon->setIcon(QIcon(":/icon/icon_32.png"));
     m_trayicon->show();
 
     // Create and set traymenu.

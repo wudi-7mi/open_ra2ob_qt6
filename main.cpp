@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     }
 
     MainWindow w(nullptr, cfgm);
-    w.show();
+//    w.show();
 
     Ob ob(nullptr);
     ob.show();
