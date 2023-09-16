@@ -9,7 +9,7 @@
 #include <locale>
 #include <codecvt>
 
-#include "ra2ob.hpp"
+#include "ra2ob.h"
 
 using json = nlohmann::json;
 
