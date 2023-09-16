@@ -30,8 +30,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ob.h ob.cpp ob.ui
         configmanager.h configmanager.cpp
         tray.h tray.cpp
-        datafetch.h datafetch.cpp
-        ra2.h ra2.cpp
+
+        ra2ob.h ra2ob.cpp
+        json.hpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET open_ra2ob_qt6 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
