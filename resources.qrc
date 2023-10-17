@@ -14,4 +14,146 @@
     <qresource prefix="/panels">
         <file alias="right_panel">assets/panels/right_panel.png</file>
     </qresource>
+    <qresource prefix="/obicons/allied">
+        <file>assets/obicons/allied/Aegis Cruiser.png</file>
+        <file>assets/obicons/allied/Aircraft Carrier.png</file>
+        <file>assets/obicons/allied/Allied Attack dog.png</file>
+        <file>assets/obicons/allied/Allied Engineer_u.png</file>
+        <file>assets/obicons/allied/Allied MCV.png</file>
+        <file>assets/obicons/allied/Allied war factory.png</file>
+        <file>assets/obicons/allied/Allieed Engineer.png</file>
+        <file>assets/obicons/allied/Amphibious Transport.png</file>
+        <file>assets/obicons/allied/asaticon.png</file>
+        <file>assets/obicons/allied/ayaricon.png</file>
+        <file>assets/obicons/allied/bfrticon.png</file>
+        <file>assets/obicons/allied/bfrtuico.png</file>
+        <file>assets/obicons/allied/Black Eagle.png</file>
+        <file>assets/obicons/allied/brrkicon.png</file>
+        <file>assets/obicons/allied/Chrono Legionnaire.png</file>
+        <file>assets/obicons/allied/Chrono Legionnaire_u.png</file>
+        <file>assets/obicons/allied/Chrono miner.png</file>
+        <file>assets/obicons/allied/csphicon.png</file>
+        <file>assets/obicons/allied/Destroyer.png</file>
+        <file>assets/obicons/allied/Dolphin.png</file>
+        <file>assets/obicons/allied/fixicon.png</file>
+        <file>assets/obicons/allied/gapicon.png</file>
+        <file>assets/obicons/allied/gdgiicon.png</file>
+        <file>assets/obicons/allied/gdgiuico.png</file>
+        <file>assets/obicons/allied/GI.png</file>
+        <file>assets/obicons/allied/GI_u.png</file>
+        <file>assets/obicons/allied/gorep.png</file>
+        <file>assets/obicons/allied/Grand Cannon.png</file>
+        <file>assets/obicons/allied/Grizzly Battle Tank.png</file>
+        <file>assets/obicons/allied/Grizzly Battle Tank_u.png</file>
+        <file>assets/obicons/allied/Harrier.png</file>
+        <file>assets/obicons/allied/heliicon.png</file>
+        <file>assets/obicons/allied/Infantry Fighting Vehicle.png</file>
+        <file>assets/obicons/allied/Infantry Fighting Vehicle_u.png</file>
+        <file>assets/obicons/allied/Mirage Tank.png</file>
+        <file>assets/obicons/allied/Mirage Tank_u.png</file>
+        <file>assets/obicons/allied/Navi SEAL.png</file>
+        <file>assets/obicons/allied/Navi SEAL_u.png</file>
+        <file>assets/obicons/allied/NightHawk Transport.png</file>
+        <file>assets/obicons/allied/NightHawk Transport_u.png</file>
+        <file>assets/obicons/allied/pillicon.png</file>
+        <file>assets/obicons/allied/powricon.png</file>
+        <file>assets/obicons/allied/prisicon.png</file>
+        <file>assets/obicons/allied/Prism Tank.png</file>
+        <file>assets/obicons/allied/Prism Tank_u.png</file>
+        <file>assets/obicons/allied/rbccicon.png</file>
+        <file>assets/obicons/allied/reficon.png</file>
+        <file>assets/obicons/allied/roboicon.png</file>
+        <file>assets/obicons/allied/robouico.png</file>
+        <file>assets/obicons/allied/Rocketeer.png</file>
+        <file>assets/obicons/allied/Rocketeer_u.png</file>
+        <file>assets/obicons/allied/samicon.png</file>
+        <file>assets/obicons/allied/Sniper.png</file>
+        <file>assets/obicons/allied/Sniper_u.png</file>
+        <file>assets/obicons/allied/Spy.png</file>
+        <file>assets/obicons/allied/Tank Destroyer.png</file>
+        <file>assets/obicons/allied/Tank Destroyer_u.png</file>
+        <file>assets/obicons/allied/Tanya.png</file>
+        <file>assets/obicons/allied/Tanya_u.png</file>
+        <file>assets/obicons/allied/techicon.png</file>
+        <file>assets/obicons/allied/wallicon.png</file>
+    </qresource>
+    <qresource prefix="/obicons/soviet">
+        <file>assets/obicons/soviet/Amphibious.png</file>
+        <file>assets/obicons/soviet/Apocalypse Tank.png</file>
+        <file>assets/obicons/soviet/Apocalypse Tank_u.png</file>
+        <file>assets/obicons/soviet/bnkricon.png</file>
+        <file>assets/obicons/soviet/brisicon.png</file>
+        <file>assets/obicons/soviet/brisuico.png</file>
+        <file>assets/obicons/soviet/clonicon.png</file>
+        <file>assets/obicons/soviet/Conscript.png</file>
+        <file>assets/obicons/soviet/Conscript_u.png</file>
+        <file>assets/obicons/soviet/Crazy Ivan.png</file>
+        <file>assets/obicons/soviet/Demolition Truck.png</file>
+        <file>assets/obicons/soviet/Desolator.png</file>
+        <file>assets/obicons/soviet/Desolator_u.png</file>
+        <file>assets/obicons/soviet/Dreadnought.png</file>
+        <file>assets/obicons/soviet/Flak Track.png</file>
+        <file>assets/obicons/soviet/Flak Track_u.png</file>
+        <file>assets/obicons/soviet/Flak Trooper.png</file>
+        <file>assets/obicons/soviet/Flak Trooper_u.png</file>
+        <file>assets/obicons/soviet/flakicon.png</file>
+        <file>assets/obicons/soviet/Giant Squid.png</file>
+        <file>assets/obicons/soviet/handicon.png</file>
+        <file>assets/obicons/soviet/indpicon.png</file>
+        <file>assets/obicons/soviet/Kirov Airship.png</file>
+        <file>assets/obicons/soviet/Kirov Airship_u.png</file>
+        <file>assets/obicons/soviet/npwricon.png</file>
+        <file>assets/obicons/soviet/nradicon.png</file>
+        <file>assets/obicons/soviet/nrcticon.png</file>
+        <file>assets/obicons/soviet/nreficon.png</file>
+        <file>assets/obicons/soviet/ntchicon.png</file>
+        <file>assets/obicons/soviet/nwalicon.png</file>
+        <file>assets/obicons/soviet/paraicon.png</file>
+        <file>assets/obicons/soviet/plticon.png</file>
+        <file>assets/obicons/soviet/psisicon.png</file>
+        <file>assets/obicons/soviet/rfixicon.png</file>
+        <file>assets/obicons/soviet/Rhino Tank.png</file>
+        <file>assets/obicons/soviet/Rhino Tank_u.png</file>
+        <file>assets/obicons/soviet/schpicon.png</file>
+        <file>assets/obicons/soviet/schpuico.png</file>
+        <file>assets/obicons/soviet/Sea Scorpion.png</file>
+        <file>assets/obicons/soviet/Soviet Attack Dog.png</file>
+        <file>assets/obicons/soviet/Soviet Engineer.png</file>
+        <file>assets/obicons/soviet/Soviet MCV.png</file>
+        <file>assets/obicons/soviet/Soviet War Factory.png</file>
+        <file>assets/obicons/soviet/Terror Drone.png</file>
+        <file>assets/obicons/soviet/Terrorist.png</file>
+        <file>assets/obicons/soviet/Tesla Tank.png</file>
+        <file>assets/obicons/soviet/Tesla Tank_u.png</file>
+        <file>assets/obicons/soviet/Tesla Trooper.png</file>
+        <file>assets/obicons/soviet/Tesla Trooper_u.png</file>
+        <file>assets/obicons/soviet/trstuico.png</file>
+        <file>assets/obicons/soviet/tslaicon.png</file>
+        <file>assets/obicons/soviet/Typhoon Attack Submarine.png</file>
+        <file>assets/obicons/soviet/V3 Rocket Launcher.png</file>
+        <file>assets/obicons/soviet/V3 Rocket Launcher_u.png</file>
+        <file>assets/obicons/soviet/War Miner_u.png</file>
+        <file>assets/obicons/soviet/WarMiner.png</file>
+        <file>assets/obicons/soviet/yardicon.png</file>
+        <file>assets/obicons/soviet/Yuri.png</file>
+        <file>assets/obicons/soviet/Yuri_u.png</file>
+    </qresource>
+    <qresource prefix="/obicons/timer">
+        <file>assets/obicons/timer/Chronosphere.png</file>
+        <file>assets/obicons/timer/Force Shield.png</file>
+        <file>assets/obicons/timer/Iron Curtain.png</file>
+        <file>assets/obicons/timer/Lightning Storm.png</file>
+        <file>assets/obicons/timer/Nuclear Missile.png</file>
+        <file>assets/obicons/timer/Spy Plane.png</file>
+    </qresource>
+    <qresource prefix="/obicons/tech">
+        <file>assets/obicons/tech/Chrono Commando.png</file>
+        <file>assets/obicons/tech/Chrono Commando_u.png</file>
+        <file>assets/obicons/tech/Chrono Ivan.png</file>
+        <file>assets/obicons/tech/Chrono Ivan_u.png</file>
+        <file>assets/obicons/tech/Psi Commando.png</file>
+        <file>assets/obicons/tech/Psi Commando_u.png</file>
+        <file>assets/obicons/tech/Yuri Prime.png</file>
+        <file>assets/obicons/tech/Yuri Prime_u.png</file>
+    </qresource>
 </RCC>

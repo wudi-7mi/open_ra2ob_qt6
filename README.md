@@ -31,7 +31,7 @@ Building:
 Tank:
 武装采矿车 War Miner 0x4
 犀牛坦克 Rhino Tank 0xc
-防空车 Flak Track 0x44
+防空履带车 Flak Track 0x44
 磁能坦克 Tesla Tank 0x74
 天启坦克 Apocalypse Tank 0x8
 v3火箭 V3 Rocket Launcher 0x38
@@ -54,6 +54,7 @@ Infantry:
 尤里 Yuri 0x18
 辐射 Desolator 0x20
 恐怖分子 Terrorist 0x68
+防空步兵 Flak Trooper 0x5c
 
 Aircraft:
 

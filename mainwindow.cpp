@@ -52,7 +52,7 @@ void MainWindow::initLanguage(QString language)
 
 void MainWindow::RadioButtonToggled()
 {
-    ui->btn_reload->show();
+//    ui->btn_reload->show();
 }
 
 
@@ -70,9 +70,11 @@ void MainWindow::onRbChineseClicked()
 
 
 void MainWindow::onBtnReloadClicked()
-{    
-    qApp->quit();
-    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+{
+    qApp->exit(773);
+//    qApp->quit();
+//    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+
 }
 
 

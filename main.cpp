@@ -4,6 +4,8 @@
 #include <QLocale>
 #include <QTranslator>
 #include <QDebug>
+#include <QProcess>
+#include <QString>
 #include "ob.h"
 
 int main(int argc, char *argv[])
@@ -28,5 +30,11 @@ int main(int argc, char *argv[])
     Ob ob(nullptr);
     ob.show();
 
-    return a.exec();
+    int ret = a.exec();
+
+    if (ret == 773) {
+        QProcess::startDetached(qApp->applicationFilePath(), QStringList());
+    }
+
+    return ret;
 }

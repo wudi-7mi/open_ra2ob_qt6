@@ -23,8 +23,8 @@ void Ob::paintEvent(QPaintEvent *)
     QPainter *painter = new QPainter(this);
 
     paintTopPanel(*painter, QColor("#ffff00"), QColor("#0000ff"));
-//    paintRightPanel(*painter);
-//    paintLeftPanel(*painter);
+    paintRightPanel(*painter);
+    paintLeftPanel(*painter);
 
     painter->end();
 }

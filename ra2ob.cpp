@@ -84,7 +84,7 @@ void Ra2ob::View::sortView() {}
 
 std::string Ra2ob::View::viewToString() {
     std::stringstream ss;
-    
+
     sortView();
 
     for (int i = 0; i < MAXPLAYER; i++) {
@@ -101,7 +101,7 @@ std::string Ra2ob::View::viewToString() {
         for (auto& it : m_unitView.items()) {
             auto v = it.value();
             if (m_viewType == ViewType::Auto || m_viewType == ViewType::ManualNoZero) {
-                
+
                 if (v[i] != "0" && v[i] != "") {
                     ss << it.key() << ": " << v[i] << std::endl;
                 }
@@ -431,8 +431,8 @@ bool Ra2ob::initAddrs() {
 
 int Ra2ob::hasPlayer() {
     int count = 0;
-    
-    for (auto& it : _players) {
+
+    for (bool it : _players) {
         if (it) {
             count++;
         }
@@ -487,17 +487,17 @@ void Ra2ob::exportInfo() {
 
         _view.refreshView(_strName.getName(), _strName.getValueByIndex(i), i);
         _view.refreshView(_strCountry.getName(), _strCountry.getValueByIndex(i), i);
-        
+
         if (countryToFaction(_strCountry.getValueByIndex(i)) == FactionType::Allied) {
             _factionTypes[i] = FactionType::Allied;
         }
         else {
             _factionTypes[i] = FactionType::Soviet;
         }
-        
+
         for (auto& it : _numerics) {
             if (_view.m_numericView.find(it.getName()) != _view.m_numericView.end()) {
-                _view.refreshView(it.getName(), std::to_string(it.getValueByIndex(i)), i);                
+                _view.refreshView(it.getName(), std::to_string(it.getValueByIndex(i)), i);
             }
         }
         for (auto& it : _units) {
@@ -521,8 +521,8 @@ void Ra2ob::exportInfo() {
 int Ra2ob::getHandle() {
     DWORD pid = 0;
     // Use this if something goes wrong here.
-    //std::wstring name = L"gamemd-spawn.exe";
-    std::string name = "gamemd-spawn.exe";
+    std::wstring name = L"gamemd-spawn.exe";
+    //std::string name = "gamemd-spawn.exe";
 
     std::unique_ptr<void, decltype(&CloseHandle)> h(
         CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0),
@@ -539,8 +539,7 @@ int Ra2ob::getHandle() {
 
     for (BOOL success = Process32First(h.get(), &processInfo); success; success = Process32Next(h.get(), &processInfo)) {
         // Use this if something goes wrong here.
-        //if (wcscmp(processInfo.szExeFile, name.c_str() == 0) {
-        if (name == processInfo.szExeFile) {
+        if (wcscmp(processInfo.szExeFile, name.c_str()) == 0) {
             pid = processInfo.th32ProcessID;
             std::cout << "PID Found: " << pid << std::endl;
         }
@@ -590,7 +589,7 @@ Ra2ob::FactionType Ra2ob::countryToFaction(std::string country) {
         country == "British"
     ) {
         return FactionType::Allied;
-    } 
+    }
     return FactionType::Soviet;
 }
 
