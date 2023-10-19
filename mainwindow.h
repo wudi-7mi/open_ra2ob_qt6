@@ -24,13 +24,14 @@ private:
     ConfigManager *_cfgm;
     Tray *tray;
     void changeEvent(QEvent *event) override;
-    void RadioButtonToggled();
 
 private slots:
     void initLanguage(QString language);
     void onRbEnglishClicked();
     void onRbChineseClicked();
     void onBtnReloadClicked();
+    void onBtnEmitClicked();
+    void updateUbs();
     void showSetting();
     void quit();
 

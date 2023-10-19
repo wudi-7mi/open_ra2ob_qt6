@@ -8,16 +8,31 @@
 #include <TlHelp32.h>   //for PROCESSENTRY32, needs to be included after windows.h
 #include <locale>
 #include <codecvt>
+#include <thread>
+#include <ctime>
 
-#include "ra2ob.h"
+#include "ra2ob.hpp"
 
 using json = nlohmann::json;
 
+Ra2ob& Ra2ob::getInstance() {
+    static Ra2ob instance;
+    return instance;
+}
+
 Ra2ob::Ra2ob() {
+    std::string logFile = "./logs/" + getTime() + "-log.txt";
+    auto max_size = 1048576 * 5;
+    auto max_files = 2;
+
+    _logger = spdlog::rotating_logger_mt("Ra2ob", logFile, max_size, max_files);
+
     _pHandle = nullptr;
     _strName = StrName();
     _strCountry = StrCountry();
     _view = View();
+
+    initDatas();
 
     _players        = std::vector<bool>(MAXPLAYER, false);
     _playerBases    = std::vector<uint32_t>(MAXPLAYER, 0);
@@ -37,6 +52,7 @@ Ra2ob::~Ra2ob() {
 
 Ra2ob::View::View(std::string jsonFile) {
     loadFromJson(jsonFile);
+    m_gameValid = false;
 }
 
 Ra2ob::View::~View() {}
@@ -69,6 +85,13 @@ void Ra2ob::View::loadFromJson(std::string jsonFile) {
         m_unitView[key] = jsonArray;
         //m_order[key] = index;
     }
+
+    json jsonValidPlayer = json::array();
+    for (int i = 0; i < MAXPLAYER; i++) {
+        jsonValidPlayer.push_back(false);
+    }
+    m_validPlayer = jsonValidPlayer;
+
 }
 
 void Ra2ob::View::refreshView(std::string key, std::string value, int index) {
@@ -82,12 +105,53 @@ void Ra2ob::View::refreshView(std::string key, std::string value, int index) {
 
 void Ra2ob::View::sortView() {}
 
+json Ra2ob::View::viewToJson() {
+    json j;
+
+    sortView();
+
+    for (int i = 0; i < MAXPLAYER; i++) {
+
+        if (!m_validPlayer[i]) {
+            continue;
+        }
+
+        for (auto& it : m_numericView.items()) {
+            auto v = it.value();
+            if (v[i] != "0" && v[i] != "") {
+                j[it.key()] = v[i];
+            }
+        }
+
+        for (auto& it : m_unitView.items()) {
+            auto v = it.value();
+            if (m_viewType == ViewType::Auto || m_viewType == ViewType::ManualNoZero) {
+
+                if (v[i] != "0" && v[i] != "") {
+                    j[it.key()] = v[i];
+                }
+            }
+            else {
+                j[it.key()] = v[i];
+            }
+        }
+    }
+
+    j["game_running"] = m_gameValid;
+
+    return j;
+}
+
 std::string Ra2ob::View::viewToString() {
     std::stringstream ss;
 
     sortView();
 
     for (int i = 0; i < MAXPLAYER; i++) {
+
+        if (!m_validPlayer[i]) {
+            continue;
+        }
 
         ss << std::endl;
 
@@ -172,7 +236,7 @@ Ra2ob::Unit::Unit(
     uint32_t offset,
     FactionType ft,
     UnitType ut
-) : Ra2ob::DataBase(name, offset) {
+    ) : Ra2ob::DataBase(name, offset) {
     m_factionType = ft;
     m_unitType = ut;
 }
@@ -198,7 +262,7 @@ Ra2ob::StrName::~StrName() {}
 void Ra2ob::StrName::fetchData(
     HANDLE pHandle,
     std::vector<uint32_t> baseOffsets
-) {
+    ) {
     for (int i = 0; i < baseOffsets.size(); i++) {
         if (baseOffsets[i] == 0) {
             continue;
@@ -237,7 +301,7 @@ Ra2ob::StrCountry::~StrCountry() {}
 void Ra2ob::StrCountry::fetchData(
     HANDLE pHandle,
     std::vector<uint32_t> baseOffsets
-) {
+    ) {
     for (int i = 0; i < baseOffsets.size(); i++) {
         if (baseOffsets[i] == 0) {
             continue;
@@ -267,7 +331,7 @@ Ra2ob::WinOrLose::~WinOrLose() {}
 void Ra2ob::WinOrLose::fetchData(
     HANDLE pHandle,
     std::vector<uint32_t> baseOffsets
-) {
+    ) {
     for (int i = 0; i < baseOffsets.size(); i++) {
         if (baseOffsets[i] == 0) {
             continue;
@@ -366,14 +430,14 @@ Ra2ob::Units Ra2ob::loadUnitsFromJson(std::string filePath) {
     return units;
 }
 
-std::vector<std::string> Ra2ob::loadViewsFromJson(std::string filePath) {
-    std::vector<std::string> ret;
-    std::ifstream f(filePath);
-    json data = json::parse(f);
+Ra2ob::WinOrLoses Ra2ob::initWinOrLose() {
+    WinOrLoses ret;
 
-    for (auto& v : data) {
-        ret.push_back(v);
-    }
+    WinOrLose w("Win", WINOFFSET);
+    WinOrLose l("Lose", LOSEOFFSET);
+
+    ret.push_back(w);
+    ret.push_back(l);
 
     return ret;
 }
@@ -381,12 +445,12 @@ std::vector<std::string> Ra2ob::loadViewsFromJson(std::string filePath) {
 void Ra2ob::initDatas() {
     _numerics = loadNumericsFromJson();
     _units = loadUnitsFromJson();
-    _views = loadViewsFromJson();
+    _winOrLoses = initWinOrLose();
 }
 
 bool Ra2ob::initAddrs() {
     if (NULL == _pHandle) {
-        std::cerr << "No valid process handle, call Game::getHandle() first." << std::endl;
+        std::cerr << "No valid process handle, call getHandle() first." << std::endl;
         return false;
     }
 
@@ -420,7 +484,7 @@ bool Ra2ob::initAddrs() {
                 _infantrys[i]   == 1 &&
                 _aircrafts[i]   == 1 &&
                 _houseTypes[i]  == 1
-            ) {
+                ) {
                 return false;
             }
         }
@@ -469,25 +533,32 @@ bool Ra2ob::refreshInfo() {
         }
     }
 
+    for (auto& it : _winOrLoses) {
+        it.fetchData(_pHandle, _playerBases);
+    }
+
     _strName.fetchData(_pHandle, _playerBases);
     _strCountry.fetchData(_pHandle, _houseTypes);
 
     return true;
 }
 
-void Ra2ob::exportInfo() {
+void Ra2ob::updateView(bool show) {
     for (int i = 0; i < MAXPLAYER; i++) {
+
+        // Filter invalid players
         if (!_players[i]) {
             continue;
         }
-
         if (_strCountry.getValueByIndex(i) == "") {
             continue;
         }
 
+        _view.m_validPlayer[i] = true;
+
+        // Refresh Name & Country
         _view.refreshView(_strName.getName(), _strName.getValueByIndex(i), i);
         _view.refreshView(_strCountry.getName(), _strCountry.getValueByIndex(i), i);
-
         if (countryToFaction(_strCountry.getValueByIndex(i)) == FactionType::Allied) {
             _factionTypes[i] = FactionType::Allied;
         }
@@ -495,13 +566,15 @@ void Ra2ob::exportInfo() {
             _factionTypes[i] = FactionType::Soviet;
         }
 
+        // Refresh numeric values
         for (auto& it : _numerics) {
             if (_view.m_numericView.find(it.getName()) != _view.m_numericView.end()) {
                 _view.refreshView(it.getName(), std::to_string(it.getValueByIndex(i)), i);
             }
         }
+
+        // Refresh units
         for (auto& it : _units) {
-            // Todo: Add support for opposite faction units.
             if (it.getFactionType() != _factionTypes[i]) {
                 continue;
             }
@@ -513,55 +586,108 @@ void Ra2ob::exportInfo() {
                 }
             }
         }
+
+        // Refresh win or lose
+        _view.refreshView("Win Or Lose", "unknown", i);
+        if (_winOrLoses[0].getValueByIndex(i) == true) {
+            _view.refreshView("Win Or Lose", "win", i);
+        }
+        if (_winOrLoses[1].getValueByIndex(i) == true) {
+            _view.refreshView("Win Or Lose", "lose", i);
+        }
     }
 
-    std::cout << _view.viewToString() << std::endl;
+    if (show) {
+        std::cout << _view.viewToString();
+    }
+    _logger->info(_view.viewToString());
+
 }
 
-int Ra2ob::getHandle() {
+int Ra2ob::getHandle(bool show) {
     DWORD pid = 0;
     // Use this if something goes wrong here.
     std::wstring name = L"gamemd-spawn.exe";
     //std::string name = "gamemd-spawn.exe";
 
-    std::unique_ptr<void, decltype(&CloseHandle)> h(
-        CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0),
-        &CloseHandle
-    );
+    HANDLE hProcessSnap = INVALID_HANDLE_VALUE;
+    hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 
-    if (h.get() == INVALID_HANDLE_VALUE) {
-        std::cerr << "Failed to create snapshot" << std::endl;
+    HANDLE hThreadSnap = INVALID_HANDLE_VALUE;
+    hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+
+    if (hProcessSnap == INVALID_HANDLE_VALUE) {
+        _logger->error("Failed to create process snapshot");
+        std::cerr << "Failed to create process snapshot" << std::endl;
+        return 1;
+    }
+
+    if (hThreadSnap == INVALID_HANDLE_VALUE) {
+        _logger->error("Failed to create thread snapshot");
+        std::cerr << "Failed to create thread snapshot" << std::endl;
         return 1;
     }
 
     PROCESSENTRY32 processInfo {};
     processInfo.dwSize = sizeof(PROCESSENTRY32);
 
-    for (BOOL success = Process32First(h.get(), &processInfo); success; success = Process32Next(h.get(), &processInfo)) {
+    for (BOOL success = Process32First(hProcessSnap, &processInfo);
+         success;
+         success = Process32Next(hProcessSnap, &processInfo)) {
         // Use this if something goes wrong here.
         if (wcscmp(processInfo.szExeFile, name.c_str()) == 0) {
+        //if (name == processInfo.szExeFile) {
+
+            THREADENTRY32 threadInfo {};
+            threadInfo.dwSize = sizeof(THREADENTRY32);
+
             pid = processInfo.th32ProcessID;
-            std::cout << "PID Found: " << pid << std::endl;
+
+            int thread_nums = 0;
+
+            for (BOOL success = Thread32First(hThreadSnap, &threadInfo);
+                 success;
+                 success = Thread32Next(hThreadSnap, &threadInfo)) {
+                if (threadInfo.th32OwnerProcessID == pid) {
+                    //std::cout << "THREAD ID: " << te32.th32ThreadID;
+                    //std::cout << ", base priority: " << te32.tpBasePri << std::endl;
+                    thread_nums++;
+                }
+            }
+
+            if (thread_nums != 0) {
+                if (show) {
+                    std::cout << "PID Found: " << pid << std::endl;
+                }
+                _logger->info("PID Found: {}", pid);
+                break;
+            }
+
+            pid = 0;
         }
     }
 
     if (pid == 0) {
-        std::cerr << "No Valid PID. Finding \"gamemd-spawn.exe\"." << std::endl;
+        if (show) {
+            std::cerr << "No Valid PID. Finding \"gamemd-spawn.exe\"." << std::endl;
+        }
+        _logger->info("No Valid PID. Finding gamemd-spawn.exe.");
         return 1;
     }
 
     HANDLE pHandle = OpenProcess(
-        PROCESS_QUERY_INFORMATION |     // Needed to get a process' token
-        PROCESS_CREATE_THREAD   |     // For obvious reasons
-        PROCESS_VM_OPERATION    |      // Required to perform operations on address space of process (like WriteProcessMemory)
-        PROCESS_VM_READ,            // Required for read data
-        FALSE,                          // Don't inherit pHandle
+        PROCESS_QUERY_INFORMATION |
+            PROCESS_CREATE_THREAD   |
+            PROCESS_VM_OPERATION    |
+            PROCESS_VM_READ,
+        FALSE,
         pid
-    );
+        );
 
     if (pHandle == NULL)
     {
-        std::cerr << "Could not open process\n" << std::endl;
+        _logger->error("Could not open process");
+        std::cerr << "Could not open process" << std::endl;
         return 1;
     }
 
@@ -587,7 +713,7 @@ Ra2ob::FactionType Ra2ob::countryToFaction(std::string country) {
         country == "French"     ||
         country == "Germans"    ||
         country == "British"
-    ) {
+        ) {
         return FactionType::Allied;
     }
     return FactionType::Soviet;
@@ -595,4 +721,107 @@ Ra2ob::FactionType Ra2ob::countryToFaction(std::string country) {
 
 bool Ra2ob::readMemory(HANDLE handle, uint32_t addr, void* value, uint32_t size) {
     return ReadProcessMemory(handle, (const void*)addr, value, size, nullptr);
+}
+
+std::string Ra2ob::getTime() {
+    char timeBuffer[15];
+
+    time_t now = time(nullptr);
+    std::strftime(
+        timeBuffer,
+        sizeof(timeBuffer),
+        "%Y%m%d%H%M%S",
+        std::localtime(&now)
+        );
+    std::string timeStr = timeBuffer;
+
+    return timeStr;
+}
+
+void Ra2ob::close() {
+    if (_pHandle != nullptr) {
+        CloseHandle(_pHandle);
+    }
+    _strName = StrName();
+    _strCountry = StrCountry();
+    _view = View();
+    initDatas();
+    std::cout << "Handle Closed." << std::endl;
+    _logger->info("Handle Closed.");
+}
+
+void Ra2ob::detectTask(bool show, int interval) {
+    while (true) {
+
+        if (getHandle(show) == 0) {
+            _gameValid = true;
+            _view.m_gameValid = true;
+            initAddrs();
+        }
+
+        Sleep(interval);
+    }
+}
+
+void Ra2ob::fetchTask(int interval) {
+    while (true) {
+
+        if (_gameValid && _view.m_gameValid) {
+            if (!refreshInfo()) {
+                _gameValid = false;
+            }
+
+            if (!initAddrs()) {
+                _gameValid = false;
+            }
+        } else if (_view.m_gameValid) {
+            _view.m_gameValid = false;
+            close();
+        }
+
+        Sleep(interval);
+
+    }
+}
+
+void Ra2ob::refreshViewTask(bool show, int interval) {
+
+    while (true) {
+
+        if (_gameValid && _view.m_gameValid) {
+            if (show) {
+                system("cls");
+                std::cout << "Player numbers: " << hasPlayer() << std::endl;
+            }
+            _logger->info("Player numbers: {}", hasPlayer());
+
+            updateView(show);
+
+            if (show) {
+                std::cout << std::endl;
+            }
+        }
+
+        Sleep(interval);
+    }
+}
+
+void Ra2ob::startLoop(bool show) {
+
+    std::thread d_thread(std::bind(
+        &Ra2ob::detectTask, this, false, 1000
+        ));
+
+    std::thread f_thread(std::bind(
+        &Ra2ob::fetchTask, this, 500
+        ));
+
+    std::thread r_thread(std::bind(
+        &Ra2ob::refreshViewTask, this, show, 500
+        ));
+
+    d_thread.detach();
+    f_thread.detach();
+    r_thread.detach();
+
 }

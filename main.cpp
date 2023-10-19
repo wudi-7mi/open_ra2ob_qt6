@@ -8,6 +8,8 @@
 #include <QString>
 #include "ob.h"
 
+#include "ra2ob.hpp"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -26,6 +28,9 @@ int main(int argc, char *argv[])
 
     MainWindow w(nullptr, cfgm);
 //    w.show();
+
+    Ra2ob& g = Ra2ob::getInstance();
+    g.startLoop(false);
 
     Ob ob(nullptr);
     ob.show();

@@ -9,6 +9,7 @@
 #include <Windows.h>
 
 #include "json.hpp"
+#include "spdlog/sinks/rotating_file_sink.h"
 
 #define MAXPLAYER 8
 #define INVALIDCLASS 0xffffffffu
@@ -31,6 +32,9 @@
 #define STRNAMEOFFSET 0x1602a
 #define STRCOUNTRYOFFSET 0x24
 
+#define WINOFFSET 0x1f7
+#define LOSEOFFSET 0x1f8
+
 #define UNITSAFE 4096
 
 using json = nlohmann::json;
@@ -38,8 +42,10 @@ using json = nlohmann::json;
 class Ra2ob {
 
 public:
-    Ra2ob();
-    ~Ra2ob();
+    static Ra2ob& getInstance();
+
+    Ra2ob(const Ra2ob&) = delete;
+    void operator = (const Ra2ob&) = delete;
 
     enum class FactionType : int { Soviet = 2, Allied = 1, Unknown = 0 };
     enum class UnitType : int { Building = 4, Tank = 3, Infantry = 2, Aircraft = 1, Unknown = 0 };
@@ -48,15 +54,17 @@ public:
     class View {
 
     public:
-        View(std::string jsonFile = "../view_n.json");
+        View(std::string jsonFile = "./view_n.json");
         ~View();
 
         void loadFromJson(std::string jsonFile);
         void refreshView(std::string key, std::string value, int index);
         void sortView();
         std::string viewToString();
+        json viewToJson();
 
-        json m_numericView, m_unitView, m_order;
+        json m_numericView, m_unitView, m_order, m_validPlayer;
+        bool m_gameValid;
         ViewType m_viewType;
     };
 
@@ -97,7 +105,7 @@ public:
             uint32_t offset,
             FactionType ft,
             UnitType ut
-        );
+            );
         ~Unit();
 
         FactionType getFactionType();
@@ -131,7 +139,7 @@ public:
         ~StrCountry();
 
         void fetchData(HANDLE pHandle, std::vector<uint32_t> baseOffsets);
-    
+
     protected:
         std::map<std::string, std::string> m_countryMap = {
             { "Americans"       , "Americans"   },
@@ -163,27 +171,37 @@ public:
 
     using Numerics = std::vector<Numeric>;
     using Units = std::vector<Unit>;
+    using WinOrLoses = std::vector<WinOrLose>;
 
-    Numerics loadNumericsFromJson(std::string filePath = "../numeric_offsets.json");
-    Units loadUnitsFromJson(std::string filePath = "../unit_offsets.json");
-    std::vector<std::string> loadViewsFromJson(std::string filePath = "../view.json");
+    Numerics loadNumericsFromJson(std::string filePath = "./numeric_offsets.json");
+    Units loadUnitsFromJson(std::string filePath = "./unit_offsets.json");
+    WinOrLoses initWinOrLose();
     void initDatas();
     bool initAddrs();
     int hasPlayer();
     bool refreshInfo();
-    void exportInfo();
-    int getHandle();
+    void updateView(bool show = true);
+    int getHandle(bool show = true);
     uint32_t getAddr(uint32_t offset);
     FactionType countryToFaction(std::string country);
+    static bool readMemory(HANDLE handle, uint32_t addr, void* value, uint32_t size);
+    std::string getTime();
 
+    void close();
+    void detectTask(bool show = true, int interval = 500);
+    void fetchTask(int interval = 500);
+    void refreshViewTask(bool show = true, int interval = 500);
+    void startLoop(bool show = true);
+
+    std::shared_ptr<spdlog::logger> _logger;
+    bool _gameValid;
     HANDLE _pHandle;
     Numerics _numerics;
     Units _units;
+    WinOrLoses _winOrLoses;
     StrName _strName;
     StrCountry _strCountry;
     View _view;
-
-    std::vector<std::string> _views;
 
     std::vector<bool> _players;
     std::vector<uint32_t> _playerBases;
@@ -194,7 +212,10 @@ public:
     std::vector<uint32_t> _houseTypes;
     std::vector<FactionType> _factionTypes;
 
-    static bool readMemory(HANDLE handle, uint32_t addr, void* value, uint32_t size);
+private:
+    Ra2ob();
+    ~Ra2ob();
+
 };
- 
+
 #endif

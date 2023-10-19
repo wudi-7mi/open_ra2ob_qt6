@@ -3,9 +3,12 @@
 #include "configmanager.h"
 #include "tray.h"
 
+#include "ra2ob.hpp"
+
 #include <QMessageBox>
 #include <QProcess>
 #include <QCloseEvent>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     : QMainWindow(parent)
@@ -36,6 +39,16 @@ MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     connect(tray, SIGNAL(quit()), this, SLOT(quit()));
 
     tray->setupTray();
+
+    ui->ub_01->initUnit("Rhino Tank");
+    ui->ub_02->initUnit("Soviet Attack Dog");
+
+    QTimer* refreshTimer = new QTimer();
+    refreshTimer->setInterval(1000);
+    connect(refreshTimer, SIGNAL(timeout()), this, SLOT(updateUbs()));
+    refreshTimer->start();
+
+    connect(ui->btn_emit, &QPushButton::clicked, this, &MainWindow::onBtnEmitClicked);
 }
 
 
@@ -48,13 +61,6 @@ void MainWindow::initLanguage(QString language)
     }
     ui->rb_English->setChecked(true);
 }
-
-
-void MainWindow::RadioButtonToggled()
-{
-//    ui->btn_reload->show();
-}
-
 
 void MainWindow::onRbEnglishClicked()
 {
@@ -77,6 +83,35 @@ void MainWindow::onBtnReloadClicked()
 
 }
 
+void updateView(std::string name, Unitblock& ub)
+{
+    Ra2ob& g = Ra2ob::getInstance();
+    json view = g._view.viewToJson();
+
+    if (!view["game_running"]) {
+        ub.updateNumber("0");
+    }
+
+    if (view.contains(name)) {
+        QString n = QString::fromStdString(view[name]);
+        ub.updateNumber(n);
+    }
+}
+
+void MainWindow::onBtnEmitClicked()
+{
+    Ra2ob& g = Ra2ob::getInstance();
+    std::cout << g._view.viewToJson().dump() << std::endl;
+
+    updateView("Rhino Tank", *ui->ub_01);
+    updateView("Soviet Attack Dog", *ui->ub_02);
+}
+
+void MainWindow::updateUbs()
+{
+    updateView("Rhino Tank", *ui->ub_01);
+    updateView("Soviet Attack Dog", *ui->ub_02);
+}
 
 void MainWindow::showSetting()
 {

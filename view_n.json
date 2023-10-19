@@ -6,7 +6,8 @@
     "Balance",
     "Credit Spent",
     "Power Output",
-    "Power Drain"
+    "Power Drain",
+    "Win Or Lose"
   ],
   "UnitItems": {
     "DefaultView": [
