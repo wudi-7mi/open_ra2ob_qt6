@@ -12,16 +12,16 @@
 
 ```
 基础偏移：
-	Fixed:						0xa8b230
-	ClassBaseArray:		0xa8022c
-	PlayerBaseArray:	0x1180
+	Fixed:            0xa8b230
+	ClassBaseArray:   0xa8022c
+	PlayerBaseArray:  0x1180
 
 五项偏移：
-	Building:		0x5554
-	Unit(Tank):	0x5568
-	Infantry:		0x557c
-	Aircraft:		0x5590
-	HouseType:  0x34
+	Building:    0x5554
+	Unit(Tank):  0x5568
+	Infantry:    0x557c
+	Aircraft:    0x5590
+	HouseType:   0x34
 
 
 苏军：
@@ -110,18 +110,17 @@ Aircraft:
 
 Ra2ob 类相关：
 
-- [ ] 显示所有的单位数量 包括对面阵营的单位数量
-- [ ] 牛车挂机显示
-- [ ] 标注升星（渗透）
-- [ ] 伞兵时间的显示
+- [ ] 建造队列显示 
+- [ ] 超武、伞兵冷却时间显示
 - [ ] 科技建筑数量显示
-- [ ] 超武冷却时间
+- [ ] 标注升星（渗透）
 - [ ] 尤里控制的单位计数
 
 GUI 相关：
 
 - [ ] 不同分辨率下的适配
 - [ ] 自定义计分板样式
+- [ ] 控制观战界面的透明度、显示与否
 
 综合：
 
