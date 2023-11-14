@@ -3,6 +3,10 @@
 
 #include <QWidget>
 
+#include "unitblock.h"
+
+#include "ra2ob.hpp"
+
 namespace Ui {
 class Ob;
 }
@@ -21,6 +25,28 @@ private:
     void paintTopPanel(QPainter &painter, QColor lColor, QColor rColor);
     void paintRightPanel(QPainter &painter);
     void paintLeftPanel(QPainter &painter);
+
+    void refreshData();
+
+    void rearrangeUnitblocks();
+    void sortUnitblocks();
+
+    void setName(int index);
+    void setCountry(int index);
+    void setColor(int index);
+
+    void updateView(Unitblock& ub);
+    void updateBalance(int index);
+    void updateCredit(int index);
+    void updatePower(int index);
+
+    QVector<Unitblock*> unitblock_list_player_0;
+    QVector<Unitblock*> unitblock_list_player_1;
+    QVector<int> player_list;
+    Ra2ob* g;
+
+private slots:
+    void detectGame();
 };
 
 #endif // OB_H

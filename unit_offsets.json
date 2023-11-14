@@ -1,237 +1,226 @@
 {
-  "Soviet": {
-    "Building": [
+  "Building": [
       {
-        "Name": "Soviet War Factory",
-        "Offset": "0x38"
+          "Name": "Soviet War Factory",
+          "Offset": "0x38"
       },
       {
-        "Name": "Soviet Barracks",
-        "Offset": "0x2c"
+          "Name": "Soviet Barracks",
+          "Offset": "0x2c"
       },
       {
-        "Name": "Soviet Naval Shipyard",
-        "Offset": "0xf4"
+          "Name": "Soviet Naval Shipyard",
+          "Offset": "0xf4"
+      },
+      {
+          "Name": "Allied War Factory",
+          "Offset": "0x1c"
+      },
+      {
+          "Name": "Allied Barracks",
+          "Offset": "0xc"
+      },
+      {
+          "Name": "Allied Naval Shipyard",
+          "Offset": "0x5c"
+      },
+      {
+          "Name": "Grand Cannon",
+          "Offset": "0x100"
       }
-    ],
-    "Tank": [
+  ],
+  "Tank": [
       {
-        "Name": "War Miner",
-        "Offset": "0x4"
+          "Name": "War Miner",
+          "Offset": "0x4"
       },
       {
-        "Name": "Rhino Tank",
-        "Offset": "0xc"
+          "Name": "Rhino Tank",
+          "Offset": "0xc"
       },
       {
-        "Name": "Flak Track",
-        "Offset": "0x44"
+          "Name": "Flak Track",
+          "Offset": "0x44"
       },
       {
-        "Name": "Tesla Tank",
-        "Offset": "0x74"
+          "Name": "Tesla Tank",
+          "Offset": "0x74"
       },
       {
-        "Name": "Apocalypse Tank",
-        "Offset": "0x8"
+          "Name": "Apocalypse Tank",
+          "Offset": "0x8"
       },
       {
-        "Name": "V3 Rocket Launcher",
-        "Offset": "0x38"
+          "Name": "V3 Rocket Launcher",
+          "Offset": "0x38"
       },
       {
-        "Name": "Terror Drone",
-        "Offset": "0x40"
+          "Name": "Terror Drone",
+          "Offset": "0x40"
       },
       {
-        "Name": "Giant Squid",
-        "Offset": "0x60"
+          "Name": "Giant Squid",
+          "Offset": "0x60"
       },
       {
-        "Name": "Kirov Airship",
-        "Offset": "0x3c"
+          "Name": "Kirov Airship",
+          "Offset": "0x3c"
       },
       {
-        "Name": "Soviet MCV",
-        "Offset": "0x68"
+          "Name": "Soviet MCV",
+          "Offset": "0x68"
       },
       {
-        "Name": "Dreadnought",
-        "Offset": "0x58"
+          "Name": "Dreadnought",
+          "Offset": "0x58"
       },
       {
-        "Name": "Typhoon Attack Submarine",
-        "Offset": "0x4c"
+          "Name": "Typhoon Attack Submarine",
+          "Offset": "0x4c"
       },
       {
-        "Name": "Sea Scorpion",
-        "Offset": "0x90"
+          "Name": "Sea Scorpion",
+          "Offset": "0x90"
       },
       {
-        "Name": "Soviet Amphibious Transport",
-        "Offset": "0x10"
+          "Name": "Soviet Amphibious Transport",
+          "Offset": "0x10"
       },
       {
-        "Name": "Demolition Truck",
-        "Offset": "0xa4"
+          "Name": "Demolition Truck",
+          "Offset": "0xa4"
+      },
+      {
+          "Name": "Chrono Miner",
+          "Offset": "0x84"
+      },
+      {
+          "Name": "Grizzly Battle Tank",
+          "Offset": "0x24"
+      },
+      {
+          "Name": "Mirage Tank",
+          "Offset": "0x94"
+      },
+      {
+          "Name": "Prism Tank",
+          "Offset": "0x88"
+      },
+      {
+          "Name": "Allied MCV",
+          "Offset": "0x0"
+      },
+      {
+          "Name": "Allied Amphibious Transport",
+          "Offset": "0x54"
+      },
+      {
+          "Name": "Destoryer",
+          "Offset": "0x48"
+      },
+      {
+          "Name": "Dolphin",
+          "Offset": "0x64"
+      },
+      {
+          "Name": "Aegis Cruiser",
+          "Offset": "0x50"
+      },
+      {
+          "Name": "Aircraft Carrier",
+          "Offset": "0x34"
+      },
+      {
+          "Name": "NightHawk Transport",
+          "Offset": "0x5c"
+      },
+      {
+          "Name": "Tank Destoyer",
+          "Offset": "0x6c"
+      },
+      {
+          "Name": "Infantry Fighting Vehicle",
+          "Offset": "0x98"
       }
-    ],
-    "Infantry": [
+  ],
+  "Infantry": [
       {
-        "Name": "Soviet Attack Dog",
-        "Offset": "0x24"
+          "Name": "Soviet Attack Dog",
+          "Offset": "0x24"
       },
       {
-        "Name": "Conscript",
-        "Offset": "0x4"
+          "Name": "Conscript",
+          "Offset": "0x4"
       },
       {
-        "Name": "Soviet Engineer",
-        "Offset": "0x6c"
+          "Name": "Soviet Engineer",
+          "Offset": "0x6c"
       },
       {
-        "Name": "Tesla Trooper",
-        "Offset": "0x8"
+          "Name": "Tesla Trooper",
+          "Offset": "0x8"
       },
       {
-        "Name": "Crazy Ivan",
-        "Offset": "0x1c"
+          "Name": "Crazy Ivan",
+          "Offset": "0x1c"
       },
       {
-        "Name": "Yuri",
-        "Offset": "0x18"
+          "Name": "Yuri",
+          "Offset": "0x18"
       },
       {
-        "Name": "Desolator",
-        "Offset": "0x20"
+          "Name": "Desolator",
+          "Offset": "0x20"
       },
       {
-        "Name": "Terrorist",
-        "Offset": "0x68"
+          "Name": "Terrorist",
+          "Offset": "0x68"
       },
       {
-        "Name": "Flak Trooper",
-        "Offset": "0x5c"
+          "Name": "Flak Trooper",
+          "Offset": "0x5c"
+      },
+      {
+          "Name": "Allied Attack Dog",
+          "Offset": "0x70"
+      },
+      {
+          "Name": "GI",
+          "Offset": "0x0"
+      },
+      {
+          "Name": "Allied Engineer",
+          "Offset": "0xc"
+      },
+      {
+          "Name": "Chrono Legionnaire",
+          "Offset": "0x3c"
+      },
+      {
+          "Name": "Spy",
+          "Offset": "0x40"
+      },
+      {
+          "Name": "Tanya",
+          "Offset": "0x60"
+      },
+      {
+          "Name": "Sniper",
+          "Offset": "0x54"
+      },
+      {
+          "Name": "Rocketeer",
+          "Offset": "0x10"
       }
-    ],
-    "Aircraft": []
-  },
-  "Allied": {
-    "Building": [
+  ],
+  "Aircraft": [
       {
-        "Name": "Allied War Factory",
-        "Offset": "0x1c"
+          "Name": "Harrier",
+          "Offset": "0x4"
       },
       {
-        "Name": "Allied Barracks",
-        "Offset": "0xc"
-      },
-      {
-        "Name": "Allied Naval Shipyard",
-        "Offset": "0x5c"
-      },
-      {
-        "Name": "Grand Cannon",
-        "Offset": "0x100"
+          "Name": "Black Eagle",
+          "Offset": "0x1c"
       }
-    ],
-    "Tank": [
-      {
-        "Name": "Chrono Miner",
-        "Offset": "0x84"
-      },
-      {
-        "Name": "Grizzly Battle Tank",
-        "Offset": "0x24"
-      },
-      {
-        "Name": "Mirage Tank",
-        "Offset": "0x94"
-      },
-      {
-        "Name": "Prism Tank",
-        "Offset": "0x88"
-      },
-      {
-        "Name": "Allied MCV",
-        "Offset": "0x0"
-      },
-      {
-        "Name": "Allied Amphibious Transport",
-        "Offset": "0x54"
-      },
-      {
-        "Name": "Destoryer",
-        "Offset": "0x48"
-      },
-      {
-        "Name": "Dolphin",
-        "Offset": "0x64"
-      },
-      {
-        "Name": "Aegis Cruiser",
-        "Offset": "0x50"
-      },
-      {
-        "Name": "Aircraft Carrier",
-        "Offset": "0x34"
-      },
-      {
-        "Name": "NightHawk Transport",
-        "Offset": "0x5c"
-      },
-      {
-        "Name": "Tank Destoyer",
-        "Offset": "0x6c"
-      },
-      {
-        "Name": "Infantry Fighting Vehicle",
-        "Offset": "0x98"
-      }
-    ],
-    "Infantry": [
-      {
-        "Name": "Allied Attack Dog",
-        "Offset": "0x70"
-      },
-      {
-        "Name": "GI",
-        "Offset": "0x0"
-      },
-      {
-        "Name": "Allied Engineer",
-        "Offset": "0xc"
-      },
-      {
-        "Name": "Chrono Legionnaire",
-        "Offset": "0x3c"
-      },
-      {
-        "Name": "Spy",
-        "Offset": "0x40"
-      },
-      {
-        "Name": "Tanya",
-        "Offset": "0x60"
-      },
-      {
-        "Name": "Sniper",
-        "Offset": "0x54"
-      },
-      {
-        "Name": "Rocketeer",
-        "Offset": "0x10"
-      }
-    ],
-    "Aircraft": [
-      {
-        "Name": "Harrier",
-        "Offset": "0x4"
-      },
-      {
-        "Name": "Black Eagle",
-        "Offset": "0x1c"
-      }
-    ]
-  }
+  ]
 }

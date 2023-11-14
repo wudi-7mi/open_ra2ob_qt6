@@ -17,12 +17,12 @@
     <qresource prefix="/obicons">
         <file>assets/obicons/Aegis Cruiser.png</file>
         <file>assets/obicons/Aircraft Carrier.png</file>
-        <file>assets/obicons/Allied Attack dog.png</file>
+        <file>assets/obicons/Allied Attack Dog.png</file>
         <file>assets/obicons/Allied Engineer_u.png</file>
         <file>assets/obicons/Allied MCV.png</file>
-        <file>assets/obicons/Allied war factory.png</file>
-        <file>assets/obicons/Allieed Engineer.png</file>
-        <file>assets/obicons/Amphibious Transport.png</file>
+        <file>assets/obicons/Allied War Factory.png</file>
+        <file>assets/obicons/Allied Engineer.png</file>
+        <file>assets/obicons/Allied Amphibious Transport.png</file>
         <file>assets/obicons/asaticon.png</file>
         <file>assets/obicons/ayaricon.png</file>
         <file>assets/obicons/bfrticon.png</file>
@@ -31,7 +31,7 @@
         <file>assets/obicons/brrkicon.png</file>
         <file>assets/obicons/Chrono Legionnaire.png</file>
         <file>assets/obicons/Chrono Legionnaire_u.png</file>
-        <file>assets/obicons/Chrono miner.png</file>
+        <file>assets/obicons/Chrono Miner.png</file>
         <file>assets/obicons/csphicon.png</file>
         <file>assets/obicons/Destroyer.png</file>
         <file>assets/obicons/Dolphin.png</file>
@@ -76,7 +76,7 @@
         <file>assets/obicons/Tanya_u.png</file>
         <file>assets/obicons/techicon.png</file>
         <file>assets/obicons/wallicon.png</file>
-        <file>assets/obicons/Amphibious.png</file>
+        <file>assets/obicons/Soviet Amphibious Transport.png</file>
         <file>assets/obicons/Apocalypse Tank.png</file>
         <file>assets/obicons/Apocalypse Tank_u.png</file>
         <file>assets/obicons/bnkricon.png</file>
@@ -131,7 +131,7 @@
         <file>assets/obicons/V3 Rocket Launcher.png</file>
         <file>assets/obicons/V3 Rocket Launcher_u.png</file>
         <file>assets/obicons/War Miner_u.png</file>
-        <file>assets/obicons/WarMiner.png</file>
+        <file>assets/obicons/War Miner.png</file>
         <file>assets/obicons/yardicon.png</file>
         <file>assets/obicons/Yuri.png</file>
         <file>assets/obicons/Yuri_u.png</file>
@@ -149,5 +149,6 @@
         <file>assets/obicons/Psi Commando_u.png</file>
         <file>assets/obicons/Yuri Prime.png</file>
         <file>assets/obicons/Yuri Prime_u.png</file>
+        <file>assets/obicons/unit_placeholder.png</file>
     </qresource>
 </RCC>

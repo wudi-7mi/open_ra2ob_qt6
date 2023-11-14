@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include "tray.h"
+#include "unitblock.h"
+#include "ob.h"
 
 #include <QMainWindow>
 #include <QSystemTrayIcon>
@@ -23,7 +25,8 @@ private:
     Ui::MainWindow *ui;
     ConfigManager *_cfgm;
     Tray *tray;
-    void changeEvent(QEvent *event) override;
+    Ob *ob;
+    void updateView(std::string name, Unitblock& ub);
 
 private slots:
     void initLanguage(QString language);
@@ -31,11 +34,13 @@ private slots:
     void onRbChineseClicked();
     void onBtnReloadClicked();
     void onBtnEmitClicked();
-    void updateUbs();
+    void obToggle();
     void showSetting();
+    void showOb();
     void quit();
 
 protected:
+    void hideEvent(QHideEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
 };
 

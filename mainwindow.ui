@@ -46,7 +46,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="General">
      <attribute name="title">
@@ -131,7 +131,7 @@
      <widget class="QPushButton" name="btn_emit">
       <property name="geometry">
        <rect>
-        <x>260</x>
+        <x>320</x>
         <y>170</y>
         <width>80</width>
         <height>23</height>
@@ -211,6 +211,19 @@
       </property>
       <property name="text">
        <string>0</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_show_ob">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>170</y>
+        <width>80</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>show ob</string>
       </property>
      </widget>
     </widget>

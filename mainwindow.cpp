@@ -40,15 +40,15 @@ MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
 
     tray->setupTray();
 
-    ui->ub_01->initUnit("Rhino Tank");
-    ui->ub_02->initUnit("Soviet Attack Dog");
-
-    QTimer* refreshTimer = new QTimer();
-    refreshTimer->setInterval(1000);
-    connect(refreshTimer, SIGNAL(timeout()), this, SLOT(updateUbs()));
-    refreshTimer->start();
+    ob = new Ob();
 
     connect(ui->btn_emit, &QPushButton::clicked, this, &MainWindow::onBtnEmitClicked);
+    connect(ui->btn_show_ob, &QPushButton::clicked, this, &MainWindow::showOb);
+
+    QTimer* detectGameTimer = new QTimer();
+    detectGameTimer->setInterval(1000);
+    connect(detectGameTimer, SIGNAL(timeout()), this, SLOT(obToggle()));
+    detectGameTimer->start();
 }
 
 
@@ -74,43 +74,27 @@ void MainWindow::onRbChineseClicked()
     _cfgm->setLanguage("zh_CN");
 }
 
-
 void MainWindow::onBtnReloadClicked()
 {
     qApp->exit(773);
-//    qApp->quit();
-//    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
-
-}
-
-void updateView(std::string name, Unitblock& ub)
-{
-    Ra2ob& g = Ra2ob::getInstance();
-    json view = g._view.viewToJson();
-
-    if (!view["game_running"]) {
-        ub.updateNumber("0");
-    }
-
-    if (view.contains(name)) {
-        QString n = QString::fromStdString(view[name]);
-        ub.updateNumber(n);
-    }
 }
 
 void MainWindow::onBtnEmitClicked()
 {
     Ra2ob& g = Ra2ob::getInstance();
     std::cout << g._view.viewToJson().dump() << std::endl;
-
-    updateView("Rhino Tank", *ui->ub_01);
-    updateView("Soviet Attack Dog", *ui->ub_02);
 }
 
-void MainWindow::updateUbs()
+void MainWindow::obToggle()
 {
-    updateView("Rhino Tank", *ui->ub_01);
-    updateView("Soviet Attack Dog", *ui->ub_02);
+    Ra2ob& g = Ra2ob::getInstance();
+
+    if (g._view.m_gameValid) {
+        ob->show();
+        return;
+    }
+
+    ob->hide();
 }
 
 void MainWindow::showSetting()
@@ -119,23 +103,22 @@ void MainWindow::showSetting()
     this->activateWindow();
 }
 
-
-void MainWindow::quit()
+void MainWindow::showOb()
 {
-    if (QMessageBox::question(this, tr("Notice"), tr("Do you want to Exit?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
-        QApplication::exit(0);
-    }
+    ob->show();
 }
 
 
-void MainWindow::changeEvent(QEvent *event)
+void MainWindow::quit()
 {
-    if (event->type() != QEvent::WindowStateChange)
-        return;
-    if (this->windowState() == Qt::WindowMinimized)
-    {
-        this->hide();
-    }
+    qApp->quit();
+}
+
+
+void MainWindow::hideEvent(QHideEvent *event)
+{
+    this->hide();
+    event->ignore();
 }
 
 
