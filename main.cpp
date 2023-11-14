@@ -4,6 +4,7 @@
 #include <QLocale>
 #include <QTranslator>
 #include <QDebug>
+#include <QScreen>
 #include <QProcess>
 #include <QString>
 
@@ -30,6 +31,11 @@ int main(int argc, char *argv[])
 
     Ra2ob& g = Ra2ob::getInstance();
     g.startLoop(false);
+
+    QScreen *screen = QGuiApplication::primaryScreen();
+    QSize size = screen->size();
+
+    qDebug() << "Screen width:" << size.width() << " height: " << size.height();
 
     int ret = a.exec();
 

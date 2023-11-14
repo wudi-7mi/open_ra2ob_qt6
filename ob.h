@@ -22,8 +22,23 @@ public:
 private:
     Ui::Ob *ui;
     void paintEvent(QPaintEvent *);
-    void paintTopPanel(QPainter &painter, QColor lColor, QColor rColor);
-    void paintRightPanel(QPainter &painter);
+    void paintTopPanel(
+        QPainter &painter,
+        QColor lColor,
+        QColor rColor,
+        int offsetX = 0,
+        int offsetY = 0,
+        int pWidth = 1000,
+        int pHeight = 100,
+        int rightPanelWidth = 168
+    );
+    void paintRightPanel(
+        QPainter &painter,
+        int offsetX = 0,
+        int offsetY = 0,
+        int rightPanelWidth = 168,
+        int rightPanelHeight = 1080
+    );
     void paintLeftPanel(QPainter &painter);
 
     void refreshData();

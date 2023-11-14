@@ -45,20 +45,41 @@ void Ob::paintEvent(QPaintEvent *)
 {
     QPainter *painter = new QPainter(this);
 
-//    paintTopPanel(*painter, QColor("#ffff00"), QColor("#0000ff"));
+//    paintTopPanel(
+//        *painter,
+//        QColor("#ffff00"),
+//        QColor("#0000ff"),
+//        -150,
+//        0,
+//        800,
+//        80
+//    );
+    paintTopPanel(
+        *painter,
+        QColor("#ffff00"),
+        QColor("#0000ff")
+    );
+    // paintRightPanel(*painter, -425);
     paintRightPanel(*painter);
-    paintLeftPanel(*painter);
+    // paintLeftPanel(*painter);
 
     painter->end();
 }
 
-void Ob::paintTopPanel(QPainter &painter, QColor lColor, QColor rColor)
+void Ob::paintTopPanel(
+    QPainter &painter,
+    QColor lColor,
+    QColor rColor,
+    int offsetX,
+    int offsetY,
+    int pWidth,
+    int pHeight,
+    int rightPanelWidth
+)
 {
     painter.setOpacity(0.8);
-    int pWidth = 1000;
-    int pHeight = 100;
     int pBottom = 5;
-    int wCenter = (width() - 168) / 2;
+    int wCenter = (width() - rightPanelWidth) / 2 + offsetX;
 
     QLinearGradient leftGradient(QPointF(wCenter - pWidth / 2, pHeight * 4), QPointF(wCenter, 0));
     leftGradient.setColorAt(0, lColor);
@@ -92,19 +113,25 @@ void Ob::paintTopPanel(QPainter &painter, QColor lColor, QColor rColor)
 }
 
 
-void Ob::paintRightPanel(QPainter &painter)
+void Ob::paintRightPanel(
+    QPainter &painter,
+    int offsetX,
+    int offsetY,
+    int rightPanelWidth,
+    int rightPanelHeight
+)
 {
     QColor fill(QColor("midnightblue"));
-    painter.fillRect(QRect(1752, 0, 168, 48), fill);
-    painter.fillRect(QRect(1752, 48, 12, 110), fill);
-    painter.fillRect(QRect(1905, 48, 15, 110), fill);
-    painter.fillRect(QRect(1752, 158, 168, 922), fill);
+    painter.fillRect(QRect(offsetX + 1752, offsetY + 0, rightPanelWidth, 48), fill);
+    painter.fillRect(QRect(offsetX + 1752, offsetY + 48, 12, 110), fill);
+    painter.fillRect(QRect(offsetX + 1905, offsetY + 48, 15, 110), fill);
+    painter.fillRect(QRect(offsetX + 1752, offsetY + 158, rightPanelWidth, 922), fill);
 
     QPen border(Qt::gray);
     border.setWidth(1);
 
     painter.setPen(border);
-    painter.drawRect(QRect(1763, 47, 142, 111));
+    painter.drawRect(QRect(offsetX + 1763, offsetY + 47, 142, 111));
 
     return;
 }
