@@ -1,5 +1,5 @@
-#include "unitblock.h"
-#include "ui_unitblock.h"
+#include "./unitblock.h"
+#include "./ui_unitblock.h"
 
 #include <QFile>
 #include <iostream>
@@ -38,10 +38,10 @@ void Unitblock::initImg(QString name)
     img->setPixmap(QPixmap(img_str));
 }
 
-void Unitblock::updateNumber(QString number)
+void Unitblock::updateNumber(int n)
 {
     QLabel *num = ui->number;
-    num->setText(number);
+    num->setText(QString::number(n));
 
     num->adjustSize();
 
@@ -50,9 +50,10 @@ void Unitblock::updateNumber(QString number)
     num->setGeometry(childX, num->y(), num->width(), num->height());
 }
 
-void Unitblock::setColor(QString color)
+void Unitblock::setColor(std::string color)
 {
+    QString q_color = QString::fromStdString("#" + color);
     QString defaultStyle = ui->bg->styleSheet();
 
-    ui->bg->setStyleSheet(defaultStyle + "background-color: " + color + ";");
+    ui->bg->setStyleSheet(defaultStyle + "background-color: " + q_color + ";");
 }

@@ -16,8 +16,8 @@ public:
     ~Unitblock();
     void initUnit(QString name, int index);
     void initImg(QString name);
-    void updateNumber(QString num);
-    void setColor(QString color);
+    void updateNumber(int n);
+    void setColor(std::string color);
 
     QString unit_name;
     int player_index;

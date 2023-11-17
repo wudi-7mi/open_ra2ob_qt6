@@ -1,14 +1,13 @@
-#include "mainwindow.h"
+#include "./mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "configmanager.h"
-#include "tray.h"
-
-#include "ra2ob.hpp"
+#include "./configmanager.h"
+#include "./tray.h"
 
 #include <QMessageBox>
 #include <QProcess>
 #include <QCloseEvent>
 #include <QTimer>
+#include <QShortcut>
 
 MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     : QMainWindow(parent)
@@ -49,6 +48,10 @@ MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     detectGameTimer->setInterval(1000);
     connect(detectGameTimer, SIGNAL(timeout()), this, SLOT(obToggle()));
     detectGameTimer->start();
+
+    QShortcut *shortcut = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_H), this);
+
+    connect(shortcut, &QShortcut::activated, this, &MainWindow::hideOb);
 }
 
 
@@ -81,15 +84,15 @@ void MainWindow::onBtnReloadClicked()
 
 void MainWindow::onBtnEmitClicked()
 {
-    Ra2ob& g = Ra2ob::getInstance();
-    std::cout << g._view.viewToJson().dump() << std::endl;
+    Ra2ob::Game& g = Ra2ob::Game::getInstance();
+    g.viewer.print(g._gameInfo, 0);
 }
 
 void MainWindow::obToggle()
 {
-    Ra2ob& g = Ra2ob::getInstance();
+    Ra2ob::Game& g = Ra2ob::Game::getInstance();
 
-    if (g._view.m_gameValid) {
+    if (g._gameInfo.valid && !forceHideOb) {
         ob->show();
         return;
     }
@@ -114,6 +117,16 @@ void MainWindow::quit()
     qApp->quit();
 }
 
+void MainWindow::hideOb() {
+    if (forceHideOb) {
+        forceHideOb = !forceHideOb;
+        ob->show();
+        return;
+    }
+
+    forceHideOb = !forceHideOb;
+    ob->hide();
+}
 
 void MainWindow::hideEvent(QHideEvent *event)
 {

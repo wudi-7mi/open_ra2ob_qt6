@@ -22,7 +22,7 @@ set(PROJECT_SOURCES
         ${TS_FILES}
 )
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Ra2ob)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(open_ra2ob_qt6
@@ -32,9 +32,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ob.h ob.cpp ob.ui
         configmanager.h configmanager.cpp
         tray.h tray.cpp
-        ra2ob.hpp ra2ob.cpp
         json.hpp
         unitblock.h unitblock.cpp unitblock.ui
+        playerinfo.h playerinfo.cpp playerinfo.ui
+        layoutsetting.h
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET open_ra2ob_qt6 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

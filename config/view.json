@@ -1,0 +1,176 @@
+{
+  "ViewType": 0,
+  "@ViewType": "0=Auto, 1=Manual, 2=ManualNoZero",
+  "PanelItems": [
+    "Player Name",
+    "Balance",
+    "Credit Spent",
+    "Power Output",
+    "Power Drain",
+    "Win Or Lose",
+    "Color",
+    "Country"
+  ],
+  "UnitItems": {
+    "DefaultView": [
+      {
+        "Name": "Soviet War Factory",
+        "Index": 0
+      },
+      {
+        "Name": "Allied War Factory",
+        "Index": 0
+      },
+      {
+        "Name": "War Miner",
+        "Index": 0
+      },
+      {
+        "Name": "Chrono Miner",
+        "Index": 0
+      },
+      {
+        "Name": "Rhino Tank",
+        "Index": 1
+      },
+      {
+        "Name": "Grizzly Battle Tank",
+        "Index": 1
+      },
+      {
+        "Name": "Grand Cannon"
+      },
+      {
+        "Name": "Mirage Tank"
+      },
+      {
+        "Name": "Prism Tank"
+      },
+      {
+        "Name": "Allied MCV"
+      },
+      {
+        "Name": "Allied Amphibious Transport"
+      },
+      {
+        "Name": "Destoryer"
+      },
+      {
+        "Name": "Dolphin"
+      },
+      {
+        "Name": "Aegis Cruiser"
+      },
+      {
+        "Name": "Aircraft Carrier"
+      },
+      {
+        "Name": "NightHawk Transport"
+      },
+      {
+        "Name": "Tank Destoyer"
+      },
+      {
+        "Name": "Infantry Fighting Vehicle"
+      },
+      {
+        "Name": "Allied Attack Dog"
+      },
+      {
+        "Name": "GI"
+      },
+      {
+        "Name": "Allied Engineer"
+      },
+      {
+        "Name": "Chrono Legionnaire"
+      },
+      {
+        "Name": "Spy"
+      },
+      {
+        "Name": "Tanya"
+      },
+      {
+        "Name": "Sniper"
+      },
+      {
+        "Name": "Rocketeer"
+      },
+      {
+        "Name": "Harrier"
+      },
+      {
+        "Name": "Black Eagle"
+      },
+      {
+        "Name": "Flak Track"
+      },
+      {
+        "Name": "Tesla Tank"
+      },
+      {
+        "Name": "Apocalypse Tank"
+      },
+      {
+        "Name": "V3 Rocket Launcher"
+      },
+      {
+        "Name": "Terror Drone"
+      },
+      {
+        "Name": "Giant Squid"
+      },
+      {
+        "Name": "Kirov Airship"
+      },
+      {
+        "Name": "Soviet MCV"
+      },
+      {
+        "Name": "Dreadnought"
+      },
+      {
+        "Name": "Typhoon Attack Submarine"
+      },
+      {
+        "Name": "Sea Scorpion"
+      },
+      {
+        "Name": "Soviet Amphibious Transport"
+      },
+      {
+        "Name": "Demolition Truck"
+      },
+      {
+        "Name": "Soviet Attack Dog"
+      },
+      {
+        "Name": "Conscript"
+      },
+      {
+        "Name": "Soviet Engineer"
+      },
+      {
+        "Name": "Tesla Trooper"
+      },
+      {
+        "Name": "Crazy Ivan"
+      },
+      {
+        "Name": "Yuri"
+      },
+      {
+        "Name": "Desolator"
+      },
+      {
+        "Name": "Terrorist"
+      }
+    ],
+    "StructureTabView": [],
+    "ArmoryTabView": [],
+    "InfantryTabView": [],
+    "UnitTabView": []
+  }
+
+}
