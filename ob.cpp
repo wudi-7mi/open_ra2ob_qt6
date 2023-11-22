@@ -85,7 +85,7 @@ void Ob::paintTopPanel(QPainter *painter, int offsetX, int offsetY, int pWidth, 
     int iconX     = wCenter - iconWidth / 2;
     int iconY     = 0;
 
-    pixmap.load((QString(":/icon/icon_100.png")));
+    pixmap.load((QString(":/icon/assets/icons/icon_100.png")));
     painter->drawPixmap(iconX, iconY, iconWidth, iconWidth, pixmap);
 
     return;

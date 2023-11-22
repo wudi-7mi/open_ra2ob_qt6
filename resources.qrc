@@ -1,12 +1,12 @@
 <RCC>
     <qresource prefix="/icon">
-        <file>icon_highres.png</file>
-        <file>icon_128.png</file>
-        <file>icon_16.png</file>
-        <file>icon_32.png</file>
-        <file>icon_64.png</file>
-        <file>icon_80.png</file>
-        <file>icon_100.png</file>
+        <file>assets/icons/icon_highres.png</file>
+        <file>assets/icons/icon_128.png</file>
+        <file>assets/icons/icon_16.png</file>
+        <file>assets/icons/icon_32.png</file>
+        <file>assets/icons/icon_64.png</file>
+        <file>assets/icons/icon_80.png</file>
+        <file>assets/icons/icon_100.png</file>
     </qresource>
     <qresource prefix="/i18n">
         <file>open_ra2ob_qt6_zh_CN.qm</file>

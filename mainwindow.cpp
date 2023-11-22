@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
-    this->setWindowIcon(QIcon(":/icon/icon_16.png"));
+    this->setWindowIcon(QIcon(":/icon/assets/icons/icon_16.png"));
     this->setWindowTitle(tr("open_ra2ob - An Opensource Ra2 observer"));
     this->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::MSWindowsFixedSizeDialogHint);
 

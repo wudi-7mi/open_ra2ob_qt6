@@ -15,7 +15,7 @@ Tray::~Tray() { delete m_trayicon; }
 void Tray::setupTray() {
     // Setup trayicon.
     m_trayicon->setToolTip(tr("Open_Ra2ob"));
-    m_trayicon->setIcon(QIcon(":/icon/icon_32.png"));
+    m_trayicon->setIcon(QIcon(":/icon/assets/icons/icon_32.png"));
     m_trayicon->show();
 
     // Create and set traymenu.
@@ -27,7 +27,7 @@ void Tray::setupTray() {
     QAction *action_show_setting = new QAction(tr("Setting"));
     QAction *action_quit         = new QAction(tr("Quit"));
 
-    action_show_setting->setIcon(QIcon(":/icon/icon_highres.png"));
+    action_show_setting->setIcon(QIcon(":/icon/assets/icons/icon_highres.png"));
 
     // Add actions to traymenu.
     m_traymenu->addAction(action_show_setting);
