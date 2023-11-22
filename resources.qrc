@@ -13,6 +13,10 @@
     </qresource>
     <qresource prefix="/panels">
         <file alias="right_panel">assets/panels/right_panel.png</file>
+        <file>assets/panels/balance.png</file>
+        <file>assets/panels/credit.png</file>
+        <file>assets/panels/balance_w.png</file>
+        <file>assets/panels/credit_w.png</file>
     </qresource>
     <qresource prefix="/obicons">
         <file>assets/obicons/Aegis Cruiser.png</file>
@@ -150,5 +154,16 @@
         <file>assets/obicons/Yuri Prime.png</file>
         <file>assets/obicons/Yuri Prime_u.png</file>
         <file>assets/obicons/unit_placeholder.png</file>
+    </qresource>
+    <qresource prefix="/countries">
+        <file>assets/countries/Americans.png</file>
+        <file>assets/countries/British.png</file>
+        <file>assets/countries/Cuba.png</file>
+        <file>assets/countries/France.png</file>
+        <file>assets/countries/Germans.png</file>
+        <file>assets/countries/Iraq.png</file>
+        <file>assets/countries/Korea.png</file>
+        <file>assets/countries/Libya.png</file>
+        <file>assets/countries/Russians.png</file>
     </qresource>
 </RCC>

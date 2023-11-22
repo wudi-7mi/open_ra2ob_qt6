@@ -1,5 +1,5 @@
-#include "ob.h"
-#include "ui_ob.h"
+#include "./ob.h"
+#include "./ui_ob.h"
 
 #include <QPainter>
 #include <QTimer>
@@ -8,8 +8,10 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <QScreen>
+#include <QShortcut>
 
-#include "ra2ob.hpp"
+#include "./Ra2ob/Ra2ob"
 
 
 using json = nlohmann::json;
@@ -23,17 +25,36 @@ Ob::Ob(QWidget *parent) :
     this->setWindowFlags(Qt::WindowMinMaxButtonsHint | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
     this->setAttribute(Qt::WA_TranslucentBackground);
 
-    g = &Ra2ob::getInstance();
+    g = &Ra2ob::Game::getInstance();
 
-    QLabel* lb_name_01 = new QLabel(this);
-    QLabel* lb_name_02 = new QLabel(this);
+    initPanel();
+    initUnitblocks();
 
     QTimer* detectGameTimer = new QTimer();
-    detectGameTimer->setInterval(1000);
+    detectGameTimer->setInterval(500);
     connect(detectGameTimer, SIGNAL(timeout()), this, SLOT(detectGame()));
+    connect(detectGameTimer, SIGNAL(timeout()), this, SLOT(toggleOb()));
     detectGameTimer->start();
-//    qw->setGeometry(1763, 158, 78, 100 * 10);
 
+    int screenCount = QGuiApplication::screens().size();
+    qDebug() << "Numbers of screens: " << screenCount;
+
+    QList<QScreen*> screens = QGuiApplication::screens();
+    for (auto& s : screens) {
+        qDebug() << "Name: " << s->name();
+        qDebug() << "Geometry: " << s->geometry();
+        qDebug() << "Available Geometry: " << s->availableGeometry();
+    }
+
+    QScreen *screen = QGuiApplication::primaryScreen();
+    qDebug() << "Primary Screen: " << screen->name();
+
+    this->setScreen(screen);
+
+    QShortcut *shortcut = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_H), this);
+    QShortcut *sc_switch_screen = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_S), this);
+    connect(shortcut, &QShortcut::activated, this, &Ob::hideOb);
+    connect(sc_switch_screen, &QShortcut::activated, this, &Ob::switchScreen);
 }
 
 Ob::~Ob()
@@ -45,22 +66,14 @@ void Ob::paintEvent(QPaintEvent *)
 {
     QPainter *painter = new QPainter(this);
 
-//    paintTopPanel(
-//        *painter,
-//        QColor("#ffff00"),
-//        QColor("#0000ff"),
-//        -150,
-//        0,
-//        800,
-//        80
-//    );
     paintTopPanel(
         *painter,
-        QColor("#ffff00"),
-        QColor("#0000ff")
+        topPanelOffset,
+        0,
+        topPanelWidth,
+        topPanelHeight
     );
-    // paintRightPanel(*painter, -425);
-    paintRightPanel(*painter);
+    paintRightPanel(*painter, rightOffset);
     // paintLeftPanel(*painter);
 
     painter->end();
@@ -68,18 +81,20 @@ void Ob::paintEvent(QPaintEvent *)
 
 void Ob::paintTopPanel(
     QPainter &painter,
-    QColor lColor,
-    QColor rColor,
     int offsetX,
     int offsetY,
     int pWidth,
-    int pHeight,
-    int rightPanelWidth
+    int pHeight
 )
 {
-    painter.setOpacity(0.8);
+    painter.setOpacity(1);
     int pBottom = 5;
-    int wCenter = (width() - rightPanelWidth) / 2 + offsetX;
+    int wCenter = (width() - layout::RIGHT_W) / 2 + offsetX;
+
+    QString qs_l = QString::fromStdString("#" + qs_1);
+    QString qs_r = QString::fromStdString("#" + qs_2);
+    QColor lColor = QColor(qs_l);
+    QColor rColor = QColor(qs_r);
 
     QLinearGradient leftGradient(QPointF(wCenter - pWidth / 2, pHeight * 4), QPointF(wCenter, 0));
     leftGradient.setColorAt(0, lColor);
@@ -102,7 +117,7 @@ void Ob::paintTopPanel(
     painter.setOpacity(1);
 
     QPixmap pixmap;
-    int iconWidth = 100;
+    int iconWidth = 80;
     int iconX = wCenter - iconWidth / 2;
     int iconY = 0;
 
@@ -116,24 +131,155 @@ void Ob::paintTopPanel(
 void Ob::paintRightPanel(
     QPainter &painter,
     int offsetX,
-    int offsetY,
-    int rightPanelWidth,
-    int rightPanelHeight
+    int offsetY
 )
 {
     QColor fill(QColor("midnightblue"));
-    painter.fillRect(QRect(offsetX + 1752, offsetY + 0, rightPanelWidth, 48), fill);
-    painter.fillRect(QRect(offsetX + 1752, offsetY + 48, 12, 110), fill);
-    painter.fillRect(QRect(offsetX + 1905, offsetY + 48, 15, 110), fill);
-    painter.fillRect(QRect(offsetX + 1752, offsetY + 158, rightPanelWidth, 922), fill);
+    painter.fillRect(QRect(
+                         offsetX + layout::SC1K_RIGHT_X,
+                         offsetY + 0,
+                         layout::RIGHT_W,
+                         layout::RIGHT_HEADER_H
+                         ), fill);
+    painter.fillRect(QRect(
+                         offsetX + layout::SC1K_RIGHT_X,
+                         offsetY + layout::RIGHT_HEADER_H,
+                         layout::RIGHT_LEFTBORDER_W,
+                         layout::RIGHT_BORDER_H
+                         ), fill);
+    painter.fillRect(QRect(
+                         offsetX + layout::SC1K_RIGHT_X + layout::RIGHT_RIGHTBORDER_START,
+                         offsetY + layout::RIGHT_HEADER_H,
+                         layout::RIGHT_RIGHTBORDER_W,
+                         layout::RIGHT_BORDER_H
+                         ), fill);
+    painter.fillRect(QRect(
+                         offsetX + layout::SC1K_RIGHT_X,
+                         offsetY + layout::RIGHT_HEADER_H + layout::RIGHT_BORDER_H,
+                         layout::RIGHT_W,
+                         layout::SC1K_RIGHT_BOTTOM_H
+                         ), fill);
 
     QPen border(Qt::gray);
     border.setWidth(1);
 
     painter.setPen(border);
-    painter.drawRect(QRect(offsetX + 1763, offsetY + 47, 142, 111));
+    painter.drawRect(QRect(
+        offsetX + layout::SC1K_MAP_X,
+        offsetY + layout::SC1K_MAP_Y,
+        layout::MAP_W,
+        layout::MAP_H
+        ));
 
     return;
+}
+
+void Ob::initPanel() {
+    this->pi_1 = new PlayerInfo(this);
+    this->pi_2 = new PlayerInfo(this);
+
+    this->pi_1->setGeometry(
+        layout::SC1K_TOP_M - layout::SC1K_TOP_W / 2 - 40,
+        0,
+        layout::SC1K_TOP_W / 2,
+        layout::SC1K_TOP_H
+    );
+    this->pi_2->setGeometry(
+        layout::SC1K_TOP_M + 40,
+        0,
+        layout::SC1K_TOP_W / 2,
+        layout::SC1K_TOP_H
+    );
+}
+
+void Ob::initUnitblocks() {
+    for (int i = 0; i < layout::SC1K_UNITBLOCKS; i++) {
+        Unitblock* ub = new Unitblock(this);
+        ub->initUnit("null");
+        ub->setGeometry(
+            layout::SC1K_UNIT_X + rightOffset,
+            layout::SC1K_UNIT_Y + i * layout::SC1K_UNIT_Hs,
+            layout::SC1K_UNIT_W,
+            layout::SC1K_UNIT_H);
+        ub->setColor(qs_1);
+        ub->setEmpty();
+        ub->show();
+        ubs_p1.push_back(ub);
+    }
+
+    for (int i = 0; i < layout::SC1K_UNITBLOCKS; i++) {
+        Unitblock* ub = new Unitblock(this);
+        ub->initUnit("null");
+        ub->setGeometry(
+            layout::SC1K_UNIT_X + layout::SC1K_UNIT_Ws + rightOffset,
+            layout::SC1K_UNIT_Y + i * layout::SC1K_UNIT_Hs,
+            layout::SC1K_UNIT_W,
+            layout::SC1K_UNIT_H);
+        ub->setColor(qs_2);
+        ub->setEmpty();
+        ub->show();
+        ubs_p2.push_back(ub);
+    }
+}
+
+void Ob::refreshUbs() {
+    Ra2ob::tagGameInfo gi = g->_gameInfo;
+
+    if (!gi.valid) {
+        return;
+    }
+
+    std::vector<int> validPlayerIndex;
+    int validPlayerNum = getValidPlayerIndex(&validPlayerIndex);
+
+    if (validPlayerNum != 2) {
+        std::cerr << "No two valid players.\n";
+        return;
+    }
+
+    std::vector<Ra2ob::tagPlayer> players;
+    players.push_back(gi.players[validPlayerIndex[0]]);
+    players.push_back(gi.players[validPlayerIndex[1]]);
+
+    Ra2ob::tagUnitsInfo ui = players[0].units;
+    int j = 0;
+
+    for (int i = 0; j < layout::SC1K_UNITBLOCKS; i++) {
+        try {
+            auto u = ui.units.at(i);
+            if (u.num == 0) {
+                continue;
+            }
+
+            ubs_p1[j]->setNumber(u.num);
+            ubs_p1[j]->setName(QString::fromStdString(u.unitName));
+            ubs_p1[j]->setColor(qs_1);
+        } catch(std::out_of_range& e) {
+            ubs_p1[j]->setEmpty();
+            ubs_p1[j]->setColor(qs_1);
+        }
+        j++;
+    }
+
+    ui = players[1].units;
+    j = 0;
+
+    for (int i = 0; j < layout::SC1K_UNITBLOCKS; i++) {
+        try {
+            auto u = ui.units.at(i);
+            if (u.num == 0) {
+                continue;
+            }
+
+            ubs_p2[j]->setNumber(u.num);
+            ubs_p2[j]->setName(QString::fromStdString(u.unitName));
+            ubs_p2[j]->setColor(qs_2);
+        } catch(std::out_of_range& e) {
+            ubs_p2[j]->setEmpty();
+            ubs_p2[j]->setColor(qs_2);
+        }
+        j++;
+    }
 }
 
 void Ob::paintLeftPanel(QPainter &painter)
@@ -141,134 +287,101 @@ void Ob::paintLeftPanel(QPainter &painter)
     return;
 }
 
-void Ob::refreshData()
-{
+void Ob::sortUnitblocks() {
     return;
 }
 
-void Ob::rearrangeUnitblocks()
+void Ob::refreshPanel() {
+    std::vector<int> validPlayerIndex;
+    int validPlayerNum = getValidPlayerIndex(&validPlayerIndex);
+
+    if (validPlayerNum != 2) {
+        return;
+    }
+
+    int p1_index = validPlayerIndex[0];
+    int p2_index = validPlayerIndex[1];
+
+    pi_1->setAll(p1_index);
+    pi_2->setAll(p2_index);
+}
+
+void Ob::setPlayerColor() {
+    std::vector<int> validPlayerIndex;
+    int validPlayerNum = getValidPlayerIndex(&validPlayerIndex);
+
+    if (validPlayerNum != 2) {
+        return;
+    }
+    int p1_index = validPlayerIndex[0];
+    int p2_index = validPlayerIndex[1];
+
+    Ra2ob::tagGameInfo gi = g->_gameInfo;
+
+    qs_1 = gi.players[p1_index].panel.color;
+    qs_2 = gi.players[p2_index].panel.color;
+}
+
+int Ob::getValidPlayerIndex(std::vector<int>* vpi)
 {
-    if (!g->_view.m_gameValid) {
-        return;
-    }
+    Ra2ob::tagGameInfo gi = g->_gameInfo;
 
-    json view = g->_view.viewToJsonFull();
-
-    if (view["valid_players"].empty()) {
-        return;
-    }
-
-    try {
-        player_list = { view["valid_players"][0], view["valid_players"][1] };
-    } catch(json::type_error err) {
-        std::cerr << "No two valid players." << std::endl;
-        return;
-    }
-
-    for (auto& ub : unitblock_list_player_0) {
-        delete ub;
-    }
-    unitblock_list_player_0.clear();
-
-    for (auto& ub : unitblock_list_player_1) {
-        delete ub;
-    }
-    unitblock_list_player_1.clear();
-
-    for (int i = 0; i < 2; i++) {
-        auto unit_info = view["player_info"][i]["unit_info"];
-
-        for (auto& u : unit_info.items()) {
-
-            std::string v_str = u.value();
-
-            int v = std::stoi(v_str);
-
-            if (v <= 0) {
-                continue;
-            }
-
-            Unitblock* ub = new Unitblock(this);
-
-            ub->initUnit(QString::fromStdString(u.key()), i);
-
-            updateView(*ub);
-
-            if (i == 0) {
-                unitblock_list_player_0.push_back(ub);
-            } else {
-                unitblock_list_player_1.push_back(ub);
-            }
+    int validPlayerNum = 0;
+    for (int i = 0; i < Ra2ob::MAXPLAYER; i++) {
+        if (gi.players[i].valid) {
+            validPlayerNum ++;
+            vpi->push_back(i);
         }
     }
 
-}
-
-void Ob::sortUnitblocks() {
-    for (int i = 0; i < unitblock_list_player_0.length(); i++) {
-        Unitblock* ub = unitblock_list_player_0[i];
-        ub->setGeometry(1757, 158 + i * 57, 78, 60);
-        ub->setColor("#008787");
-        ub->show();
-    }
-
-    for (int i = 0; i < unitblock_list_player_1.length(); i++) {
-        Unitblock* ub = unitblock_list_player_1[i];
-        ub->setGeometry(1757 + 78, 158 + i * 57, 78, 60);
-        ub->setColor("#ff8080");
-        ub->show();
-    }
-}
-
-void Ob::setName(int index) {
-    json panel_info = g->_view.getPlayerUnitInfo(index);
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
-    std::cout << panel_info["Player Name"];
-
-//    std::wstring wstr = convert.from_bytes(panel_info["Player Name"]);
-//    QString player_name = QString::fromStdWString(wstr);
-
-//    qDebug() << player_name;
-}
-
-void Ob::setCountry(int index) {
-
-}
-
-void Ob::setColor(int index) {
-
-}
-
-void Ob::updateView(Unitblock& ub)
-{
-    json unit_info = g->_view.getPlayerUnitInfo(ub.player_index);
-    std::string n_std = unit_info[ub.unit_name.toStdString()];
-
-    ub.updateNumber(QString::fromStdString(n_std));
-}
-
-void Ob::updateBalance(int index)
-{
-
-}
-
-void Ob::updateCredit(int index)
-{
-
-}
-
-void Ob::updatePower(int index)
-{
-
+    return validPlayerNum;
 }
 
 void Ob::detectGame()
 {
-    if (g->_view.m_gameValid) {
-        rearrangeUnitblocks();
-        sortUnitblocks();
-//        setName(1);
-//        setName(2);
+    if (g->_gameInfo.valid) {
+        refreshUbs();
+        refreshPanel();
+        setPlayerColor();
+        this->update();
     }
+}
+
+void Ob::toggleOb() {
+    Ra2ob::Game& g = Ra2ob::Game::getInstance();
+
+    if (g._gameInfo.valid && !forceHideOb) {
+        this->show();
+        return;
+    }
+
+    this->hide();
+}
+
+void Ob::hideOb() {
+    if (forceHideOb) {
+        forceHideOb = !forceHideOb;
+        this->show();
+        return;
+    }
+
+    forceHideOb = !forceHideOb;
+    this->hide();
+}
+
+void Ob::switchScreen() {
+    QList<QScreen*> screens = QGuiApplication::screens();
+    int index = 0;
+
+    for (int i = 0; i < screens.length(); i++) {
+        if (screens[i] == this->screen()) {
+            index = i;
+            break;
+        }
+    }
+
+    int next = (index + 1 == screens.length()) ? 0 : index + 1;
+
+    this->setGeometry(screens[next]->geometry());
 }
 

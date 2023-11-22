@@ -1,9 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "tray.h"
-#include "unitblock.h"
-#include "ob.h"
+#include "./tray.h"
+#include "./ob.h"
 
 #include <QMainWindow>
 #include <QSystemTrayIcon>
@@ -26,17 +25,15 @@ private:
     ConfigManager *_cfgm;
     Tray *tray;
     Ob *ob;
-    void updateView(std::string name, Unitblock& ub);
+
+    bool forceHideOb = false;
 
 private slots:
     void initLanguage(QString language);
     void onRbEnglishClicked();
     void onRbChineseClicked();
     void onBtnReloadClicked();
-    void onBtnEmitClicked();
-    void obToggle();
     void showSetting();
-    void showOb();
     void quit();
 
 protected:

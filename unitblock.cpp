@@ -1,8 +1,13 @@
-#include "unitblock.h"
-#include "ui_unitblock.h"
+#include "./unitblock.h"
+#include "./ui_unitblock.h"
 
 #include <QFile>
 #include <iostream>
+#include <QDebug>
+#include <QPainter>
+#include <QPainterPath>
+
+#include "./layoutsetting.h"
 
 Unitblock::Unitblock(QWidget *parent) :
     QWidget(parent),
@@ -16,43 +21,77 @@ Unitblock::~Unitblock()
     delete ui;
 }
 
-void Unitblock::initUnit(QString name, int index)
+void Unitblock::initUnit(QString name)
 {
     unit_name = name;
-    player_index = index;
-    initImg(name);
+    setImage(name);
 }
 
-void Unitblock::initImg(QString name)
+void Unitblock::setName(QString name) {
+    unit_name = name;
+    setImage(name);
+}
+
+void Unitblock::setImage(QString name)
 {
-    QLabel *img = ui->img;
     QString img_str = ":/obicons/assets/obicons/" + name + ".png";
 
     QFile qf(img_str);
 
     if (!qf.exists()) {
-        img->setPixmap(QPixmap(":/obicons/assets/obicons/unit_placeholder.png"));
+        ui->img->setPixmap(QPixmap(":/obicons/assets/obicons/unit_placeholder_trans.png"));
         return;
     }
 
-    img->setPixmap(QPixmap(img_str));
+    ui->img->setPixmap(getRadius(QPixmap(img_str), 8));
 }
 
-void Unitblock::updateNumber(QString number)
+QPixmap Unitblock::getRadius(QPixmap src, int radius) {
+    QPixmap dest(src.width(), src.height());
+    dest.fill(Qt::transparent);
+
+    QPainter painter(&dest);
+
+    QPainterPath path;
+    QRect rect(0, 0, src.width(), src.height());
+    path.addRoundedRect(rect, radius, radius);
+    painter.setClipPath(path);
+    painter.drawPixmap(0, 0, src.width(), src.height(), src);
+
+    return dest;
+}
+
+void Unitblock::setNumber(int n)
 {
     QLabel *num = ui->number;
-    num->setText(number);
-
+    num->setText(QString::number(n));
     num->adjustSize();
 
     int childX = (this->width() - num->width()) / 2;
-
     num->setGeometry(childX, num->y(), num->width(), num->height());
+
+    num->show();
+
+    ui->bg->show();
 }
 
-void Unitblock::setColor(QString color)
+void Unitblock::setColor(std::string color)
 {
-    QString defaultStyle = ui->bg->styleSheet();
+    QString q_color = QString::fromStdString("#" + color);
 
-    ui->bg->setStyleSheet(defaultStyle + "background-color: " + color + ";");
+    ui->bg->setStyleSheet(
+        "background-color: " + q_color + ";" + layout::BOTTOM_RADIUS_8
+    );
+    ui->border->setStyleSheet(
+        "border: 1px solid " + q_color + ";" + layout::RADIUS_8
+    );
+}
+
+void Unitblock::setEmpty()
+{
+    QString img_str = ":/obicons/assets/obicons/unit_placeholder_trans.png";
+    ui->img->setPixmap(QPixmap(img_str));
+
+    ui->number->hide();
+    ui->bg->hide();
 }

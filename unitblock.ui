@@ -6,20 +6,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>78</width>
-    <height>60</height>
+    <width>69</width>
+    <height>55</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">.Unitblock{border: 2px solid #FF0000;
+border-radius: 6px;}</string>
+  </property>
   <widget class="QLabel" name="img">
    <property name="geometry">
     <rect>
-     <x>9</x>
-     <y>6</y>
-     <width>60</width>
-     <height>48</height>
+     <x>0</x>
+     <y>0</y>
+     <width>69</width>
+     <height>55</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -28,15 +32,21 @@
      <height>48</height>
     </size>
    </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLabel" name="number">
    <property name="geometry">
     <rect>
-     <x>34</x>
-     <y>37</y>
+     <x>31</x>
+     <y>38</y>
      <width>10</width>
      <height>17</height>
     </rect>
@@ -61,19 +71,31 @@
   <widget class="QLabel" name="bg">
    <property name="geometry">
     <rect>
-     <x>9</x>
-     <y>38</y>
-     <width>60</width>
-     <height>16</height>
+     <x>0</x>
+     <y>40</y>
+     <width>69</width>
+     <height>15</height>
     </rect>
    </property>
    <property name="autoFillBackground">
     <bool>false</bool>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: &quot;#2e2f30&quot;;
-border-bottom-left-radius: 4px;
-border-bottom-right-radius: 4px;</string>
+    <string notr="true">border-bottom-left-radius: 8px;
+border-bottom-right-radius: 8px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="border">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>69</width>
+     <height>55</height>
+    </rect>
    </property>
    <property name="text">
     <string/>
@@ -82,6 +104,7 @@ border-bottom-right-radius: 4px;</string>
   <zorder>img</zorder>
   <zorder>bg</zorder>
   <zorder>number</zorder>
+  <zorder>border</zorder>
  </widget>
  <resources/>
  <connections/>

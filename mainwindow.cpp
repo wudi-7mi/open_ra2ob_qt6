@@ -1,14 +1,13 @@
-#include "mainwindow.h"
+#include "./mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "configmanager.h"
-#include "tray.h"
-
-#include "ra2ob.hpp"
+#include "./configmanager.h"
+#include "./tray.h"
 
 #include <QMessageBox>
 #include <QProcess>
 #include <QCloseEvent>
 #include <QTimer>
+#include <QShortcut>
 
 MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     : QMainWindow(parent)
@@ -41,14 +40,6 @@ MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     tray->setupTray();
 
     ob = new Ob();
-
-    connect(ui->btn_emit, &QPushButton::clicked, this, &MainWindow::onBtnEmitClicked);
-    connect(ui->btn_show_ob, &QPushButton::clicked, this, &MainWindow::showOb);
-
-    QTimer* detectGameTimer = new QTimer();
-    detectGameTimer->setInterval(1000);
-    connect(detectGameTimer, SIGNAL(timeout()), this, SLOT(obToggle()));
-    detectGameTimer->start();
 }
 
 
@@ -79,41 +70,16 @@ void MainWindow::onBtnReloadClicked()
     qApp->exit(773);
 }
 
-void MainWindow::onBtnEmitClicked()
-{
-    Ra2ob& g = Ra2ob::getInstance();
-    std::cout << g._view.viewToJson().dump() << std::endl;
-}
-
-void MainWindow::obToggle()
-{
-    Ra2ob& g = Ra2ob::getInstance();
-
-    if (g._view.m_gameValid) {
-        ob->show();
-        return;
-    }
-
-    ob->hide();
-}
-
 void MainWindow::showSetting()
 {
     this->showNormal();
     this->activateWindow();
 }
 
-void MainWindow::showOb()
-{
-    ob->show();
-}
-
-
 void MainWindow::quit()
 {
     qApp->quit();
 }
-
 
 void MainWindow::hideEvent(QHideEvent *event)
 {

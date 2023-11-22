@@ -77,3 +77,6 @@ logs
 
 # Vscode
 .vscode
+
+# Temp
+UserspcAppDataLocalTemp*

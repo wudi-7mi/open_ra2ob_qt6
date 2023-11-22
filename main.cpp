@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "./mainwindow.h"
 
 #include <QApplication>
 #include <QLocale>
@@ -8,7 +8,7 @@
 #include <QProcess>
 #include <QString>
 
-#include "ra2ob.hpp"
+#include "./Ra2ob/Ra2ob"
 
 int main(int argc, char *argv[])
 {
@@ -29,13 +29,8 @@ int main(int argc, char *argv[])
     MainWindow w(nullptr, cfgm);
     w.show();
 
-    Ra2ob& g = Ra2ob::getInstance();
-    g.startLoop(false);
-
-    QScreen *screen = QGuiApplication::primaryScreen();
-    QSize size = screen->size();
-
-    qDebug() << "Screen width:" << size.width() << " height: " << size.height();
+    Ra2ob::Game& g = Ra2ob::Game::getInstance();
+    g.startLoop();
 
     int ret = a.exec();
 
