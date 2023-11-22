@@ -3,14 +3,13 @@
 
 #include <QWidget>
 
-#include "./Ra2ob/Ra2ob"
+#include "Ra2ob/Ra2ob"
 
 namespace Ui {
 class PlayerInfo;
 }
 
-class PlayerInfo : public QWidget
-{
+class PlayerInfo : public QWidget {
     Q_OBJECT
 
 public:
@@ -32,4 +31,4 @@ private:
     Ui::PlayerInfo *ui;
 };
 
-#endif // PLAYERINFO_H
+#endif  // PLAYERINFO_H

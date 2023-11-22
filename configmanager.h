@@ -1,12 +1,11 @@
 #ifndef CONFIGMANAGER_H
 #define CONFIGMANAGER_H
 
-#include <QObject>
 #include <QJsonObject>
+#include <QObject>
 #include <QString>
 
-class ConfigManager : public QObject
-{
+class ConfigManager : public QObject {
     Q_OBJECT
 public:
     explicit ConfigManager(QObject *parent = nullptr);
@@ -18,10 +17,6 @@ public:
     bool verifyConfig();
     bool setLanguage(QString language);
     QString getLanguage();
-
-signals:
-
-public slots:
 };
 
-#endif // CONFIGMANAGER_H
+#endif  // CONFIGMANAGER_H

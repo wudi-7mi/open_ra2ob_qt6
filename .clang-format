@@ -1,0 +1,21 @@
+Language: Cpp
+BasedOnStyle: Google
+
+IndentWidth: 4
+
+AccessModifierOffset: -4
+
+ColumnLimit: 100
+
+SpacesBeforeTrailingComments: 2
+
+ReflowComments: true
+SpacesInLineCommentPrefix:
+    Minimum: 1
+    Maximum: -1
+
+InsertNewlineAtEOF: true
+
+AlignConsecutiveAssignments: true
+AlignConsecutiveMacros:
+    Enabled: true

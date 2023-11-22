@@ -3,26 +3,16 @@
 #include <QAction>
 #include <QMenu>
 
-Tray::Tray(QObject *parent)
-    : QObject{parent}
-{
+Tray::Tray(QObject *parent) : QObject{parent} {
     m_trayicon = new QSystemTrayIcon();
 
-    connect(
-        m_trayicon,
-        SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-        this,
-        SLOT(iconActivated(QSystemTrayIcon::ActivationReason))
-    );
+    connect(m_trayicon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this,
+            SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 }
 
-Tray::~Tray()
-{
-    delete m_trayicon;
-}
+Tray::~Tray() { delete m_trayicon; }
 
-void Tray::setupTray()
-{
+void Tray::setupTray() {
     // Setup trayicon.
     m_trayicon->setToolTip(tr("Open_Ra2ob"));
     m_trayicon->setIcon(QIcon(":/icon/icon_32.png"));
@@ -35,7 +25,7 @@ void Tray::setupTray()
 
     // Define actions.
     QAction *action_show_setting = new QAction(tr("Setting"));
-    QAction *action_quit = new QAction(tr("Quit"));
+    QAction *action_quit         = new QAction(tr("Quit"));
 
     action_show_setting->setIcon(QIcon(":/icon/icon_highres.png"));
 
@@ -50,14 +40,13 @@ void Tray::setupTray()
     connect(action_quit, SIGNAL(triggered()), this, SIGNAL(quit()));
 }
 
-void Tray::iconActivated(QSystemTrayIcon::ActivationReason reason)
-{
+void Tray::iconActivated(QSystemTrayIcon::ActivationReason reason) {
     switch (reason) {
-    case QSystemTrayIcon::DoubleClick:
-        emit showSetting();
-        break;
+        case QSystemTrayIcon::DoubleClick:
+            emit showSetting();
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }

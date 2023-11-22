@@ -1,27 +1,22 @@
-#include "./mainwindow.h"
-
 #include <QApplication>
 #include <QLocale>
-#include <QTranslator>
-#include <QDebug>
-#include <QScreen>
 #include <QProcess>
 #include <QString>
+#include <QTranslator>
 
-#include "./Ra2ob/Ra2ob"
+#include "./mainwindow.h"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
     ConfigManager *cfgm = new ConfigManager();
-    cfgm->checkConfig();
+    if (!cfgm->checkConfig()) {
+        return 1;
+    }
 
     QTranslator translator;
-    if (cfgm->getLanguage() == "zh_CN")
-    {
-        if (translator.load(":/i18n/open_ra2ob_qt6_zh_CN"))
-        {
+    if (cfgm->getLanguage() == "zh_CN") {
+        if (translator.load(":/i18n/open_ra2ob_qt6_zh_CN")) {
             a.installTranslator(&translator);
         }
     }
@@ -29,7 +24,7 @@ int main(int argc, char *argv[])
     MainWindow w(nullptr, cfgm);
     w.show();
 
-    Ra2ob::Game& g = Ra2ob::Game::getInstance();
+    Ra2ob::Game &g = Ra2ob::Game::getInstance();
     g.startLoop();
 
     int ret = a.exec();

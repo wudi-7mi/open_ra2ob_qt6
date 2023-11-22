@@ -2,13 +2,13 @@
 #define UNITBLOCK_H
 
 #include <QWidget>
+#include <string>
 
 namespace Ui {
 class Unitblock;
 }
 
-class Unitblock : public QWidget
-{
+class Unitblock : public QWidget {
     Q_OBJECT
 
 public:
@@ -28,4 +28,4 @@ private:
     Ui::Unitblock *ui;
 };
 
-#endif // UNITBLOCK_H
+#endif  // UNITBLOCK_H
