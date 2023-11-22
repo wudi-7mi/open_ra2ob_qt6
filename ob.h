@@ -6,6 +6,7 @@
 
 #include "./unitblock.h"
 #include "./playerinfo.h"
+#include "./layoutsetting.h"
 
 #include "./Ra2ob/Ra2ob"
 
@@ -38,7 +39,10 @@ private:
     );
     void paintLeftPanel(QPainter &painter);
 
-    void rearrangeUnitblocks();
+    void initPanel();
+    void initUnitblocks();
+    void refreshUbs();
+
     void sortUnitblocks();
     void refreshPanel();
 
@@ -46,24 +50,29 @@ private:
 
     int getValidPlayerIndex(std::vector<int>* vpi);
 
-    QVector<Unitblock*> unitblock_list_player_0;
-    QVector<Unitblock*> unitblock_list_player_1;
+    QVector<Unitblock*> ubs_p1;
+    QVector<Unitblock*> ubs_p2;
     PlayerInfo* pi_1;
     PlayerInfo* pi_2;
-    std::string qs_1 = "ffff00";
-    std::string qs_2 = "0000ff";
+    std::string qs_1 = layout::COLOR_DEFAULT;
+    std::string qs_2 = layout::COLOR_DEFAULT;
+
+    bool forceHideOb = false;
 
 //    int rightOffset = -425;
 //    int topPanelOffset = -150;
     int rightOffset = 0;
     int topPanelOffset = 0;
-    int topPanelWidth = 800;
-    int topPanelHeight = 80;
+    int topPanelWidth = layout::SC1K_TOP_W;
+    int topPanelHeight = layout::SC1K_TOP_H;
     QVector<int> player_list;
     Ra2ob::Game* g;
 
 private slots:
     void detectGame();
+    void toggleOb();
+    void hideOb();
+    void switchScreen();
 };
 
 #endif // OB_H

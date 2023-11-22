@@ -8,8 +8,8 @@
 #include <string>
 #include <fstream>
 #include <vector>
-
-#include "./layoutsetting.h"
+#include <QScreen>
+#include <QShortcut>
 
 #include "./Ra2ob/Ra2ob"
 
@@ -27,17 +27,34 @@ Ob::Ob(QWidget *parent) :
 
     g = &Ra2ob::Game::getInstance();
 
-    pi_1 = new PlayerInfo(this);
-    pi_2 = new PlayerInfo(this);
-
-    pi_1->setGeometry(layout::SC1K_TOP_M - 440 - 40, 0, 440, 100);
-    pi_2->setGeometry(layout::SC1K_TOP_M + 40, 0, 440, 100);
+    initPanel();
+    initUnitblocks();
 
     QTimer* detectGameTimer = new QTimer();
-    detectGameTimer->setInterval(1000);
+    detectGameTimer->setInterval(500);
     connect(detectGameTimer, SIGNAL(timeout()), this, SLOT(detectGame()));
+    connect(detectGameTimer, SIGNAL(timeout()), this, SLOT(toggleOb()));
     detectGameTimer->start();
 
+    int screenCount = QGuiApplication::screens().size();
+    qDebug() << "Numbers of screens: " << screenCount;
+
+    QList<QScreen*> screens = QGuiApplication::screens();
+    for (auto& s : screens) {
+        qDebug() << "Name: " << s->name();
+        qDebug() << "Geometry: " << s->geometry();
+        qDebug() << "Available Geometry: " << s->availableGeometry();
+    }
+
+    QScreen *screen = QGuiApplication::primaryScreen();
+    qDebug() << "Primary Screen: " << screen->name();
+
+    this->setScreen(screen);
+
+    QShortcut *shortcut = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_H), this);
+    QShortcut *sc_switch_screen = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_S), this);
+    connect(shortcut, &QShortcut::activated, this, &Ob::hideOb);
+    connect(sc_switch_screen, &QShortcut::activated, this, &Ob::switchScreen);
 }
 
 Ob::~Ob()
@@ -51,7 +68,7 @@ void Ob::paintEvent(QPaintEvent *)
 
     paintTopPanel(
         *painter,
-        -150,
+        topPanelOffset,
         0,
         topPanelWidth,
         topPanelHeight
@@ -157,13 +174,55 @@ void Ob::paintRightPanel(
     return;
 }
 
-void Ob::paintLeftPanel(QPainter &painter)
-{
-    return;
+void Ob::initPanel() {
+    this->pi_1 = new PlayerInfo(this);
+    this->pi_2 = new PlayerInfo(this);
+
+    this->pi_1->setGeometry(
+        layout::SC1K_TOP_M - layout::SC1K_TOP_W / 2 - 40,
+        0,
+        layout::SC1K_TOP_W / 2,
+        layout::SC1K_TOP_H
+    );
+    this->pi_2->setGeometry(
+        layout::SC1K_TOP_M + 40,
+        0,
+        layout::SC1K_TOP_W / 2,
+        layout::SC1K_TOP_H
+    );
 }
 
-void Ob::rearrangeUnitblocks()
-{
+void Ob::initUnitblocks() {
+    for (int i = 0; i < layout::SC1K_UNITBLOCKS; i++) {
+        Unitblock* ub = new Unitblock(this);
+        ub->initUnit("null");
+        ub->setGeometry(
+            layout::SC1K_UNIT_X + rightOffset,
+            layout::SC1K_UNIT_Y + i * layout::SC1K_UNIT_Hs,
+            layout::SC1K_UNIT_W,
+            layout::SC1K_UNIT_H);
+        ub->setColor(qs_1);
+        ub->setEmpty();
+        ub->show();
+        ubs_p1.push_back(ub);
+    }
+
+    for (int i = 0; i < layout::SC1K_UNITBLOCKS; i++) {
+        Unitblock* ub = new Unitblock(this);
+        ub->initUnit("null");
+        ub->setGeometry(
+            layout::SC1K_UNIT_X + layout::SC1K_UNIT_Ws + rightOffset,
+            layout::SC1K_UNIT_Y + i * layout::SC1K_UNIT_Hs,
+            layout::SC1K_UNIT_W,
+            layout::SC1K_UNIT_H);
+        ub->setColor(qs_2);
+        ub->setEmpty();
+        ub->show();
+        ubs_p2.push_back(ub);
+    }
+}
+
+void Ob::refreshUbs() {
     Ra2ob::tagGameInfo gi = g->_gameInfo;
 
     if (!gi.valid) {
@@ -182,61 +241,54 @@ void Ob::rearrangeUnitblocks()
     players.push_back(gi.players[validPlayerIndex[0]]);
     players.push_back(gi.players[validPlayerIndex[1]]);
 
-    for (auto& it : unitblock_list_player_0) {
-        delete it;
-    }
-    unitblock_list_player_0.clear();
-    for (auto& it : unitblock_list_player_1) {
-        delete it;
-    }
-    unitblock_list_player_1.clear();
+    Ra2ob::tagUnitsInfo ui = players[0].units;
+    int j = 0;
 
-    for (int i = 0; i < 2; i++) {
-
-        Ra2ob::tagUnitsInfo ui = players[i].units;
-
-        for (auto& u : ui.units) {
+    for (int i = 0; j < layout::SC1K_UNITBLOCKS; i++) {
+        try {
+            auto u = ui.units.at(i);
             if (u.num == 0) {
                 continue;
             }
 
-            Unitblock* ub = new Unitblock(this);
-
-            ub->initUnit(QString::fromStdString(u.unitName), i);
-            ub->updateNumber(u.num);
-
-            if (i == 0) {
-                unitblock_list_player_0.push_back(ub);
-            } else {
-                unitblock_list_player_1.push_back(ub);
-            }
+            ubs_p1[j]->setNumber(u.num);
+            ubs_p1[j]->setName(QString::fromStdString(u.unitName));
+            ubs_p1[j]->setColor(qs_1);
+        } catch(std::out_of_range& e) {
+            ubs_p1[j]->setEmpty();
+            ubs_p1[j]->setColor(qs_1);
         }
+        j++;
     }
 
+    ui = players[1].units;
+    j = 0;
+
+    for (int i = 0; j < layout::SC1K_UNITBLOCKS; i++) {
+        try {
+            auto u = ui.units.at(i);
+            if (u.num == 0) {
+                continue;
+            }
+
+            ubs_p2[j]->setNumber(u.num);
+            ubs_p2[j]->setName(QString::fromStdString(u.unitName));
+            ubs_p2[j]->setColor(qs_2);
+        } catch(std::out_of_range& e) {
+            ubs_p2[j]->setEmpty();
+            ubs_p2[j]->setColor(qs_2);
+        }
+        j++;
+    }
+}
+
+void Ob::paintLeftPanel(QPainter &painter)
+{
+    return;
 }
 
 void Ob::sortUnitblocks() {
-    for (int i = 0; i < unitblock_list_player_0.length(); i++) {
-        Unitblock* ub = unitblock_list_player_0[i];
-        ub->setGeometry(
-            layout::SC1K_UNIT_X + rightOffset,
-            layout::SC1K_UNIT_Y + i * layout::SC1K_UNIT_Hs,
-            layout::SC1K_UNIT_W,
-            layout::SC1K_UNIT_H);
-        ub->setColor(qs_1);
-        ub->show();
-    }
-
-    for (int i = 0; i < unitblock_list_player_1.length(); i++) {
-        Unitblock* ub = unitblock_list_player_1[i];
-        ub->setGeometry(
-            layout::SC1K_UNIT_X + layout::SC1K_UNIT_W + rightOffset,
-            layout::SC1K_UNIT_Y + i * layout::SC1K_UNIT_Hs,
-            layout::SC1K_UNIT_W,
-            layout::SC1K_UNIT_H);
-        ub->setColor(qs_2);
-        ub->show();
-    }
+    return;
 }
 
 void Ob::refreshPanel() {
@@ -252,7 +304,6 @@ void Ob::refreshPanel() {
 
     pi_1->setAll(p1_index);
     pi_2->setAll(p2_index);
-
 }
 
 void Ob::setPlayerColor() {
@@ -289,11 +340,48 @@ int Ob::getValidPlayerIndex(std::vector<int>* vpi)
 void Ob::detectGame()
 {
     if (g->_gameInfo.valid) {
-        rearrangeUnitblocks();
-        sortUnitblocks();
+        refreshUbs();
         refreshPanel();
         setPlayerColor();
         this->update();
     }
+}
+
+void Ob::toggleOb() {
+    Ra2ob::Game& g = Ra2ob::Game::getInstance();
+
+    if (g._gameInfo.valid && !forceHideOb) {
+        this->show();
+        return;
+    }
+
+    this->hide();
+}
+
+void Ob::hideOb() {
+    if (forceHideOb) {
+        forceHideOb = !forceHideOb;
+        this->show();
+        return;
+    }
+
+    forceHideOb = !forceHideOb;
+    this->hide();
+}
+
+void Ob::switchScreen() {
+    QList<QScreen*> screens = QGuiApplication::screens();
+    int index = 0;
+
+    for (int i = 0; i < screens.length(); i++) {
+        if (screens[i] == this->screen()) {
+            index = i;
+            break;
+        }
+    }
+
+    int next = (index + 1 == screens.length()) ? 0 : index + 1;
+
+    this->setGeometry(screens[next]->geometry());
 }
 

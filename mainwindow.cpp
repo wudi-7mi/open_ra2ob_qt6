@@ -40,18 +40,6 @@ MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     tray->setupTray();
 
     ob = new Ob();
-
-    connect(ui->btn_emit, &QPushButton::clicked, this, &MainWindow::onBtnEmitClicked);
-    connect(ui->btn_show_ob, &QPushButton::clicked, this, &MainWindow::showOb);
-
-    QTimer* detectGameTimer = new QTimer();
-    detectGameTimer->setInterval(1000);
-    connect(detectGameTimer, SIGNAL(timeout()), this, SLOT(obToggle()));
-    detectGameTimer->start();
-
-    QShortcut *shortcut = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_H), this);
-
-    connect(shortcut, &QShortcut::activated, this, &MainWindow::hideOb);
 }
 
 
@@ -82,50 +70,15 @@ void MainWindow::onBtnReloadClicked()
     qApp->exit(773);
 }
 
-void MainWindow::onBtnEmitClicked()
-{
-    Ra2ob::Game& g = Ra2ob::Game::getInstance();
-    g.viewer.print(g._gameInfo, 0);
-}
-
-void MainWindow::obToggle()
-{
-    Ra2ob::Game& g = Ra2ob::Game::getInstance();
-
-    if (g._gameInfo.valid && !forceHideOb) {
-        ob->show();
-        return;
-    }
-
-    ob->hide();
-}
-
 void MainWindow::showSetting()
 {
     this->showNormal();
     this->activateWindow();
 }
 
-void MainWindow::showOb()
-{
-    ob->show();
-}
-
-
 void MainWindow::quit()
 {
     qApp->quit();
-}
-
-void MainWindow::hideOb() {
-    if (forceHideOb) {
-        forceHideOb = !forceHideOb;
-        ob->show();
-        return;
-    }
-
-    forceHideOb = !forceHideOb;
-    ob->hide();
 }
 
 void MainWindow::hideEvent(QHideEvent *event)

@@ -38,7 +38,7 @@ public:
 
     void structBuild();
 
-    void restart();
+    void restart(bool valid);
 
     void detectTask(int interval = 500);
     void fetchTask(int inferval = 500);
@@ -443,7 +443,11 @@ inline void Game::structBuild() {
     }
 }
 
-inline void Game::restart() {
+inline void Game::restart(bool valid) {
+    if (!valid) {
+        return;
+    }
+
     if (r.getHandle() != nullptr) {
         CloseHandle(r.getHandle());
     }
@@ -471,6 +475,7 @@ inline void Game::detectTask(int interval) {
             _gameInfo.valid = true;
             initAddrs();
         } else {
+            restart(_gameInfo.valid);
             _gameInfo.valid = false;
         }
 

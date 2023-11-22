@@ -14,13 +14,15 @@ class Unitblock : public QWidget
 public:
     explicit Unitblock(QWidget *parent = nullptr);
     ~Unitblock();
-    void initUnit(QString name, int index);
-    void initImg(QString name);
-    void updateNumber(int n);
+    void initUnit(QString name);
+    void setName(QString name);
+    void setImage(QString name);
+    void setNumber(int n);
     void setColor(std::string color);
+    void setEmpty();
+    QPixmap getRadius(QPixmap src, int radius);
 
     QString unit_name;
-    int player_index;
 
 private:
     Ui::Unitblock *ui;

@@ -32,18 +32,6 @@ int main(int argc, char *argv[])
     Ra2ob::Game& g = Ra2ob::Game::getInstance();
     g.startLoop();
 
-    int screenCount = QGuiApplication::screens().size();
-    QList<QScreen*> screens = QGuiApplication::screens();
-
-    for (auto& s : screens) {
-        qDebug() << "Name: " << s->name();
-        qDebug() << "Geometry: " << s->geometry();
-        qDebug() << "Available Geometry " << s->availableGeometry();
-    }
-
-    QScreen *screen = QGuiApplication::primaryScreen();
-    qDebug() << "Primary Screen: " << screen->name();
-
     int ret = a.exec();
 
     if (ret == 773) {

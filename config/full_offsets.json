@@ -5,8 +5,24 @@
             "Offset": "0x38"
         },
         {
+            "Name": "Soviet Barracks",
+            "Offset": "0x2c"
+        },
+        {
+            "Name": "Soviet Naval Shipyard",
+            "Offset": "0xf4"
+        },
+        {
             "Name": "Allied War Factory",
             "Offset": "0x1c"
+        },
+        {
+            "Name": "Allied Barracks",
+            "Offset": "0xc"
+        },
+        {
+            "Name": "Allied Naval Shipyard",
+            "Offset": "0x5c"
         },
         {
             "Name": "Grand Cannon",

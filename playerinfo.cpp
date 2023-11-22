@@ -8,6 +8,9 @@ PlayerInfo::PlayerInfo(QWidget *parent) :
     ui->setupUi(this);
 
     g = &Ra2ob::Game::getInstance();
+    ui->lb_playerName->setStyleSheet("color: #ffffff;");
+    ui->lb_balance->setStyleSheet("color: #ffffff;");
+    ui->lb_credit->setStyleSheet("color: #ffffff;");
 }
 
 PlayerInfo::~PlayerInfo()

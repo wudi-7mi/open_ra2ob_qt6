@@ -15,6 +15,8 @@
         <file alias="right_panel">assets/panels/right_panel.png</file>
         <file>assets/panels/balance.png</file>
         <file>assets/panels/credit.png</file>
+        <file>assets/panels/balance_w.png</file>
+        <file>assets/panels/credit_w.png</file>
     </qresource>
     <qresource prefix="/obicons">
         <file>assets/obicons/Aegis Cruiser.png</file>

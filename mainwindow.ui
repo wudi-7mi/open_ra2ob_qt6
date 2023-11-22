@@ -46,7 +46,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="General">
      <attribute name="title">
@@ -112,7 +112,7 @@
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>130</x>
         <y>20</y>
         <width>171</width>
         <height>171</height>
@@ -128,32 +128,6 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QPushButton" name="btn_emit">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>110</y>
-        <width>80</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>刷新数据</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btn_show_ob">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>60</y>
-        <width>80</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>show ob</string>
-      </property>
-     </widget>
     </widget>
    </widget>
   </widget>
@@ -163,7 +137,7 @@
      <x>0</x>
      <y>0</y>
      <width>441</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
