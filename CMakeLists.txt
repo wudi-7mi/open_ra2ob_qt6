@@ -36,6 +36,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         unitblock.h unitblock.cpp unitblock.ui
         playerinfo.h playerinfo.cpp playerinfo.ui
         layoutsetting.h
+        messagebox.h
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET open_ra2ob_qt6 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

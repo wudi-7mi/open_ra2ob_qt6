@@ -4,8 +4,7 @@
 #include <QObject>
 #include <QSystemTrayIcon>
 
-class Tray : public QObject
-{
+class Tray : public QObject {
     Q_OBJECT
 public:
     explicit Tray(QObject *parent = nullptr);
@@ -24,4 +23,4 @@ private:
     QSystemTrayIcon *m_trayicon;
 };
 
-#endif // TRAY_H
+#endif  // TRAY_H

@@ -1,28 +1,19 @@
 #include "./unitblock.h"
-#include "./ui_unitblock.h"
 
 #include <QFile>
-#include <iostream>
-#include <QDebug>
 #include <QPainter>
 #include <QPainterPath>
 
 #include "./layoutsetting.h"
+#include "./ui_unitblock.h"
 
-Unitblock::Unitblock(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::Unitblock)
-{
+Unitblock::Unitblock(QWidget *parent) : QWidget(parent), ui(new Ui::Unitblock) {
     ui->setupUi(this);
 }
 
-Unitblock::~Unitblock()
-{
-    delete ui;
-}
+Unitblock::~Unitblock() { delete ui; }
 
-void Unitblock::initUnit(QString name)
-{
+void Unitblock::initUnit(QString name) {
     unit_name = name;
     setImage(name);
 }
@@ -32,8 +23,7 @@ void Unitblock::setName(QString name) {
     setImage(name);
 }
 
-void Unitblock::setImage(QString name)
-{
+void Unitblock::setImage(QString name) {
     QString img_str = ":/obicons/assets/obicons/" + name + ".png";
 
     QFile qf(img_str);
@@ -61,8 +51,7 @@ QPixmap Unitblock::getRadius(QPixmap src, int radius) {
     return dest;
 }
 
-void Unitblock::setNumber(int n)
-{
+void Unitblock::setNumber(int n) {
     QLabel *num = ui->number;
     num->setText(QString::number(n));
     num->adjustSize();
@@ -75,20 +64,14 @@ void Unitblock::setNumber(int n)
     ui->bg->show();
 }
 
-void Unitblock::setColor(std::string color)
-{
+void Unitblock::setColor(std::string color) {
     QString q_color = QString::fromStdString("#" + color);
 
-    ui->bg->setStyleSheet(
-        "background-color: " + q_color + ";" + layout::BOTTOM_RADIUS_8
-    );
-    ui->border->setStyleSheet(
-        "border: 1px solid " + q_color + ";" + layout::RADIUS_8
-    );
+    ui->bg->setStyleSheet("background-color: " + q_color + ";" + layout::BOTTOM_RADIUS_8);
+    ui->border->setStyleSheet("border: 1px solid " + q_color + ";" + layout::RADIUS_8);
 }
 
-void Unitblock::setEmpty()
-{
+void Unitblock::setEmpty() {
     QString img_str = ":/obicons/assets/obicons/unit_placeholder_trans.png";
     ui->img->setPixmap(QPixmap(img_str));
 

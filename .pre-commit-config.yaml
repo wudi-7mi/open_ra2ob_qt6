@@ -1,0 +1,11 @@
+fail_fast: false
+repos:
+  - repo: https://github.com/pocc/pre-commit-hooks
+    rev: v1.3.5
+    hooks:
+      - id: clang-format
+        args: [-i, --style=file:.clang-format]
+      - id: cpplint
+        args: [--linelength=100, "--filter=-whitespace/indent,-legal/copyright,-build/header_guard"]
+exclude: |
+  json.hpp
