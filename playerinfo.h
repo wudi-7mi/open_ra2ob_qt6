@@ -16,16 +16,17 @@ public:
     explicit PlayerInfo(QWidget *parent = nullptr);
     ~PlayerInfo();
 
-    void setLeftMode();
-    void setRightMode();
+    void setMirror();
 
     void setAll(int index);
     void setPlayerNameByIndex(int index);
     void setBalanceByIndex(int index);
     void setCreditByIndex(int index);
     void setCountryByIndex(int index);
+    void setPowerByIndex(int index);
 
     Ra2ob::Game *g;
+    bool mirrored = false;
 
 private:
     Ui::PlayerInfo *ui;

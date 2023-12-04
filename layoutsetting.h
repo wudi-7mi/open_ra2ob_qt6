@@ -21,14 +21,15 @@ const int SC1K_RIGHT_BOTTOM_H = 922;
 const int SC1K_MAP_X          = 1763;
 const int SC1K_MAP_Y          = 47;
 const int SC1K_TOP_M          = SC1K_RIGHT_X / 2;
-const int SC1K_TOP_H          = 80;
-const int SC1K_TOP_W          = 800;
+const int SC1K_TOP_H          = 90;
+const int SC1K_TOP_W          = 920;
 const int SC1K_UNIT_X         = SC1K_RIGHT_X + 11;
 const int SC1K_UNIT_Y         = 163;
 const int SC1K_UNIT_W         = 69;
 const int SC1K_UNIT_H         = 55;
 const int SC1K_UNIT_Ws        = SC1K_UNIT_W + 5;
 const int SC1K_UNIT_Hs        = SC1K_UNIT_H + 6;
+const int SC1K_ICON_SIDE      = 64;
 
 // Style
 const char BOTTOM_RADIUS_6[] = "border-bottom-left-radius: 6px;border-bottom-right-radius: 6px;";

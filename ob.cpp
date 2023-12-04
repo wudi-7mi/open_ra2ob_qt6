@@ -52,7 +52,7 @@ void Ob::paintEvent(QPaintEvent *) {
 void Ob::paintTopPanel(QPainter *painter, int offsetX, int offsetY, int pWidth, int pHeight) {
     painter->setOpacity(1);
     int pBottom = 5;
-    int wCenter = (width() - layout::RIGHT_W) / 2 + offsetX;
+    int wCenter = layout::SC1K_TOP_M + offsetX;
 
     QString qs_l  = QString::fromStdString("#" + qs_1);
     QString qs_r  = QString::fromStdString("#" + qs_2);
@@ -81,12 +81,14 @@ void Ob::paintTopPanel(QPainter *painter, int offsetX, int offsetY, int pWidth, 
     painter->setOpacity(1);
 
     QPixmap pixmap;
-    int iconWidth = 80;
-    int iconX     = wCenter - iconWidth / 2;
-    int iconY     = 0;
+    int iconSide = layout::SC1K_ICON_SIDE;
+    int iconX    = wCenter - iconSide / 2;
+    int iconY    = layout::SC1K_TOP_H / 2 - iconSide / 2;
 
-    pixmap.load((QString(":/icon/assets/icons/icon_100.png")));
-    painter->drawPixmap(iconX, iconY, iconWidth, iconWidth, pixmap);
+    QString iconPath = QString("%1%2%3").arg(":/icon/assets/icons/icon_").arg(iconSide).arg(".png");
+
+    pixmap.load(iconPath);
+    painter->drawPixmap(iconX, iconY, iconSide, iconSide, pixmap);
 
     return;
 }
@@ -122,9 +124,10 @@ void Ob::initPanel() {
     this->pi_1 = new PlayerInfo(this);
     this->pi_2 = new PlayerInfo(this);
 
-    this->pi_1->setGeometry(layout::SC1K_TOP_M - layout::SC1K_TOP_W / 2 - 40, 0,
-                            layout::SC1K_TOP_W / 2, layout::SC1K_TOP_H);
-    this->pi_2->setGeometry(layout::SC1K_TOP_M + 40, 0, layout::SC1K_TOP_W / 2, layout::SC1K_TOP_H);
+    this->pi_1->setGeometry(layout::SC1K_TOP_M - layout::SC1K_TOP_W / 2, 0, layout::SC1K_TOP_W / 2,
+                            layout::SC1K_TOP_H);
+    this->pi_2->setGeometry(layout::SC1K_TOP_M, 0, layout::SC1K_TOP_W / 2, layout::SC1K_TOP_H);
+    pi_2->setMirror();
 }
 
 void Ob::initUnitblocks() {
@@ -172,45 +175,44 @@ void Ob::refreshUbs() {
     players.push_back(gi.players[validPlayerIndex[0]]);
     players.push_back(gi.players[validPlayerIndex[1]]);
 
-    Ra2ob::tagUnitsInfo ui = players[0].units;
+    Ra2ob::tagUnitsInfo uInfo = players[0].units;
 
     int j;
     j = 0;
 
-    for (int i = 0; j < layout::SC1K_UNITBLOCKS; i++) {
-        try {
-            auto u = ui.units.at(i);
-            if (u.num == 0) {
-                continue;
-            }
-
-            ubs_p1[j]->setNumber(u.num);
-            ubs_p1[j]->setName(QString::fromStdString(u.unitName));
+    auto it_unit = uInfo.units.begin();
+    while (it_unit != uInfo.units.end() && j < layout::SC1K_UNITBLOCKS) {
+        if (it_unit->num != 0) {
+            ubs_p1[j]->setNumber(it_unit->num);
+            ubs_p1[j]->setName(QString::fromStdString(it_unit->unitName));
             ubs_p1[j]->setColor(qs_1);
-        } catch (std::out_of_range &e) {
-            ubs_p1[j]->setEmpty();
-            ubs_p1[j]->setColor(qs_1);
+            j++;
         }
+        ++it_unit;
+    }
+
+    while (j < layout::SC1K_UNITBLOCKS) {
+        ubs_p1[j]->setEmpty();
+        ubs_p1[j]->setColor(qs_1);
         j++;
     }
 
-    ui = players[1].units;
-    j  = 0;
-
-    for (int i = 0; j < layout::SC1K_UNITBLOCKS; i++) {
-        try {
-            auto u = ui.units.at(i);
-            if (u.num == 0) {
-                continue;
-            }
-
-            ubs_p2[j]->setNumber(u.num);
-            ubs_p2[j]->setName(QString::fromStdString(u.unitName));
+    j       = 0;
+    uInfo   = players[1].units;
+    it_unit = uInfo.units.begin();
+    while (it_unit != uInfo.units.end() && j < layout::SC1K_UNITBLOCKS) {
+        if (it_unit->num != 0) {
+            ubs_p2[j]->setNumber(it_unit->num);
+            ubs_p2[j]->setName(QString::fromStdString(it_unit->unitName));
             ubs_p2[j]->setColor(qs_2);
-        } catch (std::out_of_range &e) {
-            ubs_p2[j]->setEmpty();
-            ubs_p2[j]->setColor(qs_2);
+            j++;
         }
+        ++it_unit;
+    }
+
+    while (j < layout::SC1K_UNITBLOCKS) {
+        ubs_p2[j]->setEmpty();
+        ubs_p2[j]->setColor(qs_2);
         j++;
     }
 }
