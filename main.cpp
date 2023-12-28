@@ -4,6 +4,7 @@
 #include <QString>
 #include <QTranslator>
 
+#include "./globalsetting.h"
 #include "./mainwindow.h"
 
 int main(int argc, char *argv[]) {
@@ -26,6 +27,8 @@ int main(int argc, char *argv[]) {
 
     Ra2ob::Game &g = Ra2ob::Game::getInstance();
     g.startLoop();
+
+    Globalsetting &gls = Globalsetting::getInstance();
 
     int ret = a.exec();
 

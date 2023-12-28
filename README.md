@@ -8,7 +8,9 @@
 
 本项目最初由 [ra2viewer](https://github.com/chenguokai/ra2viewer) 项目启发而成立，再次感谢该项目的作者提供的思路。
 
-## 偏移量
+## 相关设置
+
+### 偏移量
 
 ```
 基础偏移：
@@ -42,8 +44,9 @@ v3火箭 V3 Rocket Launcher 0x38
 无畏级战舰 Dreadnought 0x58
 潜艇 Typhoon Attack Submarine 0x4c
 海螺 Sea Scorpion 0x90
-苏军运输船 Amphibious Transport 0x10
+苏军运输船 Soviet Amphibious Transport 0x10
 自爆卡车 Demolition Truck 0xa4
+武装直升机 Siege Chopper 0x10c
 
 Infantry:
 苏军警犬 Soviet Attack Dog 0x24
@@ -55,6 +58,7 @@ Infantry:
 辐射 Desolator 0x20
 恐怖分子 Terrorist 0x68
 防空步兵 Flak Trooper 0x5c
+鲍里斯 Boris 0xc0
 
 Aircraft:
 
@@ -69,14 +73,16 @@ Tank:
 幻影坦克 Mirage Tank 0x94
 光棱坦克 Prism Tank 0x88
 盟军基地 Allied MCV 0x0
-盟军运输船 Amphibious Transport 0x54
-驱逐舰 Destoryer 0x48
+盟军运输船 Allied Amphibious Transport 0x54
+驱逐舰 Destroyer 0x48
 海豚 Dolphin 0x64
 神盾 Aegis Cruiser 0x50
 航母 Aircraft Carrier 0x34
 夜莺直升机 NightHawk Transport 0x5c
-坦克杀手 Tank Destoyer 0x6c
+坦克杀手 Tank Destroyer 0x6c
 多功能车 Infantry Fighting Vehicle 0x98
+战斗要塞 Battle Fortress 0xf4
+遥控坦克 Robot Tank 0x120
 
 Infantry:
 盟军警犬 Allied Attack Dog 0x70
@@ -87,10 +93,40 @@ Infantry:
 谭雅 Tanya 0x60
 狙击手 Sniper 0x54
 火箭飞行兵 Rocketeer 0x10
+海豹部队 Navy SEAL 0x14
+重装大兵 Guardian GI 0xb8
 
 Aircraft:
 入侵者 Harrier 0x4
 黑鹰战机 Black Eagle 0x1c
+
+
+尤里：
+Building:
+尤里重工 Yuri War Factory 0x4bc
+奴隶矿场（部署） Slave Miner Deployed 0x594
+
+Tank:
+狂风坦克 Lasher Tank 0x7c
+奴隶矿场 Slave Miner 0xe4
+盖特坦克 Gattling Tank 0xf0
+磁电坦克 Magnetron 0xf8
+神经突击车 Chaos Drone 0xfc
+精神控制车 Mastermind 0x114
+尤里基地 Yuri MCV 0xe0
+装甲运兵船 Yuri Amphibious Transport 0xdc
+雷鸣潜艇 Boomer 0x108
+镭射幽浮 Floating Disc 0x118
+
+Infantry:
+尤里新兵 Initiate 0xbc
+病毒狙击手 Virus 0xc8
+尤里复制人 Yuri Clone 0x18
+狂兽人 Brute 0xc4
+ 尤里X Yuri X 0x50
+尤里工程师 Yuri Engineer 0xb4
+
+Aircraft:
 
 
 科技：
@@ -99,6 +135,52 @@ Aircraft:
 心灵突击队 Psi Commando 0x48
 超时空突击队 Chrono Commando 0x44
 ```
+
+### 单位显示顺序
+
+```
+Index=1
+	Soviet War Factory
+	Allied War Factory
+	Yuri War Factory
+Index=2
+	War Miner
+	Chrono Miner
+	Slave Miner
+Index=3
+	Rhino Tank
+	Grizzly Battle Tank
+	Lasher Tank
+Index=4
+	Soviet Attack Dog
+	Allied Attack Dog
+	Brute
+Index=5
+	Conscript
+	GI
+	Initiate
+Index=6
+	Soviet Engineer
+	Allied Engineer
+	Yuri Engineer
+Index=7
+	Desolator
+	Rocketeer
+Index=8
+	Harrier
+	Black Eagle
+Index=9
+	Typhoon Attack Submarine
+	Destroyer
+	Yuri Amphibious Transport
+Index=10
+	Dreadnought
+	Aircraft Carrier
+Index=11
+	Grand Cannon
+```
+
+
 
 ## 项目进度
 
@@ -114,8 +196,7 @@ Ra2ob 类相关：
 - [ ] 建造队列显示 
 - [ ] 超武、伞兵冷却时间显示
 - [ ] 科技建筑数量显示
-- [ ] 标注升星（渗透）
-- [ ] 尤里控制的单位计数
+- [ ] 检测是否为玩家
 
 GUI 相关：
 
@@ -128,3 +209,4 @@ GUI 相关：
 
 - [ ] 快捷键切换需要看到的单位数量
 - [ ] 按照血量、等级显示单位
+- [ ] 卡钱条显示

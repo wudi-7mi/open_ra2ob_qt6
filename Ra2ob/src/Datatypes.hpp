@@ -3,6 +3,7 @@
 
 #include <Windows.h>
 
+#include <array>
 #include <codecvt>
 #include <iostream>
 #include <memory>
@@ -21,14 +22,15 @@ struct tagPanelInfo {
     int creditSpent           = 0;
     int powerDrain            = 0;
     int powerOutput           = 0;
-    std::string color         = "#FFFFFF";
+    std::string color         = "ffffff";
     std::string country       = "";
 };
 
 struct tagUnitSingle {
     std::string unitName = "";
     int num              = 0;
-    int index            = -1;
+    int index            = 99;
+    bool show            = false;
 };
 
 struct tagUnitsInfo {
@@ -38,14 +40,10 @@ struct tagUnitsInfo {
 struct tagBuildingNode {
     std::string name;
     int number   = 0;
-    int progress = 0;
-    int status   = 0;  // 0 - in queue, 1 - stopped, 2 - building.
+    int progress = 0;  // Maximum: 54.
+    int status   = 0;  // 0 - building, 1 - stopped, 2 - ready.
 
     explicit tagBuildingNode(std::string n) { name = n; }
-
-    void setStop() { status = 1; }
-
-    void setStart() { status = 2; }
 };
 
 struct tagBuildingInfo {
@@ -60,17 +58,17 @@ struct tagPlayer {
 };
 
 struct tagDebugInfo {
-    std::vector<uint32_t> playerBase;
-    std::vector<uint32_t> buildingBase;
-    std::vector<uint32_t> infantryBase;
-    std::vector<uint32_t> tankBase;
-    std::vector<uint32_t> aircraftBase;
-    std::vector<uint32_t> houseType;
+    std::array<uint32_t, MAXPLAYER> playerBase{};
+    std::array<uint32_t, MAXPLAYER> buildingBase{};
+    std::array<uint32_t, MAXPLAYER> infantryBase{};
+    std::array<uint32_t, MAXPLAYER> tankBase{};
+    std::array<uint32_t, MAXPLAYER> aircraftBase{};
+    std::array<uint32_t, MAXPLAYER> houseType{};
 };
 
 struct tagGameInfo {
     bool valid = false;
-    std::vector<tagPlayer> players;
+    std::array<tagPlayer, MAXPLAYER> players{};
     tagDebugInfo debug;
 };
 
@@ -82,32 +80,38 @@ public:
     std::string getName();
     uint32_t getValueByIndex(int index);
     void setValueByIndex(int index, uint32_t value);
-    void fetchData(Reader r, std::vector<uint32_t> baseOffsets);
+    void fetchData(Reader r, const std::array<uint32_t, MAXPLAYER>& baseOffsets);
     bool validIndex(int index);
 
 protected:
     std::string m_name;
-    std::vector<uint32_t> m_value;
+    std::array<uint32_t, MAXPLAYER> m_value{};
     uint32_t m_offset;
     uint32_t m_size;
 };
 
 class Numeric : public Base {
 public:
-    Numeric(std::string name, uint32_t offset);
+    using Base::Base;
     ~Numeric();
 };
 
 class Unit : public Base {
 public:
-    Unit(std::string name, uint32_t offset, UnitType ut);
+    Unit(std::string name, uint32_t offset, UnitType ut, int index, bool show);
     ~Unit();
 
     UnitType getUnitType();
-    void fetchData(Reader r, std::vector<uint32_t> baseOffsets, std::vector<uint32_t> valids);
+    bool checkOffset(int offsetCmp, UnitType type) const;
+    bool checkShow();
+    int getUnitIndex();
+    void fetchData(Reader r, const std::array<uint32_t, MAXPLAYER>& baseOffsets,
+                   const std::array<uint32_t, MAXPLAYER>& valids);
 
 protected:
     UnitType m_unitType;
+    int m_unitIndex;
+    bool m_show;
 };
 
 class StrName : public Base {
@@ -118,11 +122,11 @@ public:
     std::string getValueByIndex(int index);
     std::string getValueByIndexUtf(int index);
     void setValueByIndex(int index, std::string value);
-    void fetchData(Reader r, std::vector<uint32_t> baseOffsets);
+    void fetchData(Reader r, const std::array<uint32_t, MAXPLAYER>& baseOffsets);
 
 protected:
-    std::vector<std::string> m_value;
-    std::vector<std::string> m_value_utf;
+    std::array<std::string, MAXPLAYER> m_value{};
+    std::array<std::string, MAXPLAYER> m_value_utf{};
 };
 
 class StrCountry : public StrName {
@@ -130,7 +134,7 @@ public:
     explicit StrCountry(std::string name = "Country", uint32_t offset = STRCOUNTRYOFFSET);
     ~StrCountry();
 
-    void fetchData(Reader r, std::vector<uint32_t> baseOffsets);
+    void fetchData(Reader r, const std::array<uint32_t, MAXPLAYER>& baseOffsets);
 };
 
 struct tagNumerics {
@@ -164,7 +168,6 @@ struct tagUnits {
 inline Base::Base(std::string name, uint32_t offset) {
     m_name   = name;
     m_offset = offset;
-    m_value  = std::vector<uint32_t>(MAXPLAYER, 0);
     m_size   = NUMSIZE;
 }
 
@@ -185,7 +188,7 @@ inline void Base::setValueByIndex(int index, uint32_t value) {
     }
 }
 
-inline void Base::fetchData(Reader r, std::vector<uint32_t> baseOffsets) {
+inline void Base::fetchData(Reader r, const std::array<uint32_t, MAXPLAYER>& baseOffsets) {
     for (int i = 0; i < baseOffsets.size(); i++) {
         if (baseOffsets[i] == 0) {
             continue;
@@ -206,15 +209,19 @@ inline bool Base::validIndex(int index) {
     return true;
 }
 
-inline Numeric::Numeric(std::string name, uint32_t offset) : Base(name, offset) {}
-
 inline Numeric::~Numeric() {}
 
-inline Unit::Unit(std::string name, uint32_t offset, UnitType ut) : Base(name, offset) { m_unitType = ut; }
+inline Unit::Unit(std::string name, uint32_t offset, UnitType ut, int index, bool show)
+    : Base(name, offset) {
+    m_unitType  = ut;
+    m_unitIndex = index;
+    m_show      = show;
+}
 
 inline Unit::~Unit() {}
 
-inline void Unit::fetchData(Reader r, std::vector<uint32_t> baseOffsets, std::vector<uint32_t> valids) {
+inline void Unit::fetchData(Reader r, const std::array<uint32_t, MAXPLAYER>& baseOffsets,
+                            const std::array<uint32_t, MAXPLAYER>& valids) {
     for (int i = 0; i < baseOffsets.size(); i++) {
         if (baseOffsets[i] == 0) {
             continue;
@@ -232,17 +239,23 @@ inline void Unit::fetchData(Reader r, std::vector<uint32_t> baseOffsets, std::ve
     }
 }
 
+inline bool Unit::checkOffset(int offsetCmp, UnitType type) const {
+    return (offsetCmp == m_offset && type == m_unitType);
+}
+
+inline bool Unit::checkShow() { return m_show; }
+
 inline UnitType Unit::getUnitType() { return m_unitType; }
 
+inline int Unit::getUnitIndex() { return m_unitIndex; }
+
 inline StrName::StrName(std::string name, uint32_t offset) : Base(name, offset) {
-    m_value     = std::vector<std::string>(MAXPLAYER, "");
-    m_value_utf = std::vector<std::string>(MAXPLAYER, "");
-    m_size      = STRNAMESIZE;
+    m_size = STRNAMESIZE;
 }
 
 inline StrName::~StrName() {}
 
-inline void StrName::fetchData(Reader r, std::vector<uint32_t> baseOffsets) {
+inline void StrName::fetchData(Reader r, const std::array<uint32_t, MAXPLAYER>& baseOffsets) {
     for (int i = 0; i < baseOffsets.size(); i++) {
         if (baseOffsets[i] == 0) {
             continue;
@@ -282,7 +295,7 @@ inline StrCountry::StrCountry(std::string name, uint32_t offset) : StrName(name,
 
 inline StrCountry::~StrCountry() {}
 
-inline void StrCountry::fetchData(Reader r, std::vector<uint32_t> baseOffsets) {
+inline void StrCountry::fetchData(Reader r, const std::array<uint32_t, MAXPLAYER>& baseOffsets) {
     for (int i = 0; i < baseOffsets.size(); i++) {
         if (baseOffsets[i] == 0) {
             continue;

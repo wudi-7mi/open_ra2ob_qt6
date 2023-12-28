@@ -20,7 +20,7 @@ public:
     json exportJson(tagGameInfo gi, int mode = 0);
     void print(tagGameInfo gi, int mode = 0, int indent = 0);
     std::string uint32ToHex(uint32_t num);
-    std::vector<std::string> vecToHex(std::vector<uint32_t> source);
+    std::array<std::string, MAXPLAYER> vecToHex(const std::array<uint32_t, MAXPLAYER>& source);
 };
 
 inline Viewer::Viewer() {}
@@ -56,13 +56,17 @@ inline json Viewer::exportJson(tagGameInfo gi, int mode) {
         jp["panel"]["creditSpent"] = p.panel.creditSpent;
         jp["panel"]["powerDrain"]  = p.panel.powerDrain;
         jp["panel"]["powerOutput"] = p.panel.powerOutput;
-        jp["panel"]["color"]       = p.panel.color;
+        jp["panel"]["color"]       = "#" + p.panel.color;
         jp["panel"]["country"]     = p.panel.country;
 
         for (auto& u : p.units.units) {
             json ju;
 
             if (mode == 0 && u.num == 0) {
+                continue;
+            }
+
+            if (u.show == false) {
                 continue;
             }
 
@@ -76,7 +80,15 @@ inline json Viewer::exportJson(tagGameInfo gi, int mode) {
             jp["units"].push_back(ju);
         }
 
-        // Todo: Add buildings.
+        if (!p.building.list.empty()) {
+            json jb;
+
+            for (auto& b : p.building.list) {
+                jb["name"]     = b.name;
+                jb["progress"] = b.progress;
+                jb["status"]   = b.status;
+            }
+        }
 
         j["players"].push_back(jp);
     }
@@ -129,6 +141,10 @@ inline void Viewer::print(tagGameInfo gi, int mode, int indent) {
                 continue;
             }
 
+            if (u.show == false) {
+                continue;
+            }
+
             std::cout << u.unitName << ": " << u.num;
 
             if (mode == 1) {
@@ -138,7 +154,24 @@ inline void Viewer::print(tagGameInfo gi, int mode, int indent) {
             std::cout << "\n";
         }
 
-        // Todo: Add buildings.
+        if (!p.building.list.empty()) {
+            std::cout << "Producing List: "
+                      << "\n";
+
+            for (auto& b : p.building.list) {
+                std::cout << b.name << " " << b.progress << "/54 ";
+                if (b.progress == 54) {
+                    std::cout << "Ready"
+                              << "\n";
+                } else if (b.status == 1) {
+                    std::cout << "On Hold"
+                              << "\n";
+                } else {
+                    std::cout << "Building"
+                              << "\n";
+                }
+            }
+        }
 
         std::cout << STR_RULER << std::endl;
     }
@@ -150,11 +183,12 @@ inline std::string Viewer::uint32ToHex(uint32_t num) {
     return ss.str();
 }
 
-inline std::vector<std::string> Viewer::vecToHex(std::vector<uint32_t> source) {
-    std::vector<std::string> ret;
+inline std::array<std::string, MAXPLAYER> Viewer::vecToHex(
+    const std::array<uint32_t, MAXPLAYER>& source) {
+    std::array<std::string, MAXPLAYER> ret{};
 
-    for (auto& it : source) {
-        ret.push_back(uint32ToHex(it));
+    for (int i = 0; i < source.size(); i++) {
+        ret[i] = uint32ToHex(source[i]);
     }
 
     return ret;

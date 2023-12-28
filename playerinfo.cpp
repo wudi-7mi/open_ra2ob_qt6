@@ -1,6 +1,5 @@
 #include "./playerinfo.h"
 
-#include <QDebug>
 #include <QFile>
 #include <QString>
 #include <string>
@@ -20,7 +19,6 @@ PlayerInfo::~PlayerInfo() { delete ui; }
 
 void PlayerInfo::setMirror() {
     for (auto* child : this->findChildren<QWidget*>()) {
-        qDebug() << child->geometry();
         child->setGeometry(this->width() - child->x() - child->width(), child->y(), child->width(),
                            child->height());
     }
@@ -52,9 +50,6 @@ void PlayerInfo::setPlayerNameByIndex(int index) {
 
         ui->lb_playerName->setGeometry(childX, ui->lb_playerName->y(), ui->lb_playerName->width(),
                                        ui->lb_playerName->height());
-
-        qDebug() << "[Geo]: " << ui->lb_playerName->geometry();
-        qDebug() << "[Country]: " << ui->lb_country->geometry();
         return;
     }
 
@@ -63,9 +58,6 @@ void PlayerInfo::setPlayerNameByIndex(int index) {
 
     ui->lb_playerName->setGeometry(childX, ui->lb_playerName->y(), ui->lb_playerName->width(),
                                    ui->lb_playerName->height());
-
-    qDebug() << "[Geo]: " << ui->lb_playerName->geometry();
-    qDebug() << "[Country]: " << ui->lb_country->geometry();
 }
 
 void PlayerInfo::setBalanceByIndex(int index) {
@@ -118,4 +110,12 @@ void PlayerInfo::setPowerByIndex(int index) {
             "QProgressBar { background-color : grey; } QProgressBar::chunk { background-color: "
             "red; }");
     }
+}
+
+int PlayerInfo::getInsufficientFund(int index) {
+    int num = g->_gameInfo.players[index].panel.balance;
+    if (num < 20) {
+        return 0;
+    }
+    return 1;
 }

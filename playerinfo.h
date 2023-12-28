@@ -25,6 +25,8 @@ public:
     void setCountryByIndex(int index);
     void setPowerByIndex(int index);
 
+    int getInsufficientFund(int index);
+
     Ra2ob::Game *g;
     bool mirrored = false;
 

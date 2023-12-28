@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "./globalsetting.h"
 #include "./layoutsetting.h"
 #include "./playerinfo.h"
 #include "./unitblock.h"
@@ -28,15 +29,21 @@ private:
                        int pHeight = 100);
     void paintRightPanel(QPainter *painter, int offsetX = 0, int offsetY = 0);
     void paintLeftPanel(QPainter *painter);
+    void paintBottomPanel(QPainter *painter);
 
     void initPanel();
     void initUnitblocks();
+    void initIfBar();
     void refreshUbs();
 
     void sortUnitblocks();
+    void setPanelByScreen();
+    void setUnitblocksByScreen();
     void refreshPanel();
 
     void setPlayerColor();
+
+    void setLayoutByScreen();
 
     int getValidPlayerIndex(std::vector<int> *vpi);
 
@@ -46,17 +53,18 @@ private:
     PlayerInfo *pi_2;
     std::string qs_1 = layout::COLOR_DEFAULT;
     std::string qs_2 = layout::COLOR_DEFAULT;
+    QVector<int> insufficient_fund_bar_1;
+    QVector<int> insufficient_fund_bar_2;
 
     bool forceHideOb = false;
 
-    //    int rightOffset = -425;
-    //    int topPanelOffset = -150;
     int rightOffset    = 0;
     int topPanelOffset = 0;
     int topPanelWidth  = layout::SC1K_TOP_W;
     int topPanelHeight = layout::SC1K_TOP_H;
     QVector<int> player_list;
     Ra2ob::Game *g;
+    Globalsetting *gls;
 
 private slots:
     void detectGame();

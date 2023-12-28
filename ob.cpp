@@ -1,5 +1,6 @@
 #include "./ob.h"
 
+#include <QDebug>
 #include <QPainter>
 #include <QScreen>
 #include <QShortcut>
@@ -17,19 +18,27 @@ Ob::Ob(QWidget *parent) : QWidget(parent), ui(new Ui::Ob) {
                          Qt::WindowStaysOnTopHint | Qt::Tool);
     this->setAttribute(Qt::WA_TranslucentBackground);
 
+    QScreen *screen = QGuiApplication::primaryScreen();
+    this->setGeometry(screen->geometry());
+    qDebug() << screen->geometry();
+
+    gls = &Globalsetting::getInstance();
+    setLayoutByScreen();
+
     g = &Ra2ob::Game::getInstance();
 
     initPanel();
     initUnitblocks();
+    initIfBar();
+
+    setPanelByScreen();
+    setUnitblocksByScreen();
 
     QTimer *detectGameTimer = new QTimer();
     connect(detectGameTimer, SIGNAL(timeout()), this, SLOT(detectGame()));
     connect(detectGameTimer, SIGNAL(timeout()), this, SLOT(toggleOb()));
     detectGameTimer->setInterval(500);
     detectGameTimer->start();
-
-    QScreen *screen = QGuiApplication::primaryScreen();
-    this->setScreen(screen);
 
     QShortcut *shortcut         = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_H), this);
     QShortcut *sc_switch_screen = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_S), this);
@@ -45,6 +54,7 @@ void Ob::paintEvent(QPaintEvent *) {
     paintTopPanel(painter, topPanelOffset, 0, topPanelWidth, topPanelHeight);
     paintRightPanel(painter, rightOffset);
     // paintLeftPanel(painter);
+    paintBottomPanel(painter);
 
     painter->end();
 }
@@ -52,7 +62,7 @@ void Ob::paintEvent(QPaintEvent *) {
 void Ob::paintTopPanel(QPainter *painter, int offsetX, int offsetY, int pWidth, int pHeight) {
     painter->setOpacity(1);
     int pBottom = 5;
-    int wCenter = layout::SC1K_TOP_M + offsetX;
+    int wCenter = gls->l.top_m + offsetX;
 
     QString qs_l  = QString::fromStdString("#" + qs_1);
     QString qs_r  = QString::fromStdString("#" + qs_2);
@@ -81,9 +91,9 @@ void Ob::paintTopPanel(QPainter *painter, int offsetX, int offsetY, int pWidth, 
     painter->setOpacity(1);
 
     QPixmap pixmap;
-    int iconSide = layout::SC1K_ICON_SIDE;
+    int iconSide = gls->l.icon_side;
     int iconX    = wCenter - iconSide / 2;
-    int iconY    = layout::SC1K_TOP_H / 2 - iconSide / 2;
+    int iconY    = gls->l.top_h / 2 - iconSide / 2;
 
     QString iconPath = QString("%1%2%3").arg(":/icon/assets/icons/icon_").arg(iconSide).arg(".png");
 
@@ -96,68 +106,118 @@ void Ob::paintTopPanel(QPainter *painter, int offsetX, int offsetY, int pWidth, 
 void Ob::paintRightPanel(QPainter *painter, int offsetX, int offsetY) {
     QColor fill(QColor("midnightblue"));
     painter->fillRect(
-        QRect(offsetX + layout::SC1K_RIGHT_X, offsetY + 0, layout::RIGHT_W, layout::RIGHT_HEADER_H),
+        QRect(offsetX + gls->l.right_x, offsetY + 0, layout::RIGHT_W, layout::RIGHT_HEADER_H),
         fill);
-    painter->fillRect(QRect(offsetX + layout::SC1K_RIGHT_X, offsetY + layout::RIGHT_HEADER_H,
+    painter->fillRect(QRect(offsetX + gls->l.right_x, offsetY + layout::RIGHT_HEADER_H,
                             layout::RIGHT_LEFTBORDER_W, layout::RIGHT_BORDER_H),
                       fill);
-    painter->fillRect(QRect(offsetX + layout::SC1K_RIGHT_X + layout::RIGHT_RIGHTBORDER_START,
+    painter->fillRect(QRect(offsetX + gls->l.right_x + layout::RIGHT_RIGHTBORDER_START,
                             offsetY + layout::RIGHT_HEADER_H, layout::RIGHT_RIGHTBORDER_W,
                             layout::RIGHT_BORDER_H),
                       fill);
-    painter->fillRect(QRect(offsetX + layout::SC1K_RIGHT_X,
-                            offsetY + layout::RIGHT_HEADER_H + layout::RIGHT_BORDER_H,
-                            layout::RIGHT_W, layout::SC1K_RIGHT_BOTTOM_H),
-                      fill);
+    painter->fillRect(
+        QRect(offsetX + gls->l.right_x, offsetY + layout::RIGHT_HEADER_H + layout::RIGHT_BORDER_H,
+              layout::RIGHT_W, gls->l.right_bottom_h),
+        fill);
 
     QPen border(Qt::gray);
     border.setWidth(1);
 
     painter->setPen(border);
-    painter->drawRect(QRect(offsetX + layout::SC1K_MAP_X, offsetY + layout::SC1K_MAP_Y,
-                            layout::MAP_W, layout::MAP_H));
+    painter->drawRect(
+        QRect(offsetX + gls->l.map_x, offsetY + gls->l.map_y, layout::MAP_W, layout::MAP_H));
 
     return;
+}
+
+void Ob::paintLeftPanel(QPainter *painter) { return; }
+
+void Ob::paintBottomPanel(QPainter *painter) {
+    QColor f_g(QColor("green"));
+    QColor f_r(QColor("red"));
+    int w    = 5;
+    int sx_1 = 0;
+    int sx_2 = 0;
+
+    QString qs_l  = QString::fromStdString("#" + qs_1);
+    QString qs_r  = QString::fromStdString("#" + qs_2);
+    QColor lColor = QColor(qs_l);
+    QColor rColor = QColor(qs_r);
+
+    QPen lBorder(lColor);
+    lBorder.setWidth(2);
+    painter->setPen(lBorder);
+    painter->drawRect(QRect(0, 1048, gls->l.right_x, 14));
+    QPen rBorder(rColor);
+    rBorder.setWidth(2);
+    painter->setPen(rBorder);
+    painter->drawRect(QRect(0, 1064, gls->l.right_x, 14));
+
+    if (gls->l.right_x / (insufficient_fund_bar_1.length() + 1) < w) {
+        w = 3;
+    }
+    if (gls->l.right_x / (insufficient_fund_bar_1.length() + 1) < w) {
+        w = 1;
+    }
+    for (int ifund : insufficient_fund_bar_1) {
+        if (ifund == 0) {
+            painter->fillRect(QRect(sx_1, 1049, w, 12), f_r);
+        } else {
+            painter->fillRect(QRect(sx_1, 1049, w, 12), f_g);
+        }
+        sx_1 += w;
+    }
+    for (int ifund : insufficient_fund_bar_2) {
+        if (ifund == 0) {
+            painter->fillRect(QRect(sx_2, 1065, w, 12), f_r);
+        } else {
+            painter->fillRect(QRect(sx_2, 1065, w, 12), f_g);
+        }
+        sx_2 += w;
+    }
 }
 
 void Ob::initPanel() {
     this->pi_1 = new PlayerInfo(this);
     this->pi_2 = new PlayerInfo(this);
-
-    this->pi_1->setGeometry(layout::SC1K_TOP_M - layout::SC1K_TOP_W / 2, 0, layout::SC1K_TOP_W / 2,
-                            layout::SC1K_TOP_H);
-    this->pi_2->setGeometry(layout::SC1K_TOP_M, 0, layout::SC1K_TOP_W / 2, layout::SC1K_TOP_H);
     pi_2->setMirror();
 }
 
 void Ob::initUnitblocks() {
-    for (int i = 0; i < layout::SC1K_UNITBLOCKS; i++) {
+    // Clear Unitblocks First
+    for (auto *ub : ubs_p1) {
+        delete ub;
+    }
+    ubs_p1.clear();
+    for (auto *ub : ubs_p2) {
+        delete ub;
+    }
+    ubs_p2.clear();
+
+    for (int i = 0; i < gls->l.unitblocks; i++) {
         Unitblock *ub = new Unitblock(this);
         ub->initUnit("null");
-        ub->setGeometry(layout::SC1K_UNIT_X + rightOffset,
-                        layout::SC1K_UNIT_Y + i * layout::SC1K_UNIT_Hs, layout::SC1K_UNIT_W,
-                        layout::SC1K_UNIT_H);
         ub->setColor(qs_1);
         ub->setEmpty();
-        ub->show();
         ubs_p1.push_back(ub);
     }
 
-    for (int i = 0; i < layout::SC1K_UNITBLOCKS; i++) {
+    for (int i = 0; i < gls->l.unitblocks; i++) {
         Unitblock *ub = new Unitblock(this);
         ub->initUnit("null");
-        ub->setGeometry(layout::SC1K_UNIT_X + layout::SC1K_UNIT_Ws + rightOffset,
-                        layout::SC1K_UNIT_Y + i * layout::SC1K_UNIT_Hs, layout::SC1K_UNIT_W,
-                        layout::SC1K_UNIT_H);
         ub->setColor(qs_2);
         ub->setEmpty();
-        ub->show();
         ubs_p2.push_back(ub);
     }
 }
 
+void Ob::initIfBar() {
+    insufficient_fund_bar_1.clear();
+    insufficient_fund_bar_2.clear();
+}
+
 void Ob::refreshUbs() {
-    Ra2ob::tagGameInfo gi = g->_gameInfo;
+    Ra2ob::tagGameInfo &gi = g->_gameInfo;
 
     if (!gi.valid) {
         return;
@@ -181,7 +241,11 @@ void Ob::refreshUbs() {
     j = 0;
 
     auto it_unit = uInfo.units.begin();
-    while (it_unit != uInfo.units.end() && j < layout::SC1K_UNITBLOCKS) {
+    while (it_unit != uInfo.units.end() && j < gls->l.unitblocks) {
+        if (it_unit->show == 0) {
+            ++it_unit;
+            continue;
+        }
         if (it_unit->num != 0) {
             ubs_p1[j]->setNumber(it_unit->num);
             ubs_p1[j]->setName(QString::fromStdString(it_unit->unitName));
@@ -191,7 +255,7 @@ void Ob::refreshUbs() {
         ++it_unit;
     }
 
-    while (j < layout::SC1K_UNITBLOCKS) {
+    while (j < gls->l.unitblocks) {
         ubs_p1[j]->setEmpty();
         ubs_p1[j]->setColor(qs_1);
         j++;
@@ -200,7 +264,11 @@ void Ob::refreshUbs() {
     j       = 0;
     uInfo   = players[1].units;
     it_unit = uInfo.units.begin();
-    while (it_unit != uInfo.units.end() && j < layout::SC1K_UNITBLOCKS) {
+    while (it_unit != uInfo.units.end() && j < gls->l.unitblocks) {
+        if (it_unit->show == 0) {
+            ++it_unit;
+            continue;
+        }
         if (it_unit->num != 0) {
             ubs_p2[j]->setNumber(it_unit->num);
             ubs_p2[j]->setName(QString::fromStdString(it_unit->unitName));
@@ -210,16 +278,38 @@ void Ob::refreshUbs() {
         ++it_unit;
     }
 
-    while (j < layout::SC1K_UNITBLOCKS) {
+    while (j < gls->l.unitblocks) {
         ubs_p2[j]->setEmpty();
         ubs_p2[j]->setColor(qs_2);
         j++;
     }
 }
 
-void Ob::paintLeftPanel(QPainter *painter) { return; }
-
 void Ob::sortUnitblocks() { return; }
+
+void Ob::setPanelByScreen() {
+    this->pi_1->setGeometry(gls->l.top_m - gls->l.top_w / 2, 0, gls->l.top_w / 2, gls->l.top_h);
+    this->pi_2->setGeometry(gls->l.top_m, 0, gls->l.top_w / 2, gls->l.top_h);
+}
+
+void Ob::setUnitblocksByScreen() {
+    int i = 0;
+
+    for (auto &ub : ubs_p1) {
+        ub->setGeometry(gls->l.unit_x + rightOffset, gls->l.unit_y + i * gls->l.unit_hs,
+                        gls->l.unit_w, gls->l.unit_h);
+        ub->show();
+        i++;
+    }
+
+    i = 0;
+    for (auto &ub : ubs_p2) {
+        ub->setGeometry(gls->l.unit_x + gls->l.unit_ws + rightOffset,
+                        gls->l.unit_y + i * gls->l.unit_hs, gls->l.unit_w, gls->l.unit_h);
+        ub->show();
+        i++;
+    }
+}
 
 void Ob::refreshPanel() {
     std::vector<int> validPlayerIndex;
@@ -234,6 +324,12 @@ void Ob::refreshPanel() {
 
     pi_1->setAll(p1_index);
     pi_2->setAll(p2_index);
+
+    int p_if_1 = pi_1->getInsufficientFund(p1_index);
+    int p_if_2 = pi_2->getInsufficientFund(p2_index);
+
+    insufficient_fund_bar_1.push_back(p_if_1);
+    insufficient_fund_bar_2.push_back(p_if_2);
 }
 
 void Ob::setPlayerColor() {
@@ -250,6 +346,17 @@ void Ob::setPlayerColor() {
 
     qs_1 = gi.players[p1_index].panel.color;
     qs_2 = gi.players[p2_index].panel.color;
+}
+
+void Ob::setLayoutByScreen() {
+    if (this->screen()->geometry().width() == layout::SC1K_W &&
+        this->screen()->geometry().height() == layout::SC1K_H) {
+        gls->loadSetting(1);
+    }
+    if (this->screen()->geometry().width() == layout::SC2K_W &&
+        this->screen()->geometry().height() == layout::SC2K_H) {
+        gls->loadSetting(2);
+    }
 }
 
 int Ob::getValidPlayerIndex(std::vector<int> *vpi) {
@@ -272,6 +379,8 @@ void Ob::detectGame() {
         refreshPanel();
         setPlayerColor();
         this->update();
+    } else {
+        // Todo: initialize
     }
 }
 
@@ -310,4 +419,10 @@ void Ob::switchScreen() {
 
     int nextScreenIndex = (currentScreenIndex + 1) % screens.length();
     this->setGeometry(screens[nextScreenIndex]->geometry());
+
+    setLayoutByScreen();
+
+    setPanelByScreen();
+    initUnitblocks();
+    setUnitblocksByScreen();
 }
