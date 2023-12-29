@@ -130,7 +130,10 @@ void Ob::paintRightPanel(QPainter *painter, int offsetX, int offsetY) {
     return;
 }
 
-void Ob::paintLeftPanel(QPainter *painter) { return; }
+void Ob::paintLeftPanel(QPainter *painter) {
+
+    return;
+}
 
 void Ob::paintBottomPanel(QPainter *painter) {
     QColor f_g(QColor("green"));
@@ -235,7 +238,7 @@ void Ob::refreshUbs() {
     players.push_back(gi.players[validPlayerIndex[0]]);
     players.push_back(gi.players[validPlayerIndex[1]]);
 
-    Ra2ob::tagUnitsInfo uInfo = players[0].units;
+    Ra2ob::tagUnitsInfo &uInfo = players[0].units;
 
     int j;
     j = 0;
@@ -285,8 +288,6 @@ void Ob::refreshUbs() {
     }
 }
 
-void Ob::sortUnitblocks() { return; }
-
 void Ob::setPanelByScreen() {
     this->pi_1->setGeometry(gls->l.top_m - gls->l.top_w / 2, 0, gls->l.top_w / 2, gls->l.top_h);
     this->pi_2->setGeometry(gls->l.top_m, 0, gls->l.top_w / 2, gls->l.top_h);
@@ -332,6 +333,66 @@ void Ob::refreshPanel() {
     insufficient_fund_bar_2.push_back(p_if_2);
 }
 
+void Ob::refreshProducingBlock() {
+    std::vector<int> validPlayerIndex;
+    int validPlayerNum = getValidPlayerIndex(&validPlayerIndex);
+
+    if (validPlayerNum != 2) {
+        return;
+    }
+    int p1_index = validPlayerIndex[0];
+    int p2_index = validPlayerIndex[1];
+
+    // Clear previous ProducingBlock
+    for (auto *pb : pb_1) {
+        delete pb;
+    }
+    pb_1.clear();
+    for (auto *pb : pb_2) {
+        delete pb;
+    }
+    pb_2.clear();
+
+    Ra2ob::tagGameInfo &gi = g->_gameInfo;
+
+    Ra2ob::tagBuildingInfo &bi_1 = gi.players[p1_index].building;
+    for (auto &bn: bi_1.list) {
+        ProducingBlock *pb = new ProducingBlock(this);
+        pb->initBlock(QString::fromStdString(bn.name));
+        pb->setcolor(qs_1);
+        pb->setProgress(bn.progress);
+        pb->setStatus(bn.status);
+        pb_1.push_back(pb);
+    }
+
+    Ra2ob::tagBuildingInfo &bi_2 = gi.players[p2_index].building;
+    for (auto &bn: bi_2.list) {
+        ProducingBlock *pb = new ProducingBlock(this);
+        pb->initBlock(QString::fromStdString(bn.name));
+        pb->setcolor(qs_2);
+        pb->setProgress(bn.progress);
+        pb->setStatus(bn.status);
+        pb_2.push_back(pb);
+    }
+
+    int g = 75;
+    int i = 0;
+    for (auto &pb : pb_1) {
+        pb->setGeometry(20 + g * i, 20, pb->width(), pb->height());
+        pb->show();
+        i++;
+    }
+
+    i = 0;
+    for (auto &pb : pb_2) {
+        pb->setGeometry(20 + g * i, 100, pb->width(), pb->height());
+        pb->show();
+        i++;
+    }
+
+
+}
+
 void Ob::setPlayerColor() {
     std::vector<int> validPlayerIndex;
     int validPlayerNum = getValidPlayerIndex(&validPlayerIndex);
@@ -342,7 +403,7 @@ void Ob::setPlayerColor() {
     int p1_index = validPlayerIndex[0];
     int p2_index = validPlayerIndex[1];
 
-    Ra2ob::tagGameInfo gi = g->_gameInfo;
+    Ra2ob::tagGameInfo &gi = g->_gameInfo;
 
     qs_1 = gi.players[p1_index].panel.color;
     qs_2 = gi.players[p2_index].panel.color;
@@ -360,7 +421,7 @@ void Ob::setLayoutByScreen() {
 }
 
 int Ob::getValidPlayerIndex(std::vector<int> *vpi) {
-    Ra2ob::tagGameInfo gi = g->_gameInfo;
+    Ra2ob::tagGameInfo &gi = g->_gameInfo;
 
     int validPlayerNum = 0;
     for (int i = 0; i < Ra2ob::MAXPLAYER; i++) {
@@ -377,10 +438,12 @@ void Ob::detectGame() {
     if (g->_gameInfo.valid) {
         refreshUbs();
         refreshPanel();
+        refreshProducingBlock();
         setPlayerColor();
         this->update();
     } else {
         // Todo: initialize
+        initIfBar();
     }
 }
 

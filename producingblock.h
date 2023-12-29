@@ -2,6 +2,7 @@
 #define PRODUCINGBLOCK_H
 
 #include <QWidget>
+#include <QPaintEvent>
 #include <string>
 
 namespace Ui {
@@ -14,16 +15,20 @@ class ProducingBlock : public QWidget {
 public:
     explicit ProducingBlock(QWidget *parent = nullptr);
     ~ProducingBlock();
-    void paintEvent(QPaintEvent *);
+    void paintEvent(QPaintEvent *event);
 
     void initBlock(QString name);
-    void setName(QString name);
+    void setProgress(int progress);
+    void setStatus(int status);
     void setImage(QString name);
     void setcolor(std::string color);
 
+    int complete = 54;
     int blockProgress;
     QString blockName;
     QString blockStatus;
+    QColor blockColor;
+    bool clean = false;
 
 private:
     Ui::ProducingBlock *ui;

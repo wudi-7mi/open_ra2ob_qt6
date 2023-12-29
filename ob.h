@@ -10,6 +10,7 @@
 #include "./layoutsetting.h"
 #include "./playerinfo.h"
 #include "./unitblock.h"
+#include "./producingblock.h"
 
 namespace Ui {
 class Ob;
@@ -36,10 +37,10 @@ private:
     void initIfBar();
     void refreshUbs();
 
-    void sortUnitblocks();
     void setPanelByScreen();
     void setUnitblocksByScreen();
     void refreshPanel();
+    void refreshProducingBlock();
 
     void setPlayerColor();
 
@@ -53,6 +54,8 @@ private:
     PlayerInfo *pi_2;
     std::string qs_1 = layout::COLOR_DEFAULT;
     std::string qs_2 = layout::COLOR_DEFAULT;
+    QVector<ProducingBlock *> pb_1;
+    QVector<ProducingBlock *> pb_2;
     QVector<int> insufficient_fund_bar_1;
     QVector<int> insufficient_fund_bar_2;
 

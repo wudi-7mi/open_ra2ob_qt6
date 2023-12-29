@@ -79,4 +79,4 @@ logs
 .vscode
 
 # Temp
-UserspcAppDataLocalTemp*
+Users*AppDataLocalTemp*
