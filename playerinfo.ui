@@ -39,33 +39,26 @@
    <property name="geometry">
     <rect>
      <x>376</x>
-     <y>22</y>
+     <y>21</y>
      <width>54</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>DIN</family>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#000000;&quot;&gt;Balance&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lb_credit">
-   <property name="geometry">
-    <rect>
-     <x>376</x>
-     <y>52</y>
-     <width>54</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#000000;&quot;&gt;Credit&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLabel" name="lb_img_balance">
    <property name="geometry">
     <rect>
      <x>350</x>
-     <y>20</y>
+     <y>18</y>
      <width>20</width>
      <height>20</height>
     </rect>
@@ -80,30 +73,11 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="lb_img_credit">
-   <property name="geometry">
-    <rect>
-     <x>350</x>
-     <y>50</y>
-     <width>20</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="pixmap">
-    <pixmap resource="resources.qrc">:/panels/assets/panels/credit_w.png</pixmap>
-   </property>
-   <property name="scaledContents">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QLabel" name="lb_country">
    <property name="geometry">
     <rect>
      <x>295</x>
-     <y>20</y>
+     <y>35</y>
      <width>30</width>
      <height>20</height>
     </rect>
@@ -118,10 +92,10 @@
   <widget class="QProgressBar" name="pb_power">
    <property name="geometry">
     <rect>
-     <x>295</x>
-     <y>52</y>
-     <width>30</width>
-     <height>18</height>
+     <x>377</x>
+     <y>51</y>
+     <width>33</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="value">
@@ -137,17 +111,17 @@
   <widget class="QLabel" name="lb_img_power">
    <property name="geometry">
     <rect>
-     <x>302</x>
-     <y>54</y>
-     <width>15</width>
-     <height>15</height>
+     <x>350</x>
+     <y>49</y>
+     <width>20</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="resources.qrc">:/panels/assets/panels/power.png</pixmap>
+    <pixmap resource="resources.qrc">:/panels/assets/panels/power_w.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>

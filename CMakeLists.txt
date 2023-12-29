@@ -39,6 +39,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         messagebox.h
         globalsetting.h globalsetting.cpp
         producingblock.h producingblock.cpp producingblock.ui
+        qoutlinelabel.h qoutlinelabel.cpp
 
     )
 # Define target properties for Android with Qt 6 as:

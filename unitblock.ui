@@ -42,32 +42,6 @@ border-radius: 6px;}</string>
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="number">
-   <property name="geometry">
-    <rect>
-     <x>31</x>
-     <y>38</y>
-     <width>10</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>微软雅黑</family>
-     <pointsize>10</pointsize>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: white</string>
-   </property>
-   <property name="text">
-    <string>0</string>
-   </property>
-   <property name="scaledContents">
-    <bool>false</bool>
-   </property>
-  </widget>
   <widget class="QLabel" name="bg">
    <property name="geometry">
     <rect>
@@ -101,10 +75,6 @@ border-bottom-right-radius: 8px;</string>
     <string/>
    </property>
   </widget>
-  <zorder>img</zorder>
-  <zorder>bg</zorder>
-  <zorder>number</zorder>
-  <zorder>border</zorder>
  </widget>
  <resources/>
  <connections/>

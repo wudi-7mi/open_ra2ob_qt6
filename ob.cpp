@@ -130,12 +130,10 @@ void Ob::paintRightPanel(QPainter *painter, int offsetX, int offsetY) {
     return;
 }
 
-void Ob::paintLeftPanel(QPainter *painter) {
-
-    return;
-}
+void Ob::paintLeftPanel(QPainter *painter) { return; }
 
 void Ob::paintBottomPanel(QPainter *painter) {
+    QColor f_bg(QColor("midnightblue"));
     QColor f_g(QColor("green"));
     QColor f_r(QColor("red"));
     int w    = 5;
@@ -150,10 +148,12 @@ void Ob::paintBottomPanel(QPainter *painter) {
     QPen lBorder(lColor);
     lBorder.setWidth(2);
     painter->setPen(lBorder);
+    painter->fillRect(QRect(0, 1048, gls->l.right_x, 14), f_bg);
     painter->drawRect(QRect(0, 1048, gls->l.right_x, 14));
     QPen rBorder(rColor);
     rBorder.setWidth(2);
     painter->setPen(rBorder);
+    painter->fillRect(QRect(0, 1064, gls->l.right_x, 14), f_bg);
     painter->drawRect(QRect(0, 1064, gls->l.right_x, 14));
 
     if (gls->l.right_x / (insufficient_fund_bar_1.length() + 1) < w) {
@@ -356,7 +356,7 @@ void Ob::refreshProducingBlock() {
     Ra2ob::tagGameInfo &gi = g->_gameInfo;
 
     Ra2ob::tagBuildingInfo &bi_1 = gi.players[p1_index].building;
-    for (auto &bn: bi_1.list) {
+    for (auto &bn : bi_1.list) {
         ProducingBlock *pb = new ProducingBlock(this);
         pb->initBlock(QString::fromStdString(bn.name));
         pb->setcolor(qs_1);
@@ -366,7 +366,7 @@ void Ob::refreshProducingBlock() {
     }
 
     Ra2ob::tagBuildingInfo &bi_2 = gi.players[p2_index].building;
-    for (auto &bn: bi_2.list) {
+    for (auto &bn : bi_2.list) {
         ProducingBlock *pb = new ProducingBlock(this);
         pb->initBlock(QString::fromStdString(bn.name));
         pb->setcolor(qs_2);
@@ -389,8 +389,6 @@ void Ob::refreshProducingBlock() {
         pb->show();
         i++;
     }
-
-
 }
 
 void Ob::setPlayerColor() {

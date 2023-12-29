@@ -21,7 +21,6 @@ public:
     void setAll(int index);
     void setPlayerNameByIndex(int index);
     void setBalanceByIndex(int index);
-    void setCreditByIndex(int index);
     void setCountryByIndex(int index);
     void setPowerByIndex(int index);
 

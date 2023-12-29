@@ -1,13 +1,22 @@
 #include "./producingblock.h"
 
 #include <QFile>
-#include <QRect>
 #include <QPainter>
+#include <QRect>
 
 #include "./ui_producingblock.h"
 
 ProducingBlock::ProducingBlock(QWidget *parent) : QWidget(parent), ui(new Ui::ProducingBlock) {
     ui->setupUi(this);
+
+    lb_status = new QOutlineLabel(this);
+
+    QFont font;
+    font.setFamily("DIN");
+    font.setPointSize(12);
+    lb_status->setFont(font);
+    lb_status->setOutline(Qt::white, Qt::black, 2, true);
+    lb_status->setGeometry(0, 15, 12, 17);
 }
 
 ProducingBlock::~ProducingBlock() {
@@ -16,7 +25,7 @@ ProducingBlock::~ProducingBlock() {
     delete ui;
 }
 
-void ProducingBlock::paintEvent(QPaintEvent *event) {
+void ProducingBlock::paintEvent(QPaintEvent *) {
     QPainter painter(this);
 
     if (clean) {
@@ -28,30 +37,23 @@ void ProducingBlock::paintEvent(QPaintEvent *event) {
         return;
     }
 
-    painter.fillRect(
-        QRect(0, 0, this->width(), this->height()), blockColor
-        );
+    painter.fillRect(QRect(0, 0, this->width(), this->height()), blockColor);
 
-    QLabel *t = ui->lb_text;
-    if (blockStatus != "") {
-        t->setText(blockStatus);
-        t->adjustSize();
+    QOutlineLabel *t = lb_status;
+    t->setText(blockStatus);
+    t->adjustSize();
 
-        int childX = (this->width() - t->width()) / 2;
-        t->setGeometry(childX, t->y(), t->width(), t->height());
-        t->show();
-        return;
-    }
-
-    t->hide();
+    int childX = (this->width() - t->width()) / 2;
+    t->setGeometry(childX, t->y(), t->width(), t->height());
+    t->show();
 
     int i = 0;
     while (i < blockProgress) {
-        painter.fillRect(QRect(8 + i, 57, 1, 12), QColor("white"));
+        painter.fillRect(QRect(8 + i, 57, 1, 8), QColor("white"));
         i++;
     }
     while (i < complete) {
-        painter.fillRect(QRect(8 + i, 57, 1, 12), QColor("black"));
+        painter.fillRect(QRect(8 + i, 57, 1, 8), QColor("black"));
         i++;
     }
 
@@ -63,9 +65,7 @@ void ProducingBlock::initBlock(QString name) {
     setImage(name);
 }
 
-void ProducingBlock::setProgress(int progress) {
-    blockProgress = progress;
-}
+void ProducingBlock::setProgress(int progress) { blockProgress = progress; }
 
 void ProducingBlock::setStatus(int status) {
     if (blockProgress == 54) {

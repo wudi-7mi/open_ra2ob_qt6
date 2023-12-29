@@ -2,8 +2,9 @@
 #define PRODUCINGBLOCK_H
 
 #include <QWidget>
-#include <QPaintEvent>
 #include <string>
+
+#include "./qoutlinelabel.h"
 
 namespace Ui {
 class ProducingBlock;
@@ -15,7 +16,7 @@ class ProducingBlock : public QWidget {
 public:
     explicit ProducingBlock(QWidget *parent = nullptr);
     ~ProducingBlock();
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *);
 
     void initBlock(QString name);
     void setProgress(int progress);
@@ -29,6 +30,8 @@ public:
     QString blockStatus;
     QColor blockColor;
     bool clean = false;
+
+    QOutlineLabel *lb_status;
 
 private:
     Ui::ProducingBlock *ui;

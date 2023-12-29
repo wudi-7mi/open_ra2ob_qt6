@@ -20,6 +20,7 @@
         <file>assets/panels/balance_w.png</file>
         <file>assets/panels/credit_w.png</file>
         <file>assets/panels/power.png</file>
+        <file>assets/panels/power_w.png</file>
     </qresource>
     <qresource prefix="/obicons">
         <file>assets/obicons/Aegis Cruiser.png</file>

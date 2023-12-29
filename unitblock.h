@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <string>
 
+#include "./qoutlinelabel.h"
+
 namespace Ui {
 class Unitblock;
 }
@@ -23,6 +25,8 @@ public:
     QPixmap getRadius(QPixmap src, int radius);
 
     QString unit_name;
+
+    QOutlineLabel *lb_num;
 
 private:
     Ui::Unitblock *ui;

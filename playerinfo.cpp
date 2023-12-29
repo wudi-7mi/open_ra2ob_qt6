@@ -12,7 +12,9 @@ PlayerInfo::PlayerInfo(QWidget* parent) : QWidget(parent), ui(new Ui::PlayerInfo
     g = &Ra2ob::Game::getInstance();
     ui->lb_playerName->setStyleSheet("color: #ffffff;");
     ui->lb_balance->setStyleSheet("color: #ffffff;");
-    ui->lb_credit->setStyleSheet("color: #ffffff;");
+    QFont f = ui->lb_balance->font();
+    f.setStyleStrategy(QFont::PreferAntialias);
+    ui->lb_balance->setFont(f);
 }
 
 PlayerInfo::~PlayerInfo() { delete ui; }
@@ -23,14 +25,12 @@ void PlayerInfo::setMirror() {
                            child->height());
     }
     ui->lb_balance->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    ui->lb_credit->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     mirrored = true;
 }
 
 void PlayerInfo::setAll(int index) {
     setPlayerNameByIndex(index);
     setBalanceByIndex(index);
-    setCreditByIndex(index);
     setCountryByIndex(index);
     setPowerByIndex(index);
 }
@@ -63,11 +63,6 @@ void PlayerInfo::setPlayerNameByIndex(int index) {
 void PlayerInfo::setBalanceByIndex(int index) {
     int num = g->_gameInfo.players[index].panel.balance;
     ui->lb_balance->setText(QString::number(num));
-}
-
-void PlayerInfo::setCreditByIndex(int index) {
-    int num = g->_gameInfo.players[index].panel.creditSpent;
-    ui->lb_credit->setText(QString::number(num));
 }
 
 void PlayerInfo::setCountryByIndex(int index) {
