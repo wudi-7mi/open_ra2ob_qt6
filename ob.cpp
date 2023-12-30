@@ -145,16 +145,16 @@ void Ob::paintBottomPanel(QPainter *painter) {
     QColor lColor = QColor(qs_l);
     QColor rColor = QColor(qs_r);
 
+    painter->fillRect(QRect(0, 1048, gls->l.right_x, 32), f_bg);
+
     QPen lBorder(lColor);
     lBorder.setWidth(2);
     painter->setPen(lBorder);
-    painter->fillRect(QRect(0, 1048, gls->l.right_x, 14), f_bg);
-    painter->drawRect(QRect(0, 1048, gls->l.right_x, 14));
+    painter->drawRect(QRect(0, 1048, gls->l.right_x - 1, 14));
     QPen rBorder(rColor);
     rBorder.setWidth(2);
     painter->setPen(rBorder);
-    painter->fillRect(QRect(0, 1064, gls->l.right_x, 14), f_bg);
-    painter->drawRect(QRect(0, 1064, gls->l.right_x, 14));
+    painter->drawRect(QRect(0, 1065, gls->l.right_x - 1, 14));
 
     if (gls->l.right_x / (insufficient_fund_bar_1.length() + 1) < w) {
         w = 3;
@@ -172,12 +172,36 @@ void Ob::paintBottomPanel(QPainter *painter) {
     }
     for (int ifund : insufficient_fund_bar_2) {
         if (ifund == 0) {
-            painter->fillRect(QRect(sx_2, 1065, w, 12), f_r);
+            painter->fillRect(QRect(sx_2, 1066, w, 12), f_r);
         } else {
-            painter->fillRect(QRect(sx_2, 1065, w, 12), f_g);
+            painter->fillRect(QRect(sx_2, 1066, w, 12), f_g);
         }
         sx_2 += w;
     }
+
+    std::vector<int> validPlayerIndex;
+    int validPlayerNum = getValidPlayerIndex(&validPlayerIndex);
+
+    if (validPlayerNum != 2) {
+        return;
+    }
+    int p1_index = validPlayerIndex[0];
+    int p2_index = validPlayerIndex[1];
+
+    Ra2ob::tagGameInfo &gi = g->_gameInfo;
+
+    int c_1       = gi.players[p1_index].panel.creditSpent;
+    int ck_1      = c_1 / 1000;
+    int ch_1      = c_1 % 1000 / 100;
+    QString res_1 = QString::number(ck_1) + "." + QString::number(ch_1) + "k";
+
+    int c_2       = gi.players[p2_index].panel.creditSpent;
+    int ck_2      = c_2 / 1000;
+    int ch_2      = c_2 % 1000 / 100;
+    QString res_2 = QString::number(ck_2) + "." + QString::number(ch_2) + "k";
+
+    credit_1->setText(res_1);
+    credit_2->setText(res_2);
 }
 
 void Ob::initPanel() {
@@ -217,6 +241,28 @@ void Ob::initUnitblocks() {
 void Ob::initIfBar() {
     insufficient_fund_bar_1.clear();
     insufficient_fund_bar_2.clear();
+
+    if (credit_1 == nullptr) {
+        credit_1 = new QLabel(this);
+    }
+
+    if (credit_2 == nullptr) {
+        credit_2 = new QLabel(this);
+    }
+
+    QFont font;
+    font.setFamily("OPlusSans 3.0 Medium");
+    font.setPointSize(10);
+
+    credit_1->setFont(font);
+    credit_1->setText("0.0k");
+    credit_1->setGeometry(10, 1048, 50, 14);
+    credit_1->setStyleSheet("color: white");
+
+    credit_2->setFont(font);
+    credit_2->setText("0.0k");
+    credit_2->setGeometry(10, 1065, 50, 14);
+    credit_2->setStyleSheet("color: white");
 }
 
 void Ob::refreshUbs() {

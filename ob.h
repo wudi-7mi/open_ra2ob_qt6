@@ -9,8 +9,8 @@
 #include "./globalsetting.h"
 #include "./layoutsetting.h"
 #include "./playerinfo.h"
-#include "./unitblock.h"
 #include "./producingblock.h"
+#include "./unitblock.h"
 
 namespace Ui {
 class Ob;
@@ -58,6 +58,8 @@ private:
     QVector<ProducingBlock *> pb_2;
     QVector<int> insufficient_fund_bar_1;
     QVector<int> insufficient_fund_bar_2;
+    QLabel *credit_1 = nullptr;
+    QLabel *credit_2 = nullptr;
 
     bool forceHideOb = false;
 

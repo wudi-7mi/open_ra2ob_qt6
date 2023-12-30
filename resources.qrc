@@ -7,8 +7,6 @@
         <file>assets/icons/icon_64.png</file>
         <file>assets/icons/icon_80.png</file>
         <file>assets/icons/icon_100.png</file>
-        <file>assets/obicons/Siege Chopper.png</file>
-        <file>assets/obicons/Navy SEAL.png</file>
     </qresource>
     <qresource prefix="/i18n">
         <file>open_ra2ob_qt6_zh_CN.qm</file>
@@ -203,6 +201,7 @@
         <file>assets/obicons/Brute.png</file>
         <file>assets/obicons/Yuri Barracks.png</file>
         <file>assets/obicons/Airforce Command Headquarters (American).png</file>
+        <file>assets/obicons/Weather Control Device.png</file>
     </qresource>
     <qresource prefix="/countries">
         <file>assets/countries/Americans.png</file>

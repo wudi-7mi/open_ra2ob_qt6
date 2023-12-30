@@ -12,10 +12,10 @@ ProducingBlock::ProducingBlock(QWidget *parent) : QWidget(parent), ui(new Ui::Pr
     lb_status = new QOutlineLabel(this);
 
     QFont font;
-    font.setFamily("DIN");
-    font.setPointSize(12);
+    font.setFamily("OPlusSans 3.0 Medium");
+    font.setPointSize(10);
     lb_status->setFont(font);
-    lb_status->setOutline(Qt::white, Qt::black, 2, true);
+    lb_status->setOutline(Qt::white, QColor(30, 27, 24), 3, true);
     lb_status->setGeometry(0, 15, 12, 17);
 }
 
@@ -44,7 +44,7 @@ void ProducingBlock::paintEvent(QPaintEvent *) {
     t->adjustSize();
 
     int childX = (this->width() - t->width()) / 2;
-    t->setGeometry(childX, t->y(), t->width(), t->height());
+    t->setGeometry(childX - 1, t->y(), t->width() + 2, t->height());
     t->show();
 
     int i = 0;

@@ -12,11 +12,11 @@ Unitblock::Unitblock(QWidget *parent) : QWidget(parent), ui(new Ui::Unitblock) {
     lb_num = new QOutlineLabel(this);
 
     QFont font;
-    font.setFamily("DIN");
+    font.setFamily("OPlusSans 3.0 Medium");
     font.setPointSize(11);
     lb_num->setFont(font);
-    lb_num->setOutline(Qt::white, Qt::black, 2, true);
-    lb_num->setGeometry(31, 35, 10, 17);
+    lb_num->setOutline(Qt::white, QColor(30, 27, 24), 2, true);
+    lb_num->setGeometry(5, 32, 60, 14);
 }
 
 Unitblock::~Unitblock() {
@@ -68,7 +68,7 @@ void Unitblock::setNumber(int n) {
     lb_num->setText(QString::number(n));
     lb_num->adjustSize();
     int cX = (this->width() - lb_num->width()) / 2;
-    lb_num->setGeometry(cX, lb_num->y(), lb_num->width(), lb_num->height());
+    lb_num->setGeometry(cX - 1, lb_num->y(), lb_num->width() + 2, lb_num->height());
     lb_num->show();
 
     ui->bg->show();
