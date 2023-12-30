@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QRect>
 
+#include "./layoutsetting.h"
 #include "./ui_producingblock.h"
 
 ProducingBlock::ProducingBlock(QWidget *parent) : QWidget(parent), ui(new Ui::ProducingBlock) {
@@ -16,7 +17,7 @@ ProducingBlock::ProducingBlock(QWidget *parent) : QWidget(parent), ui(new Ui::Pr
     font.setPointSize(10);
     lb_status->setFont(font);
     lb_status->setOutline(Qt::white, QColor(30, 27, 24), 3, true);
-    lb_status->setGeometry(0, 15, 12, 17);
+    lb_status->setGeometry(0, layout::PRODUCING_STATUS_Y, 0, 0);
 }
 
 ProducingBlock::~ProducingBlock() {
@@ -49,11 +50,15 @@ void ProducingBlock::paintEvent(QPaintEvent *) {
 
     int i = 0;
     while (i < blockProgress) {
-        painter.fillRect(QRect(8 + i, 57, 1, 8), QColor("white"));
+        painter.fillRect(QRect(layout::PRODUCING_PROGRESS_X + i, layout::PRODUCING_PROGRESS_Y, 1,
+                               layout::PRODUCING_PROGRESS_H),
+                         QColor("white"));
         i++;
     }
     while (i < complete) {
-        painter.fillRect(QRect(8 + i, 57, 1, 8), QColor("black"));
+        painter.fillRect(QRect(layout::PRODUCING_PROGRESS_X + i, layout::PRODUCING_PROGRESS_Y, 1,
+                               layout::PRODUCING_PROGRESS_H),
+                         QColor("black"));
         i++;
     }
 

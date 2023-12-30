@@ -145,16 +145,16 @@ void Ob::paintBottomPanel(QPainter *painter) {
     QColor lColor = QColor(qs_l);
     QColor rColor = QColor(qs_r);
 
-    painter->fillRect(QRect(0, 1048, gls->l.right_x, 32), f_bg);
+    painter->fillRect(QRect(0, gls->l.bottom_y, gls->l.right_x, 32), f_bg);
 
     QPen lBorder(lColor);
     lBorder.setWidth(2);
     painter->setPen(lBorder);
-    painter->drawRect(QRect(0, 1048, gls->l.right_x - 1, 14));
+    painter->drawRect(QRect(0, gls->l.bottom_y1, gls->l.right_x - 1, layout::BOTTOM_CREDIT_H));
     QPen rBorder(rColor);
     rBorder.setWidth(2);
     painter->setPen(rBorder);
-    painter->drawRect(QRect(0, 1065, gls->l.right_x - 1, 14));
+    painter->drawRect(QRect(0, gls->l.bottom_y2, gls->l.right_x - 1, layout::BOTTOM_CREDIT_H));
 
     if (gls->l.right_x / (insufficient_fund_bar_1.length() + 1) < w) {
         w = 3;
@@ -164,17 +164,17 @@ void Ob::paintBottomPanel(QPainter *painter) {
     }
     for (int ifund : insufficient_fund_bar_1) {
         if (ifund == 0) {
-            painter->fillRect(QRect(sx_1, 1049, w, 12), f_r);
+            painter->fillRect(QRect(sx_1, gls->l.bottom_fill_y1, w, layout::BOTTOM_FILL_H), f_r);
         } else {
-            painter->fillRect(QRect(sx_1, 1049, w, 12), f_g);
+            painter->fillRect(QRect(sx_1, gls->l.bottom_fill_y1, w, layout::BOTTOM_FILL_H), f_g);
         }
         sx_1 += w;
     }
     for (int ifund : insufficient_fund_bar_2) {
         if (ifund == 0) {
-            painter->fillRect(QRect(sx_2, 1066, w, 12), f_r);
+            painter->fillRect(QRect(sx_2, gls->l.bottom_fill_y2, w, layout::BOTTOM_FILL_H), f_r);
         } else {
-            painter->fillRect(QRect(sx_2, 1066, w, 12), f_g);
+            painter->fillRect(QRect(sx_2, gls->l.bottom_fill_y2, w, layout::BOTTOM_FILL_H), f_g);
         }
         sx_2 += w;
     }
@@ -256,12 +256,14 @@ void Ob::initIfBar() {
 
     credit_1->setFont(font);
     credit_1->setText("0.0k");
-    credit_1->setGeometry(10, 1048, 50, 14);
+    credit_1->setGeometry(layout::BOTTOM_CREDIT_X, gls->l.bottom_credit_y1, layout::BOTTOM_CREDIT_W,
+                          layout::BOTTOM_CREDIT_H);
     credit_1->setStyleSheet("color: white");
 
     credit_2->setFont(font);
     credit_2->setText("0.0k");
-    credit_2->setGeometry(10, 1065, 50, 14);
+    credit_2->setGeometry(layout::BOTTOM_CREDIT_X, gls->l.bottom_credit_y2, layout::BOTTOM_CREDIT_W,
+                          layout::BOTTOM_CREDIT_H);
     credit_2->setStyleSheet("color: white");
 }
 
@@ -421,17 +423,18 @@ void Ob::refreshProducingBlock() {
         pb_2.push_back(pb);
     }
 
-    int g = 75;
     int i = 0;
     for (auto &pb : pb_1) {
-        pb->setGeometry(20 + g * i, 20, pb->width(), pb->height());
+        pb->setGeometry(layout::PRODUCINGBLOCK_X + layout::PRODUCINGBLOCK_Ws * i,
+                        layout::PRODUCINGBLOCK_Y1, pb->width(), pb->height());
         pb->show();
         i++;
     }
 
     i = 0;
     for (auto &pb : pb_2) {
-        pb->setGeometry(20 + g * i, 100, pb->width(), pb->height());
+        pb->setGeometry(layout::PRODUCINGBLOCK_X + layout::PRODUCINGBLOCK_Ws * i,
+                        layout::PRODUCINGBLOCK_Y2, pb->width(), pb->height());
         pb->show();
         i++;
     }
@@ -451,6 +454,13 @@ void Ob::setPlayerColor() {
 
     qs_1 = gi.players[p1_index].panel.color;
     qs_2 = gi.players[p2_index].panel.color;
+
+    if (qs_1 == "0") {
+        qs_1 = layout::COLOR_DEFAULT;
+    }
+    if (qs_2 == "0") {
+        qs_2 = layout::COLOR_DEFAULT;
+    }
 }
 
 void Ob::setLayoutByScreen() {
@@ -531,5 +541,6 @@ void Ob::switchScreen() {
 
     setPanelByScreen();
     initUnitblocks();
+    initIfBar();
     setUnitblocksByScreen();
 }

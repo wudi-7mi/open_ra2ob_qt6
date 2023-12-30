@@ -20,6 +20,13 @@ struct Layout {
     int unit_ws;
     int unit_hs;
     int icon_side;
+    int bottom_y;
+    int bottom_y1;
+    int bottom_y2;
+    int bottom_fill_y1;
+    int bottom_fill_y2;
+    int bottom_credit_y1;
+    int bottom_credit_y2;
 };
 
 class Globalsetting {

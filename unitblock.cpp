@@ -16,7 +16,7 @@ Unitblock::Unitblock(QWidget *parent) : QWidget(parent), ui(new Ui::Unitblock) {
     font.setPointSize(11);
     lb_num->setFont(font);
     lb_num->setOutline(Qt::white, QColor(30, 27, 24), 2, true);
-    lb_num->setGeometry(5, 32, 60, 14);
+    lb_num->setGeometry(0, layout::UNITBLOCK_Y, 0, 0);
 }
 
 Unitblock::~Unitblock() {
