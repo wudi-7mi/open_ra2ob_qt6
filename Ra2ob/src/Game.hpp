@@ -38,6 +38,7 @@ public:
     void getBuildingInfo(tagBuildingInfo* bi, int addr, int offset_0, int offset_1, UnitType utype);
     void refreshBuildingInfos();
     void refreshColors();
+    void refreshStatusInfos();
 
     void structBuild();
 
@@ -55,6 +56,7 @@ public:
     StrCountry _strCountry;
 
     std::array<tagBuildingInfo, MAXPLAYER> _buildingInfos;
+    std::array<tagStatusInfo, MAXPLAYER> _statusInfos;
 
     std::array<std::string, MAXPLAYER> _colors;
 
@@ -197,6 +199,8 @@ inline void Game::initAddrs() {
     uint32_t classBaseArray     = r.getAddr(CLASSBASEARRAYOFFSET);
     uint32_t playerBaseArrayPtr = fixed + PLAYERBASEARRAYPTROFFSET;
 
+    bool isObserverFlag = true;
+
     for (int i = 0; i < MAXPLAYER; i++, playerBaseArrayPtr += 4) {
         uint32_t playerBase = r.getAddr(playerBaseArrayPtr);
 
@@ -204,6 +208,12 @@ inline void Game::initAddrs() {
 
         if (playerBase != INVALIDCLASS) {
             uint32_t realPlayerBase = r.getAddr(playerBase * 4 + classBaseArray);
+
+            bool cur          = r.getBool(realPlayerBase + CURRENTPLAYEROFFSET);
+            std::string cur_s = r.getString(realPlayerBase + STRNAMEOFFSET);
+            if (cur) {
+                isObserverFlag = false;
+            }
 
             _players[i]     = true;
             _playerBases[i] = realPlayerBase;
@@ -220,6 +230,10 @@ inline void Game::initAddrs() {
 
             _houseTypes[i] = r.getAddr(realPlayerBase + HOUSETYPEOFFSET);
         }
+    }
+
+    if (isObserverFlag) {
+        _gameInfo.isObserver = true;
     }
 }
 
@@ -305,11 +319,14 @@ inline void Game::initArrays() {
 
     _houseTypes    = std::array<uint32_t, MAXPLAYER>{};
     _buildingInfos = std::array<tagBuildingInfo, MAXPLAYER>{};
+    _statusInfos   = std::array<tagStatusInfo, MAXPLAYER>{};
     _colors        = std::array<std::string, MAXPLAYER>{};
     _colors.fill("0x000000");
 }
 
 inline void Game::initGameInfo() {
+    _gameInfo.valid              = false;
+    _gameInfo.isObserver         = false;
     _gameInfo.players            = std::array<tagPlayer, MAXPLAYER>{};
     _gameInfo.debug.playerBase   = std::array<uint32_t, MAXPLAYER>{};
     _gameInfo.debug.buildingBase = std::array<uint32_t, MAXPLAYER>{};
@@ -368,6 +385,7 @@ inline void Game::refreshInfo() {
 
     refreshBuildingInfos();
     refreshColors();
+    refreshStatusInfos();
 }
 
 inline void Game::getBuildingInfo(tagBuildingInfo* bi, int addr, int offset_0, int offset_1,
@@ -438,6 +456,26 @@ inline void Game::refreshColors() {
     }
 }
 
+inline void Game::refreshStatusInfos() {
+    for (int i = 0; i < MAXPLAYER; i++) {
+        if (!_players[i]) {
+            continue;
+        }
+
+        tagStatusInfo si;
+
+        uint32_t addr = _playerBases[i];
+
+        int infantrySelfHeal = r.getInt(addr + INFANTRYSELFHEALOFFSET);
+        int unitSelfHeal     = r.getInt(addr + UNITSELFHEALOFFSET);
+
+        si.infantrySelfHeal = infantrySelfHeal;
+        si.unitSelfHeal     = unitSelfHeal;
+
+        _statusInfos[i] = si;
+    }
+}
+
 inline void Game::structBuild() {
     for (int i = 0; i < MAXPLAYER; i++) {
         tagPlayer p;
@@ -478,6 +516,7 @@ inline void Game::structBuild() {
         p.panel    = pi;
         p.units    = ui;
         p.building = _buildingInfos[i];
+        p.status   = _statusInfos[i];
 
         // Game info
         _gameInfo.players[i]            = p;

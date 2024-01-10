@@ -31,7 +31,7 @@ inline Viewer::Viewer() {}
 inline json Viewer::exportJson(tagGameInfo gi, int mode) {
     json j;
 
-    if (mode > 0) {
+    if (mode == 2) {
         j["debug"]["playerBase"]   = vecToHex(gi.debug.playerBase);
         j["debug"]["buildingBase"] = vecToHex(gi.debug.buildingBase);
         j["debug"]["infantryBase"] = vecToHex(gi.debug.infantryBase);
@@ -40,7 +40,7 @@ inline json Viewer::exportJson(tagGameInfo gi, int mode) {
         j["debug"]["houseType"]    = vecToHex(gi.debug.houseType);
     }
 
-    if (mode == 2) {
+    if (!(GOODINTENTION || gi.isObserver)) {
         return j;
     }
 
@@ -86,8 +86,16 @@ inline json Viewer::exportJson(tagGameInfo gi, int mode) {
             for (auto& b : p.building.list) {
                 jb["name"]     = b.name;
                 jb["progress"] = b.progress;
-                jb["status"]   = b.status;
+                if (b.progress == 54) {
+                    jb["status"] = "Ready";
+                } else if (b.status == 1) {
+                    jb["status"] = "On Hold";
+                } else {
+                    jb["status"] = "Building";
+                }
             }
+
+            jp["producingList"] = jb;
         }
 
         j["players"].push_back(jp);
@@ -114,6 +122,11 @@ inline void Viewer::print(tagGameInfo gi, int mode, int indent) {
         return;
     }
 
+    if (!(GOODINTENTION || gi.isObserver)) {
+        std::cout << "This player is not observer.";
+        return;
+    }
+
     for (auto& p : gi.players) {
         if (mode == 0 && !p.valid) {
             continue;
@@ -133,6 +146,14 @@ inline void Viewer::print(tagGameInfo gi, int mode, int indent) {
         std::cout << " Balance: " << p.panel.balance;
         std::cout << " Power: " << p.panel.powerDrain << " / " << p.panel.powerOutput;
         std::cout << " Credit: " << p.panel.creditSpent;
+
+        std::cout << " Auto Repair: ";
+        if (p.status.infantrySelfHeal) {
+            std::cout << "[Infantry+] ";
+        }
+        if (p.status.unitSelfHeal) {
+            std::cout << "[Tank+] ";
+        }
 
         std::cout << "\n";
 
@@ -173,7 +194,11 @@ inline void Viewer::print(tagGameInfo gi, int mode, int indent) {
             }
         }
 
-        std::cout << STR_RULER << std::endl;
+        for (int i = 0; i < RULER_MULT; i++) {
+            std::cout << STR_RULER;
+        }
+
+        std::cout << std::endl;
     }
 }
 

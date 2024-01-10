@@ -15,10 +15,6 @@ struct Layout {
     int top_w;
     int unit_x;
     int unit_y;
-    int unit_w;
-    int unit_h;
-    int unit_ws;
-    int unit_hs;
     int icon_side;
     int bottom_y;
     int bottom_y1;
@@ -28,6 +24,12 @@ struct Layout {
     int bottom_credit_y1;
     int bottom_credit_y2;
 };
+
+struct Colors {
+    float top_panel_opacity = 0.5;
+};
+
+struct Status {};
 
 class Globalsetting {
 public:

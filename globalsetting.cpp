@@ -11,28 +11,45 @@ Globalsetting& Globalsetting::getInstance() {
 
 void Globalsetting::loadSetting(int preset, int width, int height) {
     if (preset == 0) {
-        // Todo: calculate layout
+        l.w                = width;
+        l.h                = height;
+        l.right_bottom_h   = l.h - layout::MAP_H - layout::RIGHT_HEADER_H + 1;
+        l.m                = l.w / 2;
+        l.right_x          = l.w - layout::RIGHT_W;
+        l.map_x            = l.w - layout::RIGHT_W + layout::RIGHT_LEFTBORDER_W - 1;
+        l.map_y            = layout::RIGHT_HEADER_H - 1;
+        l.right_bottom_h   = l.h - layout::MAP_H - l.map_y;
+        l.unitblocks       = l.right_bottom_h / layout::UNIT_HS;
+        l.top_m            = l.right_x / 2;
+        l.top_h            = 90;
+        l.top_w            = 920;
+        l.unit_x           = l.right_x + 11;
+        l.unit_y           = layout::RIGHT_HEADER_H + layout::MAP_H + 6;
+        l.icon_side        = 64;
+        l.bottom_y         = l.h - 32;
+        l.bottom_y1        = l.bottom_y;
+        l.bottom_y2        = l.bottom_y + layout::BOTTOM_HS + 3;
+        l.bottom_fill_y1   = l.bottom_y1 + 1;
+        l.bottom_fill_y2   = l.bottom_y2 + 1;
+        l.bottom_credit_y1 = l.bottom_y1;
+        l.bottom_credit_y2 = l.bottom_y2;
         return;
     }
 
     if (preset == 1) {
         l.w                = layout::SC1K_W;
         l.h                = layout::SC1K_H;
-        l.unitblocks       = layout::SC1K_UNITBLOCKS;
         l.m                = layout::SC1K_M;
         l.right_x          = layout::SC1K_RIGHT_X;
         l.map_x            = layout::SC1K_MAP_X;
         l.map_y            = layout::SC1K_MAP_Y;
         l.right_bottom_h   = layout::SC1K_RIGHT_BOTTOM_H;
+        l.unitblocks       = layout::SC1K_UNITBLOCKS;
         l.top_m            = layout::SC1K_TOP_M;
         l.top_h            = layout::SC1K_TOP_H;
         l.top_w            = layout::SC1K_TOP_W;
         l.unit_x           = layout::SC1K_UNIT_X;
         l.unit_y           = layout::SC1K_UNIT_Y;
-        l.unit_w           = layout::SC1K_UNIT_W;
-        l.unit_h           = layout::SC1K_UNIT_H;
-        l.unit_ws          = layout::SC1K_UNIT_Ws;
-        l.unit_hs          = layout::SC1K_UNIT_Hs;
         l.icon_side        = layout::SC1K_ICON_SIDE;
         l.bottom_y         = layout::SC1K_BOTTOM_Y;
         l.bottom_y1        = layout::SC1K_BOTTOM_Y1;
@@ -46,21 +63,17 @@ void Globalsetting::loadSetting(int preset, int width, int height) {
     if (preset == 2) {
         l.w                = layout::SC2K_W;
         l.h                = layout::SC2K_H;
-        l.unitblocks       = layout::SC2K_UNITBLOCKS;
         l.m                = layout::SC2K_M;
         l.right_x          = layout::SC2K_RIGHT_X;
         l.map_x            = layout::SC2K_MAP_X;
         l.map_y            = layout::SC2K_MAP_Y;
         l.right_bottom_h   = layout::SC2K_RIGHT_BOTTOM_H;
+        l.unitblocks       = layout::SC2K_UNITBLOCKS;
         l.top_m            = layout::SC2K_TOP_M;
         l.top_h            = layout::SC2K_TOP_H;
         l.top_w            = layout::SC2K_TOP_W;
         l.unit_x           = layout::SC2K_UNIT_X;
         l.unit_y           = layout::SC2K_UNIT_Y;
-        l.unit_w           = layout::SC2K_UNIT_W;
-        l.unit_h           = layout::SC2K_UNIT_H;
-        l.unit_ws          = layout::SC2K_UNIT_Ws;
-        l.unit_hs          = layout::SC2K_UNIT_Hs;
         l.icon_side        = layout::SC2K_ICON_SIDE;
         l.bottom_y         = layout::SC2K_BOTTOM_Y;
         l.bottom_y1        = layout::SC2K_BOTTOM_Y1;
@@ -88,9 +101,5 @@ void Globalsetting::dumpLayout() {
     std::cout << "\ntop_w          : " << l.top_w;
     std::cout << "\nunit_x         : " << l.unit_x;
     std::cout << "\nunit_y         : " << l.unit_y;
-    std::cout << "\nunit_w         : " << l.unit_w;
-    std::cout << "\nunit_h         : " << l.unit_h;
-    std::cout << "\nunit_ws        : " << l.unit_ws;
-    std::cout << "\nunit_hs        : " << l.unit_hs;
     std::cout << "\nicon_side      : " << l.icon_side;
 }

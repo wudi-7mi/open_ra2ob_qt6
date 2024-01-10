@@ -26,6 +26,11 @@ struct tagPanelInfo {
     std::string country       = "";
 };
 
+struct tagStatusInfo {
+    bool infantrySelfHeal = false;
+    bool unitSelfHeal     = false;
+};
+
 struct tagUnitSingle {
     std::string unitName = "";
     int num              = 0;
@@ -52,6 +57,7 @@ struct tagBuildingInfo {
 
 struct tagPlayer {
     bool valid = false;
+    tagStatusInfo status;
     tagPanelInfo panel;
     tagUnitsInfo units;
     tagBuildingInfo building;
@@ -67,7 +73,8 @@ struct tagDebugInfo {
 };
 
 struct tagGameInfo {
-    bool valid = false;
+    bool valid      = false;
+    bool isObserver = false;
     std::array<tagPlayer, MAXPLAYER> players{};
     tagDebugInfo debug;
 };

@@ -5,7 +5,10 @@
 #include <QTranslator>
 
 #include "./globalsetting.h"
+#include "./hotkeymanager.h"
 #include "./mainwindow.h"
+
+void recv() { std::cout << "Yes" << std::endl; }
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);

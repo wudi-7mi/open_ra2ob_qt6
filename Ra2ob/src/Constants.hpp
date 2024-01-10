@@ -28,6 +28,9 @@ constexpr int CLASSBASEARRAYOFFSET     = 0xa8022c;
 constexpr int PLAYERBASEARRAYPTROFFSET = 0x1180;
 constexpr int HOUSETYPEOFFSET          = 0x34;
 constexpr int COLOROFFSET              = 0x56F9;
+constexpr int INFANTRYSELFHEALOFFSET   = 0x164;
+constexpr int UNITSELFHEALOFFSET       = 0x168;
+constexpr int CURRENTPLAYEROFFSET      = 0x1ec;
 
 constexpr int BUILDINGOFFSET = 0x5554;
 constexpr int TANKOFFSET     = 0x5568;
@@ -145,7 +148,12 @@ constexpr char F_UNITOFFSETS[]  = "./config/unit_offsets.json";
 
 // Strings
 
-constexpr char STR_RULER[] = "====================================================================";
+constexpr char STR_RULER[] = "=====";
+constexpr int RULER_MULT   = 20;
+
+// Limitation
+
+constexpr bool GOODINTENTION = true;
 
 }  // end of namespace Ra2ob
 

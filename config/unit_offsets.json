@@ -25,10 +25,6 @@
       "Show": 0
     },
     {
-      "Name": "Soviet Naval Shipyard",
-      "Offset": "0xf4"
-    },
-    {
       "Name": "Radar Tower",
       "Offset": "0x34",
       "Show": 0

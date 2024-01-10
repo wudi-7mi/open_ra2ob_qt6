@@ -60,7 +60,7 @@ void Ob::paintEvent(QPaintEvent *) {
 }
 
 void Ob::paintTopPanel(QPainter *painter, int offsetX, int offsetY, int pWidth, int pHeight) {
-    painter->setOpacity(1);
+    painter->setOpacity(0.5);
     int pBottom = 5;
     int wCenter = gls->l.top_m + offsetX;
 
@@ -111,7 +111,7 @@ void Ob::paintRightPanel(QPainter *painter, int offsetX, int offsetY) {
     painter->fillRect(QRect(offsetX + gls->l.right_x, offsetY + layout::RIGHT_HEADER_H,
                             layout::RIGHT_LEFTBORDER_W, layout::RIGHT_BORDER_H),
                       fill);
-    painter->fillRect(QRect(offsetX + gls->l.right_x + layout::RIGHT_RIGHTBORDER_START,
+    painter->fillRect(QRect(offsetX + gls->l.right_x + layout::RIGHT_RIGHTBORDER_X,
                             offsetY + layout::RIGHT_HEADER_H, layout::RIGHT_RIGHTBORDER_W,
                             layout::RIGHT_BORDER_H),
                       fill);
@@ -345,16 +345,16 @@ void Ob::setUnitblocksByScreen() {
     int i = 0;
 
     for (auto &ub : ubs_p1) {
-        ub->setGeometry(gls->l.unit_x + rightOffset, gls->l.unit_y + i * gls->l.unit_hs,
-                        gls->l.unit_w, gls->l.unit_h);
+        ub->setGeometry(gls->l.unit_x + rightOffset, gls->l.unit_y + i * layout::UNIT_HS,
+                        layout::UNIT_W, layout::UNIT_H);
         ub->show();
         i++;
     }
 
     i = 0;
     for (auto &ub : ubs_p2) {
-        ub->setGeometry(gls->l.unit_x + gls->l.unit_ws + rightOffset,
-                        gls->l.unit_y + i * gls->l.unit_hs, gls->l.unit_w, gls->l.unit_h);
+        ub->setGeometry(gls->l.unit_x + layout::UNIT_WS + rightOffset,
+                        gls->l.unit_y + i * layout::UNIT_HS, layout::UNIT_W, layout::UNIT_H);
         ub->show();
         i++;
     }
@@ -425,7 +425,7 @@ void Ob::refreshProducingBlock() {
 
     int i = 0;
     for (auto &pb : pb_1) {
-        pb->setGeometry(layout::PRODUCINGBLOCK_X + layout::PRODUCINGBLOCK_Ws * i,
+        pb->setGeometry(layout::PRODUCINGBLOCK_X + layout::PRODUCINGBLOCK_WS * i,
                         layout::PRODUCINGBLOCK_Y1, pb->width(), pb->height());
         pb->show();
         i++;
@@ -433,7 +433,7 @@ void Ob::refreshProducingBlock() {
 
     i = 0;
     for (auto &pb : pb_2) {
-        pb->setGeometry(layout::PRODUCINGBLOCK_X + layout::PRODUCINGBLOCK_Ws * i,
+        pb->setGeometry(layout::PRODUCINGBLOCK_X + layout::PRODUCINGBLOCK_WS * i,
                         layout::PRODUCINGBLOCK_Y2, pb->width(), pb->height());
         pb->show();
         i++;
