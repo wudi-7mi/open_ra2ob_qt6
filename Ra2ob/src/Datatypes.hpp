@@ -73,8 +73,11 @@ struct tagDebugInfo {
 };
 
 struct tagGameInfo {
-    bool valid      = false;
-    bool isObserver = false;
+    bool valid              = false;
+    bool isObserver         = false;
+    bool isGameOver         = false;
+    std::string gameVersion = "Yr";
+    int currentFrame        = 0;
     std::array<tagPlayer, MAXPLAYER> players{};
     tagDebugInfo debug;
 };
@@ -109,7 +112,8 @@ public:
     ~Unit();
 
     UnitType getUnitType();
-    bool checkOffset(int offsetCmp, UnitType type) const;
+    void setInvalid(std::string version);
+    bool checkOffset(int offsetCmp, UnitType type, Version version) const;
     bool checkShow();
     int getUnitIndex();
     void fetchData(Reader r, const std::array<uint32_t, MAXPLAYER>& baseOffsets,
@@ -119,6 +123,7 @@ protected:
     UnitType m_unitType;
     int m_unitIndex;
     bool m_show;
+    std::string m_invalid;
 };
 
 class StrName : public Base {
@@ -246,8 +251,14 @@ inline void Unit::fetchData(Reader r, const std::array<uint32_t, MAXPLAYER>& bas
     }
 }
 
-inline bool Unit::checkOffset(int offsetCmp, UnitType type) const {
-    return (offsetCmp == m_offset && type == m_unitType);
+inline void Unit::setInvalid(std::string version) { m_invalid = version; }
+
+inline bool Unit::checkOffset(int offsetCmp, UnitType type, Version version) const {
+    bool infoMatch    = offsetCmp == m_offset && type == m_unitType;
+    bool versionMatch = (m_invalid == "") || (version == Version::Ra2 && m_invalid == "Yr") ||
+                        (version == Version::Yr && m_invalid == "Ra2");
+
+    return infoMatch && versionMatch;
 }
 
 inline bool Unit::checkShow() { return m_show; }

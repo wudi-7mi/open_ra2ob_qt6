@@ -203,6 +203,9 @@
         <file>assets/obicons/Airforce Command Headquarters (American).png</file>
         <file>assets/obicons/Weather Control Device.png</file>
         <file>assets/obicons/Iron Curtain Device.png</file>
+        <file>assets/obicons/Yuri Cloning Vats.png</file>
+        <file>assets/obicons/Yuri Psychic Radar.png</file>
+        <file>assets/obicons/Nuclear Missile Silo.png</file>
     </qresource>
     <qresource prefix="/countries">
         <file>assets/countries/Americans.png</file>

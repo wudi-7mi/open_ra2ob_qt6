@@ -17,20 +17,25 @@ constexpr int BOOLSIZE        = 0x1;
 constexpr int NUMSIZE         = 0x4;
 constexpr int PTRSIZE         = 0x4;
 constexpr int COLORSIZE       = 0x6;
-constexpr int STRNAMESIZE     = 0x20;  // 32 in hexadecimal
-constexpr int STRCOUNTRYSIZE  = 0x19;  // 25 in hexadecimal
-constexpr int STRUNITNAMESIZE = 0x20;  // 32 in hexadecimal
+constexpr int STRNAMESIZE     = 0x20;
+constexpr int STRCOUNTRYSIZE  = 0x19;
+constexpr int STRUNITNAMESIZE = 0x20;
 
 // Basic offsets
 
+constexpr int GAMEFRAMEOFFSET          = 0xa8ed84;
 constexpr int FIXEDOFFSET              = 0xa8b230;
 constexpr int CLASSBASEARRAYOFFSET     = 0xa8022c;
 constexpr int PLAYERBASEARRAYPTROFFSET = 0x1180;
-constexpr int HOUSETYPEOFFSET          = 0x34;
-constexpr int COLOROFFSET              = 0x56F9;
-constexpr int INFANTRYSELFHEALOFFSET   = 0x164;
-constexpr int UNITSELFHEALOFFSET       = 0x168;
-constexpr int CURRENTPLAYEROFFSET      = 0x1ec;
+
+constexpr int HOUSETYPEOFFSET        = 0x34;
+constexpr int COLOROFFSET            = 0x56F9;
+constexpr int INFANTRYSELFHEALOFFSET = 0x164;
+constexpr int UNITSELFHEALOFFSET     = 0x168;
+constexpr int CURRENTPLAYEROFFSET    = 0x1ec;
+constexpr int ISDEFEATEDOFFSET       = 0x1f5;
+constexpr int ISGAMEOVEROFFSET       = 0x1f6;
+constexpr int ISWINNEROFFSET         = 0x1f7;
 
 constexpr int BUILDINGOFFSET = 0x5554;
 constexpr int TANKOFFSET     = 0x5568;
@@ -156,7 +161,7 @@ constexpr int RULER_MULT   = 20;
 
 // Limitation
 
-constexpr bool GOODINTENTION = false;
+constexpr bool GOODINTENTION = true;
 
 }  // end of namespace Ra2ob
 

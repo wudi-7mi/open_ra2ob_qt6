@@ -43,7 +43,7 @@
       "Name": "Soviet Cloning Vat",
       "Offset": "0x120",
       "Show": 0,
-      "Invalid": "yr"
+      "Invalid": "Yr"
     },
     {
       "Name": "Soviet Service Depot",
@@ -74,7 +74,7 @@
       "Name": "Soviet Psychic Sensor",
       "Offset": "0x48",
       "Show": 0,
-      "Invalid": "yr"
+      "Invalid": "Yr"
     },
     {
       "Name": "Iron Curtain Device",
@@ -220,9 +220,10 @@
       "Offset": "0x4c0"
     },
     {
-      "Name": "Psychic Radar",
+      "Name": "Yuri Psychic Radar",
       "Offset": "0x48",
-      "Show": 0
+      "Show": 0,
+      "Invalid": "Ra2"
     },
     {
       "Name": "Grinder",
@@ -250,9 +251,10 @@
       "Show": 0
     },
     {
-      "Name": "Cloning Vats",
+      "Name": "Yuri Cloning Vats",
       "Offset": "0x120",
-      "Show": 0
+      "Show": 0,
+      "Invalid": "Ra2"
     },
     {
       "Name": "Genetic Mutator",
@@ -469,7 +471,7 @@
     {
       "Name": "Yuri",
       "Offset": "0x18",
-      "Invalid": "yr"
+      "Invalid": "Yr"
     },
     {
       "Name": "Desolator",
@@ -543,7 +545,8 @@
     },
     {
       "Name": "Yuri Clone",
-      "Offset": "0x18"
+      "Offset": "0x18",
+      "Invalid": "Ra2"
     },
     {
       "Name": "Brute",
@@ -557,12 +560,13 @@
     },
     {
       "Name": "Yuri X",
-      "Offset": "0x50"
+      "Offset": "0x50",
+      "Invalid": "Ra2"
     },
     {
       "Name": "Yuri Prime",
       "Offset": "0x50",
-      "Invalid": "yr"
+      "Invalid": "Yr"
     },
     {
       "Name": "Chrono Ivan",

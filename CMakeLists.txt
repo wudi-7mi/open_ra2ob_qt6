@@ -33,7 +33,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ob.h ob.cpp ob.ui
         configmanager.h configmanager.cpp
         tray.h tray.cpp
-        json.hpp
         unitblock.h unitblock.cpp unitblock.ui
         playerinfo.h playerinfo.cpp playerinfo.ui
         layoutsetting.h
