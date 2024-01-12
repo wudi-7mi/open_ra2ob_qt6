@@ -23,6 +23,7 @@ public:
     void setStatus(int status);
     void setImage(QString name);
     void setcolor(std::string color);
+    QColor getDarkerColor(QColor qc);
 
     int complete = 54;
     int blockProgress;

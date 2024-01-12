@@ -199,7 +199,8 @@ inline void Game::initAddrs() {
     uint32_t classBaseArray     = r.getAddr(CLASSBASEARRAYOFFSET);
     uint32_t playerBaseArrayPtr = fixed + PLAYERBASEARRAYPTROFFSET;
 
-    bool isObserverFlag = true;
+    bool isObserverFlag   = true;
+    bool isAllControlable = true;
 
     for (int i = 0; i < MAXPLAYER; i++, playerBaseArrayPtr += 4) {
         uint32_t playerBase = r.getAddr(playerBaseArrayPtr);
@@ -213,6 +214,8 @@ inline void Game::initAddrs() {
             std::string cur_s = r.getString(realPlayerBase + STRNAMEOFFSET);
             if (cur) {
                 isObserverFlag = false;
+            } else {
+                isAllControlable = false;
             }
 
             _players[i]     = true;
@@ -232,9 +235,11 @@ inline void Game::initAddrs() {
         }
     }
 
-    if (isObserverFlag) {
+    if (isObserverFlag || isAllControlable) {
         _gameInfo.isObserver = true;
+        return;
     }
+    _gameInfo.isObserver = false;
 }
 
 inline void Game::loadNumericsFromJson(std::string filePath) {

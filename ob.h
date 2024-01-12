@@ -10,6 +10,7 @@
 #include "./layoutsetting.h"
 #include "./playerinfo.h"
 #include "./producingblock.h"
+#include "./qoutlinelabel.h"
 #include "./unitblock.h"
 
 namespace Ui {
@@ -58,8 +59,8 @@ private:
     QVector<ProducingBlock *> pb_2;
     QVector<int> insufficient_fund_bar_1;
     QVector<int> insufficient_fund_bar_2;
-    QLabel *credit_1 = nullptr;
-    QLabel *credit_2 = nullptr;
+    QOutlineLabel *credit_1 = nullptr;
+    QOutlineLabel *credit_2 = nullptr;
 
     bool forceHideOb = false;
 
@@ -74,7 +75,6 @@ private:
 private slots:
     void detectGame();
     void toggleOb();
-    void hideOb();
     void switchScreen();
 };
 

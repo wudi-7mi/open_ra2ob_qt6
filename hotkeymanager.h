@@ -4,21 +4,27 @@
 #include <QAbstractNativeEventFilter>
 #include <QVector>
 
+#include "./globalsetting.h"
+
 class NEFilter : public QAbstractNativeEventFilter {
 public:
-    NEFilter(const unsigned int mod, const unsigned int key);
+    NEFilter();
 
     bool nativeEventFilter(const QByteArray& eventType, void* message, qintptr* result) override;
-    unsigned int mod, key;
+    void addOpacity();
+    void minusOpacity();
+    void hideOb();
+    void hideBottomPanel();
+
+    Globalsetting* gls;
 };
 
 class HotkeyManager {
 public:
     HotkeyManager();
 
-    void defineHotkey();
     void registerHotkey(const NEFilter& filter);
-    void batchRegister();
+    void registerSingle(const quint32& mod, const quint32& kc);
 };
 
 #endif  // HOTKEYMANAGER_H

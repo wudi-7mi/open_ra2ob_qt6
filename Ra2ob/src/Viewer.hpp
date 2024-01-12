@@ -147,7 +147,9 @@ inline void Viewer::print(tagGameInfo gi, int mode, int indent) {
         std::cout << " Power: " << p.panel.powerDrain << " / " << p.panel.powerOutput;
         std::cout << " Credit: " << p.panel.creditSpent;
 
-        std::cout << " Auto Repair: ";
+        if (p.status.infantrySelfHeal || p.status.unitSelfHeal) {
+            std::cout << " Auto Repair: ";
+        }
         if (p.status.infantrySelfHeal) {
             std::cout << "[Infantry+] ";
         }
@@ -159,6 +161,10 @@ inline void Viewer::print(tagGameInfo gi, int mode, int indent) {
 
         for (auto& u : p.units.units) {
             if (mode == 0 && u.num == 0) {
+                continue;
+            }
+
+            if (u.num < 0 || u.num > UNITSAFE) {
                 continue;
             }
 

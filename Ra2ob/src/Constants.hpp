@@ -74,15 +74,16 @@ constexpr int T_PRINTTIME  = 500;
 
 // Color Codes
 
-constexpr int C_YELLOW  = 0xE0D838;
-constexpr int C_YELLOW2 = 0xF0F840;
-constexpr int C_PURPLE  = 0x9848B8;
-constexpr int C_GREEN   = 0x58CC50;
-constexpr int C_RED     = 0xF84C48;
-constexpr int C_ORANGE  = 0xF8B048;
-constexpr int C_PINK    = 0xF8ACE8;
-constexpr int C_SKYBLUE = 0x58D4E0;
-constexpr int C_BLUE    = 0x487CC8;
+constexpr int C_YELLOW   = 0xE0D838;
+constexpr int C_YELLOW2  = 0xF0F840;
+constexpr int C_PURPLE   = 0x9848B8;
+constexpr int C_GREEN    = 0x58CC50;
+constexpr int C_RED      = 0xF84C48;
+constexpr int C_ORANGE   = 0xF8B048;
+constexpr int C_PINK     = 0xF8ACE8;
+constexpr int C_SKYBLUE  = 0x58D4E0;
+constexpr int C_SKYBLUE2 = 0x58D0E0;
+constexpr int C_BLUE     = 0x487CC8;
 
 // Console Color Codes
 
@@ -122,9 +123,11 @@ constexpr char STYLE_BG_YELLOW[]    = "\033[103m";
 constexpr char STYLE_BG_WHITE[]     = "\033[107m";
 
 const std::map<int, std::string> COLORMAP = {
-    {C_YELLOW, STYLE_BG_YELLOW}, {C_YELLOW2, STYLE_BG_YELLOW},    {C_PURPLE, STYLE_BG_PURPLE},
-    {C_GREEN, STYLE_BG_GREEN},   {C_RED, STYLE_BG_RED},           {C_ORANGE, STYLE_BG_ORANGE},
-    {C_PINK, STYLE_BG_PINK},     {C_SKYBLUE, STYLE_BG_LIGHTBLUE}, {C_BLUE, STYLE_BG_DARKBLUE},
+    {C_YELLOW, STYLE_BG_YELLOW},     {C_YELLOW2, STYLE_BG_YELLOW},
+    {C_PURPLE, STYLE_BG_PURPLE},     {C_GREEN, STYLE_BG_GREEN},
+    {C_RED, STYLE_BG_RED},           {C_ORANGE, STYLE_BG_ORANGE},
+    {C_PINK, STYLE_BG_PINK},         {C_SKYBLUE2, STYLE_BG_LIGHTBLUE},
+    {C_SKYBLUE, STYLE_BG_LIGHTBLUE}, {C_BLUE, STYLE_BG_DARKBLUE},
 };
 
 // Country Map
@@ -153,7 +156,7 @@ constexpr int RULER_MULT   = 20;
 
 // Limitation
 
-constexpr bool GOODINTENTION = true;
+constexpr bool GOODINTENTION = false;
 
 }  // end of namespace Ra2ob
 

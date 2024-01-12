@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QRect>
 
+#include "./globalsetting.h"
 #include "./layoutsetting.h"
 #include "./ui_producingblock.h"
 
@@ -29,6 +30,8 @@ ProducingBlock::~ProducingBlock() {
 void ProducingBlock::paintEvent(QPaintEvent *) {
     QPainter painter(this);
 
+    Globalsetting *gls = &Globalsetting::getInstance();
+
     if (clean) {
         const QRect &rect = this->rect();
 
@@ -52,13 +55,13 @@ void ProducingBlock::paintEvent(QPaintEvent *) {
     while (i < blockProgress) {
         painter.fillRect(QRect(layout::PRODUCING_PROGRESS_X + i, layout::PRODUCING_PROGRESS_Y, 1,
                                layout::PRODUCING_PROGRESS_H),
-                         QColor("white"));
+                         getDarkerColor(blockColor));
         i++;
     }
     while (i < complete) {
         painter.fillRect(QRect(layout::PRODUCING_PROGRESS_X + i, layout::PRODUCING_PROGRESS_Y, 1,
                                layout::PRODUCING_PROGRESS_H),
-                         QColor("black"));
+                         gls->c.producing_stripe);
         i++;
     }
 
@@ -97,4 +100,18 @@ void ProducingBlock::setImage(QString name) {
 
 void ProducingBlock::setcolor(std::string color) {
     blockColor = QString::fromStdString("#" + color);
+}
+
+QColor ProducingBlock::getDarkerColor(QColor qc) {
+    int red   = qc.red();
+    int green = qc.green();
+    int blue  = qc.blue();
+
+    int delta = 50;
+
+    int darkerRed   = qMax(0, red - delta);
+    int darkerGreen = qMax(0, green - delta);
+    int darkerBlue  = qMax(0, blue - delta);
+
+    return QColor(darkerRed, darkerGreen, darkerBlue);
 }

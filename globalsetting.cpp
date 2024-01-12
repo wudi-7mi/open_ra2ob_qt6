@@ -9,7 +9,7 @@ Globalsetting& Globalsetting::getInstance() {
     return instance;
 }
 
-void Globalsetting::loadSetting(int preset, int width, int height) {
+void Globalsetting::loadLayoutSetting(int preset, int width, int height) {
     if (preset == 0) {
         l.w                = width;
         l.h                = height;

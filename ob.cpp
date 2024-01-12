@@ -40,9 +40,7 @@ Ob::Ob(QWidget *parent) : QWidget(parent), ui(new Ui::Ob) {
     detectGameTimer->setInterval(500);
     detectGameTimer->start();
 
-    QShortcut *shortcut         = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_H), this);
     QShortcut *sc_switch_screen = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_S), this);
-    connect(shortcut, &QShortcut::activated, this, &Ob::hideOb);
     connect(sc_switch_screen, &QShortcut::activated, this, &Ob::switchScreen);
 }
 
@@ -60,7 +58,7 @@ void Ob::paintEvent(QPaintEvent *) {
 }
 
 void Ob::paintTopPanel(QPainter *painter, int offsetX, int offsetY, int pWidth, int pHeight) {
-    painter->setOpacity(0.5);
+    painter->setOpacity(gls->c.top_panel_opacity);
     int pBottom = 5;
     int wCenter = gls->l.top_m + offsetX;
 
@@ -133,12 +131,19 @@ void Ob::paintRightPanel(QPainter *painter, int offsetX, int offsetY) {
 void Ob::paintLeftPanel(QPainter *painter) { return; }
 
 void Ob::paintBottomPanel(QPainter *painter) {
+    if (!gls->s.show_bottom_panel) {
+        credit_1->setText("");
+        credit_2->setText("");
+        return;
+    }
+
     QColor f_bg(QColor("midnightblue"));
     QColor f_g(QColor("green"));
     QColor f_r(QColor("red"));
     int w    = 5;
-    int sx_1 = 0;
-    int sx_2 = 0;
+    int sx   = 60;
+    int sx_1 = sx;
+    int sx_2 = sx;
 
     QString qs_l  = QString::fromStdString("#" + qs_1);
     QString qs_r  = QString::fromStdString("#" + qs_2);
@@ -146,6 +151,9 @@ void Ob::paintBottomPanel(QPainter *painter) {
     QColor rColor = QColor(qs_r);
 
     painter->fillRect(QRect(0, gls->l.bottom_y, gls->l.right_x, 32), f_bg);
+
+    painter->fillRect(QRect(0, gls->l.bottom_y1, sx, layout::BOTTOM_CREDIT_H), lColor);
+    painter->fillRect(QRect(0, gls->l.bottom_y2, sx, layout::BOTTOM_CREDIT_H), rColor);
 
     QPen lBorder(lColor);
     lBorder.setWidth(2);
@@ -156,10 +164,10 @@ void Ob::paintBottomPanel(QPainter *painter) {
     painter->setPen(rBorder);
     painter->drawRect(QRect(0, gls->l.bottom_y2, gls->l.right_x - 1, layout::BOTTOM_CREDIT_H));
 
-    if (gls->l.right_x / (insufficient_fund_bar_1.length() + 1) < w) {
+    if ((gls->l.right_x - sx) / (insufficient_fund_bar_1.length() + 1) < w) {
         w = 3;
     }
-    if (gls->l.right_x / (insufficient_fund_bar_1.length() + 1) < w) {
+    if ((gls->l.right_x - sx) / (insufficient_fund_bar_1.length() + 1) < w) {
         w = 1;
     }
     for (int ifund : insufficient_fund_bar_1) {
@@ -243,15 +251,15 @@ void Ob::initIfBar() {
     insufficient_fund_bar_2.clear();
 
     if (credit_1 == nullptr) {
-        credit_1 = new QLabel(this);
+        credit_1 = new QOutlineLabel(this);
     }
 
     if (credit_2 == nullptr) {
-        credit_2 = new QLabel(this);
+        credit_2 = new QOutlineLabel(this);
     }
 
     QFont font;
-    font.setFamily("OPlusSans 3.0 Medium");
+    font.setFamily(layout::OPPO_M);
     font.setPointSize(10);
 
     credit_1->setFont(font);
@@ -466,11 +474,11 @@ void Ob::setPlayerColor() {
 void Ob::setLayoutByScreen() {
     if (this->screen()->geometry().width() == layout::SC1K_W &&
         this->screen()->geometry().height() == layout::SC1K_H) {
-        gls->loadSetting(1);
+        gls->loadLayoutSetting(1);
     }
     if (this->screen()->geometry().width() == layout::SC2K_W &&
         this->screen()->geometry().height() == layout::SC2K_H) {
-        gls->loadSetting(2);
+        gls->loadLayoutSetting(2);
     }
 }
 
@@ -489,7 +497,7 @@ int Ob::getValidPlayerIndex(std::vector<int> *vpi) {
 }
 
 void Ob::detectGame() {
-    if (g->_gameInfo.valid) {
+    if (g->_gameInfo.valid && (g->_gameInfo.isObserver || Ra2ob::GOODINTENTION)) {
         refreshUbs();
         refreshPanel();
         refreshProducingBlock();
@@ -502,24 +510,16 @@ void Ob::detectGame() {
 }
 
 void Ob::toggleOb() {
-    Ra2ob::Game &g = Ra2ob::Game::getInstance();
+    if (!gls->s.show_all_panel) {
+        this->hide();
+        return;
+    }
 
-    if (g._gameInfo.valid && !forceHideOb) {
+    if (g->_gameInfo.valid && (g->_gameInfo.isObserver || Ra2ob::GOODINTENTION)) {
         this->show();
         return;
     }
 
-    this->hide();
-}
-
-void Ob::hideOb() {
-    if (forceHideOb) {
-        forceHideOb = !forceHideOb;
-        this->show();
-        return;
-    }
-
-    forceHideOb = !forceHideOb;
     this->hide();
 }
 

@@ -8,10 +8,14 @@
 #include "./hotkeymanager.h"
 #include "./mainwindow.h"
 
-void recv() { std::cout << "Yes" << std::endl; }
-
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
+
+    NEFilter filter;
+    a.installNativeEventFilter(&filter);
+
+    HotkeyManager hm;
+    hm.registerHotkey(filter);
 
     ConfigManager *cfgm = new ConfigManager();
     if (!cfgm->checkConfig()) {

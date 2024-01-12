@@ -202,6 +202,7 @@
         <file>assets/obicons/Yuri Barracks.png</file>
         <file>assets/obicons/Airforce Command Headquarters (American).png</file>
         <file>assets/obicons/Weather Control Device.png</file>
+        <file>assets/obicons/Iron Curtain Device.png</file>
     </qresource>
     <qresource prefix="/countries">
         <file>assets/countries/Americans.png</file>

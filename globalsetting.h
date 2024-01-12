@@ -1,6 +1,8 @@
 #ifndef GLOBALSETTING_H
 #define GLOBALSETTING_H
 
+#include <QColor>
+
 struct Layout {
     int w;
     int h;
@@ -26,10 +28,16 @@ struct Layout {
 };
 
 struct Colors {
-    float top_panel_opacity = 0.5;
+    float top_panel_opacity = 1;
+    QColor producing_stripe = QColor(30, 30, 30);
 };
 
-struct Status {};
+struct Status {
+    bool show_all_panel = true;
+
+    bool show_top_panel    = true;
+    bool show_bottom_panel = true;
+};
 
 class Globalsetting {
 public:
@@ -38,10 +46,12 @@ public:
     Globalsetting(const Globalsetting &)            = delete;
     Globalsetting &operator=(const Globalsetting &) = delete;
 
-    void loadSetting(int preset = 1, int width = 0, int height = 0);
+    void loadLayoutSetting(int preset = 1, int width = 0, int height = 0);
     void dumpLayout();
 
     Layout l;
+    Colors c;
+    Status s;
 
 protected:
     Globalsetting()  = default;

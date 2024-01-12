@@ -10,9 +10,14 @@ PlayerInfo::PlayerInfo(QWidget* parent) : QWidget(parent), ui(new Ui::PlayerInfo
     ui->setupUi(this);
 
     g = &Ra2ob::Game::getInstance();
+
     ui->lb_playerName->setStyleSheet("color: #ffffff;");
+    QFont f = ui->lb_playerName->font();
+    f.setStyleStrategy(QFont::PreferAntialias);
+    ui->lb_playerName->setFont(f);
+
     ui->lb_balance->setStyleSheet("color: #ffffff;");
-    QFont f = ui->lb_balance->font();
+    f = ui->lb_balance->font();
     f.setStyleStrategy(QFont::PreferAntialias);
     ui->lb_balance->setFont(f);
 }
@@ -85,7 +90,7 @@ void PlayerInfo::setPowerByIndex(int index) {
     int powerOutput = g->_gameInfo.players[index].panel.powerOutput;
 
     if (powerDrain == 0 && powerOutput == 0) {
-        ui->pb_power->setMaximum(1);
+        ui->pb_power->setMaximum(1000);
         ui->pb_power->setValue(1);
         ui->pb_power->setStyleSheet(
             "QProgressBar { background-color : grey; } QProgressBar::chunk { background-color: "
