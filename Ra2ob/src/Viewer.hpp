@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "./Datatypes.hpp"
-#include "./json.hpp"
+#include "./third_party/json.hpp"
 
 using json = nlohmann::json;
 
@@ -20,7 +20,7 @@ public:
     json exportJson(tagGameInfo gi, int mode = 0);
     void print(tagGameInfo gi, int mode = 0, int indent = 0);
     std::string uint32ToHex(uint32_t num);
-    std::vector<std::string> vecToHex(std::vector<uint32_t> source);
+    std::array<std::string, MAXPLAYER> vecToHex(const std::array<uint32_t, MAXPLAYER>& source);
 };
 
 inline Viewer::Viewer() {}
@@ -31,7 +31,7 @@ inline Viewer::Viewer() {}
 inline json Viewer::exportJson(tagGameInfo gi, int mode) {
     json j;
 
-    if (mode > 0) {
+    if (mode == 2) {
         j["debug"]["playerBase"]   = vecToHex(gi.debug.playerBase);
         j["debug"]["buildingBase"] = vecToHex(gi.debug.buildingBase);
         j["debug"]["infantryBase"] = vecToHex(gi.debug.infantryBase);
@@ -40,7 +40,7 @@ inline json Viewer::exportJson(tagGameInfo gi, int mode) {
         j["debug"]["houseType"]    = vecToHex(gi.debug.houseType);
     }
 
-    if (mode == 2) {
+    if (!(GOODINTENTION || gi.isObserver)) {
         return j;
     }
 
@@ -56,13 +56,17 @@ inline json Viewer::exportJson(tagGameInfo gi, int mode) {
         jp["panel"]["creditSpent"] = p.panel.creditSpent;
         jp["panel"]["powerDrain"]  = p.panel.powerDrain;
         jp["panel"]["powerOutput"] = p.panel.powerOutput;
-        jp["panel"]["color"]       = p.panel.color;
+        jp["panel"]["color"]       = "#" + p.panel.color;
         jp["panel"]["country"]     = p.panel.country;
 
         for (auto& u : p.units.units) {
             json ju;
 
             if (mode == 0 && u.num == 0) {
+                continue;
+            }
+
+            if (u.show == false) {
                 continue;
             }
 
@@ -76,7 +80,23 @@ inline json Viewer::exportJson(tagGameInfo gi, int mode) {
             jp["units"].push_back(ju);
         }
 
-        // Todo: Add buildings.
+        if (!p.building.list.empty()) {
+            json jb;
+
+            for (auto& b : p.building.list) {
+                jb["name"]     = b.name;
+                jb["progress"] = b.progress;
+                if (b.progress == 54) {
+                    jb["status"] = "Ready";
+                } else if (b.status == 1) {
+                    jb["status"] = "On Hold";
+                } else {
+                    jb["status"] = "Building";
+                }
+            }
+
+            jp["producingList"] = jb;
+        }
 
         j["players"].push_back(jp);
     }
@@ -102,6 +122,29 @@ inline void Viewer::print(tagGameInfo gi, int mode, int indent) {
         return;
     }
 
+    if (!(GOODINTENTION || gi.isObserver)) {
+        std::cout << "This player is not observer.";
+        return;
+    }
+
+    if (gi.currentFrame < 5) {
+        std::cout << "Game preparing.";
+        return;
+    }
+
+    if (gi.isGameOver) {
+        std::cout << "Game Over.";
+        return;
+    }
+
+    std::cout << "Game Version: ";
+    if (gi.gameVersion == "Yr") {
+        std::cout << "Yr. | ";
+    } else {
+        std::cout << "Ra2. | ";
+    }
+    std::cout << "Game Frame: " << gi.currentFrame << "\n";
+
     for (auto& p : gi.players) {
         if (mode == 0 && !p.valid) {
             continue;
@@ -122,10 +165,28 @@ inline void Viewer::print(tagGameInfo gi, int mode, int indent) {
         std::cout << " Power: " << p.panel.powerDrain << " / " << p.panel.powerOutput;
         std::cout << " Credit: " << p.panel.creditSpent;
 
+        if (p.status.infantrySelfHeal || p.status.unitSelfHeal) {
+            std::cout << " Auto Repair: ";
+        }
+        if (p.status.infantrySelfHeal) {
+            std::cout << "[Infantry+] ";
+        }
+        if (p.status.unitSelfHeal) {
+            std::cout << "[Tank+] ";
+        }
+
         std::cout << "\n";
 
         for (auto& u : p.units.units) {
             if (mode == 0 && u.num == 0) {
+                continue;
+            }
+
+            if (u.num < 0 || u.num > UNITSAFE) {
+                continue;
+            }
+
+            if (u.show == false) {
                 continue;
             }
 
@@ -138,9 +199,33 @@ inline void Viewer::print(tagGameInfo gi, int mode, int indent) {
             std::cout << "\n";
         }
 
-        // Todo: Add buildings.
+        if (!p.building.list.empty()) {
+            std::cout << "Producing List: "
+                      << "\n";
 
-        std::cout << STR_RULER << std::endl;
+            for (auto& b : p.building.list) {
+                std::cout << b.name << " " << b.progress << "/54 ";
+                if (b.progress == 54) {
+                    std::cout << "Ready ";
+                } else if (b.status == 1) {
+                    std::cout << "On Hold ";
+                } else {
+                    std::cout << "Building ";
+                }
+
+                if (b.number > 1) {
+                    std::cout << "[" << b.number << "]";
+                }
+
+                std::cout << "\n";
+            }
+        }
+
+        for (int i = 0; i < RULER_MULT; i++) {
+            std::cout << STR_RULER;
+        }
+
+        std::cout << std::endl;
     }
 }
 
@@ -150,11 +235,12 @@ inline std::string Viewer::uint32ToHex(uint32_t num) {
     return ss.str();
 }
 
-inline std::vector<std::string> Viewer::vecToHex(std::vector<uint32_t> source) {
-    std::vector<std::string> ret;
+inline std::array<std::string, MAXPLAYER> Viewer::vecToHex(
+    const std::array<uint32_t, MAXPLAYER>& source) {
+    std::array<std::string, MAXPLAYER> ret{};
 
-    for (auto& it : source) {
-        ret.push_back(uint32ToHex(it));
+    for (int i = 0; i < source.size(); i++) {
+        ret[i] = uint32ToHex(source[i]);
     }
 
     return ret;

@@ -19,10 +19,12 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        logo.rc
         ${TS_FILES}
 )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Ra2ob)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/QHotkey)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(open_ra2ob_qt6
@@ -32,11 +34,14 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ob.h ob.cpp ob.ui
         configmanager.h configmanager.cpp
         tray.h tray.cpp
-        json.hpp
         unitblock.h unitblock.cpp unitblock.ui
         playerinfo.h playerinfo.cpp playerinfo.ui
         layoutsetting.h
         messagebox.h
+        globalsetting.h globalsetting.cpp
+        producingblock.h producingblock.cpp producingblock.ui
+        qoutlinelabel.h qoutlinelabel.cpp
+        hotkeymanager.h hotkeymanager.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET open_ra2ob_qt6 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -74,6 +79,7 @@ set_target_properties(open_ra2ob_qt6 PROPERTIES
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
+    LINK_FLAGS "/MANIFESTUAC:\"level='requireAdministrator' uiAccess='false'\" /SUBSYSTEM:WINDOWS"
 )
 
 include(GNUInstallDirs)

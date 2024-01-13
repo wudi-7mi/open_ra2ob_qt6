@@ -35,12 +35,7 @@ bool ConfigManager::checkConfig() {
 
 bool ConfigManager::verifyConfig() { return true; }
 
-/*
- * Must call ConfigManager::checkConfig() first!
- */
-bool ConfigManager::setLanguage(QString language) {
-    _config_json["Language"] = language;
-
+bool ConfigManager::writeConfig(const QJsonObject &jsonobj) {
     QJsonDocument new_json_doc(_config_json);
     QByteArray new_data = new_json_doc.toJson(QJsonDocument::Indented);
 
@@ -56,6 +51,14 @@ bool ConfigManager::setLanguage(QString language) {
     return true;
 }
 
+/*
+ * Must call ConfigManager::checkConfig() first!
+ */
+bool ConfigManager::setLanguage(QString language) {
+    _config_json["Language"] = language;
+    return writeConfig(_config_json);
+}
+
 QString ConfigManager::getLanguage() {
     if (_config_json.contains("Language")) {
         QJsonValue languageValue = _config_json["Language"];
@@ -66,4 +69,21 @@ QString ConfigManager::getLanguage() {
     }
 
     return QString("zh_CN");
+}
+
+bool ConfigManager::setOpacity(float opacity) {
+    _config_json["Scoreboard Opacity"] = opacity;
+    return writeConfig(_config_json);
+}
+
+float ConfigManager::getOpacity() {
+    if (_config_json.contains("Scoreboard Opacity")) {
+        QJsonValue opacityValue = _config_json["Scoreboard Opacity"];
+
+        if (opacityValue.isDouble()) {
+            return opacityValue.toDouble();
+        }
+    }
+
+    return 0.0;
 }

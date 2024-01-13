@@ -7,5 +7,4 @@ repos:
         args: [-i, --style=file:.clang-format]
       - id: cpplint
         args: [--linelength=100, "--filter=-whitespace/indent,-legal/copyright,-build/header_guard"]
-exclude: |
-  json.hpp
+exclude: ^Ra2ob/src/third_party/.*$

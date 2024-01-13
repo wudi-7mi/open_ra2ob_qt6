@@ -1,18 +1,18 @@
 [
-    {
-        "Name": "Balance",
-        "Offset": "0x30c"
-    },
-    {
-        "Name": "Credit Spent",
-        "Offset": "0x2dc"
-    },
-    {
-        "Name": "Power Output",
-        "Offset": "0x53a4"
-    },
-    {
-        "Name": "Power Drain",
-        "Offset": "0x53a8"
-    }
+  {
+    "Name": "Balance",
+    "Offset": "0x30c"
+  },
+  {
+    "Name": "Credit Spent",
+    "Offset": "0x2dc"
+  },
+  {
+    "Name": "Power Output",
+    "Offset": "0x53a4"
+  },
+  {
+    "Name": "Power Drain",
+    "Offset": "0x53a8"
+  }
 ]

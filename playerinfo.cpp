@@ -1,6 +1,5 @@
 #include "./playerinfo.h"
 
-#include <QDebug>
 #include <QFile>
 #include <QString>
 #include <string>
@@ -11,28 +10,32 @@ PlayerInfo::PlayerInfo(QWidget* parent) : QWidget(parent), ui(new Ui::PlayerInfo
     ui->setupUi(this);
 
     g = &Ra2ob::Game::getInstance();
+
     ui->lb_playerName->setStyleSheet("color: #ffffff;");
+    QFont f = ui->lb_playerName->font();
+    f.setStyleStrategy(QFont::PreferAntialias);
+    ui->lb_playerName->setFont(f);
+
     ui->lb_balance->setStyleSheet("color: #ffffff;");
-    ui->lb_credit->setStyleSheet("color: #ffffff;");
+    f = ui->lb_balance->font();
+    f.setStyleStrategy(QFont::PreferAntialias);
+    ui->lb_balance->setFont(f);
 }
 
 PlayerInfo::~PlayerInfo() { delete ui; }
 
 void PlayerInfo::setMirror() {
     for (auto* child : this->findChildren<QWidget*>()) {
-        qDebug() << child->geometry();
         child->setGeometry(this->width() - child->x() - child->width(), child->y(), child->width(),
                            child->height());
     }
     ui->lb_balance->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    ui->lb_credit->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     mirrored = true;
 }
 
 void PlayerInfo::setAll(int index) {
     setPlayerNameByIndex(index);
     setBalanceByIndex(index);
-    setCreditByIndex(index);
     setCountryByIndex(index);
     setPowerByIndex(index);
 }
@@ -52,9 +55,6 @@ void PlayerInfo::setPlayerNameByIndex(int index) {
 
         ui->lb_playerName->setGeometry(childX, ui->lb_playerName->y(), ui->lb_playerName->width(),
                                        ui->lb_playerName->height());
-
-        qDebug() << "[Geo]: " << ui->lb_playerName->geometry();
-        qDebug() << "[Country]: " << ui->lb_country->geometry();
         return;
     }
 
@@ -63,19 +63,11 @@ void PlayerInfo::setPlayerNameByIndex(int index) {
 
     ui->lb_playerName->setGeometry(childX, ui->lb_playerName->y(), ui->lb_playerName->width(),
                                    ui->lb_playerName->height());
-
-    qDebug() << "[Geo]: " << ui->lb_playerName->geometry();
-    qDebug() << "[Country]: " << ui->lb_country->geometry();
 }
 
 void PlayerInfo::setBalanceByIndex(int index) {
     int num = g->_gameInfo.players[index].panel.balance;
     ui->lb_balance->setText(QString::number(num));
-}
-
-void PlayerInfo::setCreditByIndex(int index) {
-    int num = g->_gameInfo.players[index].panel.creditSpent;
-    ui->lb_credit->setText(QString::number(num));
 }
 
 void PlayerInfo::setCountryByIndex(int index) {
@@ -98,7 +90,7 @@ void PlayerInfo::setPowerByIndex(int index) {
     int powerOutput = g->_gameInfo.players[index].panel.powerOutput;
 
     if (powerDrain == 0 && powerOutput == 0) {
-        ui->pb_power->setMaximum(1);
+        ui->pb_power->setMaximum(1000);
         ui->pb_power->setValue(1);
         ui->pb_power->setStyleSheet(
             "QProgressBar { background-color : grey; } QProgressBar::chunk { background-color: "
@@ -118,4 +110,12 @@ void PlayerInfo::setPowerByIndex(int index) {
             "QProgressBar { background-color : grey; } QProgressBar::chunk { background-color: "
             "red; }");
     }
+}
+
+int PlayerInfo::getInsufficientFund(int index) {
+    int num = g->_gameInfo.players[index].panel.balance;
+    if (num < 20) {
+        return 0;
+    }
+    return 1;
 }

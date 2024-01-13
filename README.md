@@ -8,123 +8,47 @@
 
 本项目最初由 [ra2viewer](https://github.com/chenguokai/ra2viewer) 项目启发而成立，再次感谢该项目的作者提供的思路。
 
-## 偏移量
+### 基础功能
 
-```
-基础偏移：
-	Fixed:            0xa8b230
-	ClassBaseArray:   0xa8022c
-	PlayerBaseArray:  0x1180
+- 显示对战玩家基本信息（金钱、电量、国家、颜色、单位数量、建造队列）
+- 显示玩家经济情况，下方显示总消费数量和卡钱指示条
+- 支持原版和尤复双版本，双版本共有的单位图标可以区别显示
+- 支持战网/CNC/兰博三个平台（虽然兰博有自己的观战插件）兰博的回放也支持
+- 暂时隐藏观战插件、设置透明比分栏
+- 适配各种分辨率的屏幕，可以切换需要显示的显示器
 
-五项偏移：
-	Building:    0x5554
-	Unit(Tank):  0x5568
-	Infantry:    0x557c
-	Aircraft:    0x5590
-	HouseType:   0x34
+### 使用指南
 
+下载 Release 中的压缩包并解压，打开 open_ra2ob_qt6.exe
 
-苏军：
-Building:
-苏军重工 Soviet War Factory 0x38
+战网玩家请在设置中将显示补丁设为 8: GDI，选择你显示器的分辨率，并且勾选无边框窗口模式
 
-Tank:
-武装采矿车 War Miner 0x4
-犀牛坦克 Rhino Tank 0xc
-防空履带车 Flak Track 0x44
-磁能坦克 Tesla Tank 0x74
-天启坦克 Apocalypse Tank 0x8
-v3火箭 V3 Rocket Launcher 0x38
-蜘蛛 Terror Drone 0x40
-章鱼 Giant Squid 0x60
-基洛夫 Kirov Airship 0x3c
-苏军基地 Soviet MCV 0x68
-无畏级战舰 Dreadnought 0x58
-潜艇 Typhoon Attack Submarine 0x4c
-海螺 Sea Scorpion 0x90
-苏军运输船 Amphibious Transport 0x10
-自爆卡车 Demolition Truck 0xa4
+CNC玩家选择你显示器的分辨率，并且勾选无边框窗口模式
 
-Infantry:
-苏军警犬 Soviet Attack Dog 0x24
-动员兵 Conscript 0x4
-工程师 Soviet Engineer 0x6c
-磁暴步兵 Tesla Trooper 0x8
-疯狂伊文 Crazy Ivan 0x1c
-尤里 Yuri 0x18
-辐射 Desolator 0x20
-恐怖分子 Terrorist 0x68
-防空步兵 Flak Trooper 0x5c
+兰博玩家选择你显示器的分辨率，并且选择无边框窗口或者拉伸全屏即可
 
-Aircraft:
+如果上面的设置没有完成将无法正常使用本工具
 
-盟军：
-Building:
-盟军重工 Allied War Factory 0x1c
-巨炮 Grand Cannon 0x100
+设置完成后以观战身份进入游戏，观战界面将会自动显示
 
-Tank:
-超时空矿车 Chrono Miner 0x84
-灰熊坦克 Grizzly Battle Tank 0x24
-幻影坦克 Mirage Tank 0x94
-光棱坦克 Prism Tank 0x88
-盟军基地 Allied MCV 0x0
-盟军运输船 Amphibious Transport 0x54
-驱逐舰 Destoryer 0x48
-海豚 Dolphin 0x64
-神盾 Aegis Cruiser 0x50
-航母 Aircraft Carrier 0x34
-夜莺直升机 NightHawk Transport 0x5c
-坦克杀手 Tank Destoyer 0x6c
-多功能车 Infantry Fighting Vehicle 0x98
+## 注意事项
 
-Infantry:
-盟军警犬 Allied Attack Dog 0x70
-美国大兵 GI 0x0
-盟军工程师 Allied Engineer 0xc
-超时空兵 Chrono Legionnaire 0x3c
-间谍 Spy 0x40
-谭雅 Tanya 0x60
-狙击手 Sniper 0x54
-火箭飞行兵 Rocketeer 0x10
-
-Aircraft:
-入侵者 Harrier 0x4
-黑鹰战机 Black Eagle 0x1c
-
-
-科技：
-尤里改 Yuri Prime 0x50
-超时空伊文 Chrono Ivan 0x4c
-心灵突击队 Psi Commando 0x48
-超时空突击队 Chrono Commando 0x44
-```
+- 如果你在使用中出现了各种各样的问题或者有什么意见和建议，请在软件的“关于”页面点击意见反馈。
+- 本项目为开源项目，遵循 AGPL-3.0 开源协议
+- 如果你想参与开发或测试，可以加入qq 群 945693007
 
 ## 项目进度
 
 自 20230916 开始记录：
 
-- 20230916：此前的主菜单、ob 覆盖界面背景已经创建完毕；Ra2ob 能正常显示玩家的信息以及单位数量。
+- 20230916：此前的主菜单、ob 覆盖界面背景已经创建完毕；Ra2ob 能正常显示玩家的信息以及单位数量
 - 20231122：Open_Ra2ob_qt6 可以正常显示玩家信息和单位数量
+- 20240113：实现建造队列的显示；支持尤复版本；增加底部经济情况分析；完善菜单和持久化设置存储
 
-## Todo List
+## 项目相关资料和安排
 
-Ra2ob 类相关：
+[我的 Notion](https://glib-mahogany-8be.notion.site/Open_Ra2_qt6-7c0b95c9b6e54cc1bbd68dda9e7a2193?pvs=74)
 
-- [ ] 建造队列显示 
-- [ ] 超武、伞兵冷却时间显示
-- [ ] 科技建筑数量显示
-- [ ] 标注升星（渗透）
-- [ ] 尤里控制的单位计数
+## 进一步的开发指南
 
-GUI 相关：
-
-- [ ] 不同分辨率下的适配
-- [x] 控制显示器的切换
-- [ ] 自定义计分板样式
-- [ ] 控制观战界面的透明度、显示与否
-
-综合：
-
-- [ ] 快捷键切换需要看到的单位数量
-- [ ] 按照血量、等级显示单位
+待更新......

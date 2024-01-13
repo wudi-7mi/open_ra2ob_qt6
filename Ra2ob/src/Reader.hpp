@@ -18,6 +18,7 @@ public:
     bool readMemory(uint32_t addr, void* value, uint32_t size);
     uint32_t getAddr(uint32_t offset);
     int getInt(uint32_t offset);
+    bool getBool(uint32_t offset);
     std::string getString(uint32_t offset);
     uint32_t getColor(uint32_t offset);
 
@@ -48,6 +49,16 @@ inline int Reader::getInt(uint32_t offset) {
 
     if (!readMemory(offset, &buf, 4)) {
         return -1;
+    }
+
+    return buf;
+}
+
+inline bool Reader::getBool(uint32_t offset) {
+    bool buf = false;
+
+    if (!readMemory(offset, &buf, 1)) {
+        return false;
     }
 
     return buf;
