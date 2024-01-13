@@ -224,4 +224,8 @@
     <qresource prefix="/setting">
         <file>assets/setting/opacitypreview.png</file>
     </qresource>
+    <qresource prefix="/fonts">
+        <file>assets/fonts/OPlusSans3-Medium.ttf</file>
+        <file>assets/fonts/OPlusSans3-Regular.ttf</file>
+    </qresource>
 </RCC>

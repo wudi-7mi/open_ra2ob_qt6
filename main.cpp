@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QFontDatabase>
 #include <QLocale>
 #include <QMessageBox>
 #include <QObject>
@@ -13,6 +14,9 @@
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
+
+    QFontDatabase::addApplicationFont(":/fonts/assets/fonts/OPlusSans3-Medium.ttf");
+    QFontDatabase::addApplicationFont(":/fonts/assets/fonts/OPlusSans3-Regular.ttf");
 
     NEFilter filter;
     a.installNativeEventFilter(&filter);
