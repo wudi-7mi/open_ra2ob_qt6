@@ -12,13 +12,18 @@ ProducingBlock::ProducingBlock(QWidget *parent) : QWidget(parent), ui(new Ui::Pr
     ui->setupUi(this);
 
     lb_status = new QOutlineLabel(this);
+    lb_number = new QOutlineLabel(this);
 
     QFont font;
     font.setFamily("OPlusSans 3.0 Medium");
     font.setPointSize(10);
+
     lb_status->setFont(font);
     lb_status->setOutline(Qt::white, QColor(30, 27, 24), 3, true);
-    lb_status->setGeometry(0, layout::PRODUCING_STATUS_Y, 0, 0);
+
+    font.setPointSize(9);
+    lb_number->setFont(font);
+    lb_number->setOutline(Qt::white, QColor(30, 27, 24), 3, true);
 }
 
 ProducingBlock::~ProducingBlock() {
@@ -46,10 +51,18 @@ void ProducingBlock::paintEvent(QPaintEvent *) {
     QOutlineLabel *t = lb_status;
     t->setText(blockStatus);
     t->adjustSize();
-
     int childX = (this->width() - t->width()) / 2;
-    t->setGeometry(childX - 1, t->y(), t->width() + 2, t->height());
+    t->setGeometry(childX - 1, layout::PRODUCING_STATUS_Y, t->width() + 2, t->height());
     t->show();
+
+    if (blockNumber > 1) {
+        t = lb_number;
+        t->setText(QString::number(blockNumber));
+        t->adjustSize();
+        childX = (this->width() - t->width()) / 2;
+        t->setGeometry(childX - 1, layout::PRODUCING_NUMBER_Y, t->width() + 2, t->height());
+        t->show();
+    }
 
     int i = 0;
     while (i < blockProgress) {
@@ -84,6 +97,8 @@ void ProducingBlock::setStatus(int status) {
         blockStatus = "";
     }
 }
+
+void ProducingBlock::setNumber(int number) { blockNumber = number; }
 
 void ProducingBlock::setImage(QString name) {
     QString img_str = ":/obicons/assets/obicons/" + name + ".png";

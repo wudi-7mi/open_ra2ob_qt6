@@ -19,6 +19,7 @@ class MainWindow : public QMainWindow {
 
 public:
     explicit MainWindow(QWidget *parent = nullptr, ConfigManager *cfgm = nullptr);
+    void detectShortcutStatus();
     ~MainWindow();
 
 private:

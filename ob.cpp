@@ -20,7 +20,6 @@ Ob::Ob(QWidget *parent) : QWidget(parent), ui(new Ui::Ob) {
 
     QScreen *screen = QGuiApplication::primaryScreen();
     this->setGeometry(screen->geometry());
-    qDebug() << screen->geometry();
 
     gls = &Globalsetting::getInstance();
     setLayoutByScreen();
@@ -418,6 +417,7 @@ void Ob::refreshProducingBlock() {
         pb->setcolor(qs_1);
         pb->setProgress(bn.progress);
         pb->setStatus(bn.status);
+        pb->setNumber(bn.number);
         pb_1.push_back(pb);
     }
 
@@ -428,6 +428,7 @@ void Ob::refreshProducingBlock() {
         pb->setcolor(qs_2);
         pb->setProgress(bn.progress);
         pb->setStatus(bn.status);
+        pb->setNumber(bn.number);
         pb_2.push_back(pb);
     }
 
@@ -475,10 +476,11 @@ void Ob::setLayoutByScreen() {
     if (this->screen()->geometry().width() == layout::SC1K_W &&
         this->screen()->geometry().height() == layout::SC1K_H) {
         gls->loadLayoutSetting(1);
-    }
-    if (this->screen()->geometry().width() == layout::SC2K_W &&
-        this->screen()->geometry().height() == layout::SC2K_H) {
+    } else if (this->screen()->geometry().width() == layout::SC2K_W &&
+               this->screen()->geometry().height() == layout::SC2K_H) {
         gls->loadLayoutSetting(2);
+    } else {
+        gls->loadLayoutSetting(0, geometry().width(), geometry().height());
     }
 }
 
@@ -497,6 +499,9 @@ int Ob::getValidPlayerIndex(std::vector<int> *vpi) {
 }
 
 void Ob::detectGame() {
+    if (g->_gameInfo.isGameOver || g->_gameInfo.currentFrame < 5) {
+        return;
+    }
     if (g->_gameInfo.valid && (g->_gameInfo.isObserver || Ra2ob::GOODINTENTION)) {
         refreshUbs();
         refreshPanel();
@@ -511,6 +516,22 @@ void Ob::detectGame() {
 
 void Ob::toggleOb() {
     if (!gls->s.show_all_panel) {
+        this->hide();
+        return;
+    }
+
+    if (g->_gameInfo.isGameOver || g->_gameInfo.currentFrame < 5) {
+        this->hide();
+        return;
+    }
+
+    int validPlayerNum = 0;
+    for (int i = 0; i < Ra2ob::MAXPLAYER; i++) {
+        if (g->_gameInfo.players[i].valid) {
+            validPlayerNum++;
+        }
+    }
+    if (validPlayerNum != 2) {
         this->hide();
         return;
     }

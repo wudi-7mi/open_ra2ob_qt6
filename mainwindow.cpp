@@ -15,6 +15,12 @@ MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     this->setWindowTitle(tr("open_ra2ob - An Opensource Ra2 observer"));
     this->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::MSWindowsFixedSizeDialogHint);
 
+    detectShortcutStatus();
+
+    ui->lb_github->setText("<a href=\"https://github.com/wudi-7mi/open_ra2ob_qt6\">Github</a>");
+    ui->lb_feedback->setText("<a href=\"https://txc.qq.com/products/614512\">Feedback</a>");
+    ui->lb_bilibili->setText("<a href=\"https://space.bilibili.com/1361231649\">My bilibili</a>");
+
     _cfgm = cfgm;
     if (cfgm == nullptr) {
         _cfgm = new ConfigManager();
@@ -34,6 +40,42 @@ MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     tray->setupTray();
 
     ob = new Ob();
+}
+
+void MainWindow::detectShortcutStatus() {
+    Globalsetting &gls = Globalsetting::getInstance();
+
+    ui->lb_status_1->setText(tr("Normal"));
+    ui->lb_status_1->setStyleSheet("color:green;");
+
+    ui->lb_status_2->setText(tr("Normal"));
+    ui->lb_status_2->setStyleSheet("color:green;");
+
+    ui->lb_status_3->setText(tr("Normal"));
+    ui->lb_status_3->setStyleSheet("color:green;");
+
+    ui->lb_status_4->setText(tr("Normal"));
+    ui->lb_status_4->setStyleSheet("color:green;");
+
+    ui->lb_status_5->setText(tr("Normal"));
+    ui->lb_status_5->setStyleSheet("color:green;");
+
+    if (!gls.s.sc_ctrl_alt_h) {
+        ui->lb_status_1->setText(tr("Occupied"));
+        ui->lb_status_1->setStyleSheet("color:red;");
+    }
+    if (!gls.s.sc_ctrl_alt_pageup) {
+        ui->lb_status_2->setText(tr("Occupied"));
+        ui->lb_status_2->setStyleSheet("color:red;");
+    }
+    if (!gls.s.sc_ctrl_alt_pagedown) {
+        ui->lb_status_3->setText(tr("Occupied"));
+        ui->lb_status_3->setStyleSheet("color:red;");
+    }
+    if (!gls.s.sc_ctrl_alt_j) {
+        ui->lb_status_4->setText(tr("Occupied"));
+        ui->lb_status_4->setStyleSheet("color:red;");
+    }
 }
 
 void MainWindow::initLanguage(QString language) {

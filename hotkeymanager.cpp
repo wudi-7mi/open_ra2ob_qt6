@@ -16,19 +16,15 @@ bool NEFilter::nativeEventFilter(const QByteArray& eventType, void* message, qin
             case MOD_CONTROL | MOD_ALT:
                 switch (keycode) {
                     case 'J':
-                        std::cerr << "ctrl+alt+j" << std::endl;
                         hideBottomPanel();
                         break;
                     case 'H':
-                        std::cerr << "ctrl+alt+h" << std::endl;
                         hideOb();
                         break;
                     case VK_PRIOR:
-                        std::cerr << "ctrl+alt+PgUp" << std::endl;
                         addOpacity();
                         break;
                     case VK_NEXT:
-                        std::cerr << "ctrl+alt+PgDn" << std::endl;
                         minusOpacity();
                         break;
                     default:
@@ -58,15 +54,18 @@ void NEFilter::hideBottomPanel() { gls->s.show_bottom_panel = !gls->s.show_botto
 HotkeyManager::HotkeyManager() {}
 
 void HotkeyManager::registerHotkey(const NEFilter& filter) {
-    registerSingle(MOD_CONTROL | MOD_ALT, 'J');
-    registerSingle(MOD_CONTROL | MOD_ALT, 'H');
-    registerSingle(MOD_CONTROL | MOD_ALT, VK_PRIOR);
-    registerSingle(MOD_CONTROL | MOD_ALT, VK_NEXT);
+    Globalsetting& gls = Globalsetting::getInstance();
+
+    gls.s.sc_ctrl_alt_j        = registerSingle(MOD_CONTROL | MOD_ALT, 'J');
+    gls.s.sc_ctrl_alt_h        = registerSingle(MOD_CONTROL | MOD_ALT, 'H');
+    gls.s.sc_ctrl_alt_pageup   = registerSingle(MOD_CONTROL | MOD_ALT, VK_PRIOR);
+    gls.s.sc_ctrl_alt_pagedown = registerSingle(MOD_CONTROL | MOD_ALT, VK_NEXT);
 }
 
-void HotkeyManager::registerSingle(const quint32& mod, const quint32& kc) {
+bool HotkeyManager::registerSingle(const quint32& mod, const quint32& kc) {
     BOOL ok = RegisterHotKey(0, kc ^ mod, mod, kc);
     if (!ok) {
-        std::cerr << "register shortcut failed!" << std::endl;
+        return false;
     }
+    return true;
 }

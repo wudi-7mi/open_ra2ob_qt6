@@ -21,6 +21,7 @@ public:
     void initBlock(QString name);
     void setProgress(int progress);
     void setStatus(int status);
+    void setNumber(int number);
     void setImage(QString name);
     void setcolor(std::string color);
     QColor getDarkerColor(QColor qc);
@@ -29,10 +30,12 @@ public:
     int blockProgress;
     QString blockName;
     QString blockStatus;
+    int blockNumber;
     QColor blockColor;
     bool clean = false;
 
     QOutlineLabel *lb_status;
+    QOutlineLabel *lb_number;
 
 private:
     Ui::ProducingBlock *ui;
