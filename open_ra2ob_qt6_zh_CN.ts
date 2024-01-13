@@ -159,6 +159,22 @@
         <source>Please use GDI renderer and borderless windowed mode.</source>
         <translation>战网和CNC使用GDI补丁并选择无边框窗口；兰博平台选择拉伸全屏或无边框窗口</translation>
     </message>
+    <message>
+        <source>Scoreboard Opacity:</source>
+        <translation>计分板透明度：</translation>
+    </message>
+    <message>
+        <source>Github</source>
+        <translation>Github</translation>
+    </message>
+    <message>
+        <source>Feedback</source>
+        <translation>意见反馈</translation>
+    </message>
+    <message>
+        <source>My bilibili</source>
+        <translation>我的b站</translation>
+    </message>
 </context>
 <context>
     <name>Ob</name>
@@ -187,6 +203,17 @@
     <message>
         <source>Form</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>tips</source>
+        <translation>提示</translation>
+    </message>
+    <message>
+        <source>The program is already running</source>
+        <translation>程序已经运行</translation>
     </message>
 </context>
 <context>

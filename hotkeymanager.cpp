@@ -62,8 +62,23 @@ void HotkeyManager::registerHotkey(const NEFilter& filter) {
     gls.s.sc_ctrl_alt_pagedown = registerSingle(MOD_CONTROL | MOD_ALT, VK_NEXT);
 }
 
+void HotkeyManager::releaseHotkey() {
+    releaseSingle(MOD_CONTROL | MOD_ALT, 'J');
+    releaseSingle(MOD_CONTROL | MOD_ALT, 'H');
+    releaseSingle(MOD_CONTROL | MOD_ALT, VK_PRIOR);
+    releaseSingle(MOD_CONTROL | MOD_ALT, VK_NEXT);
+}
+
 bool HotkeyManager::registerSingle(const quint32& mod, const quint32& kc) {
     BOOL ok = RegisterHotKey(0, kc ^ mod, mod, kc);
+    if (!ok) {
+        return false;
+    }
+    return true;
+}
+
+bool HotkeyManager::releaseSingle(const quint32& mod, const quint32& kc) {
+    BOOL ok = UnregisterHotKey(0, kc ^ mod);
     if (!ok) {
         return false;
     }

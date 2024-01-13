@@ -8,70 +8,34 @@
 
 本项目最初由 [ra2viewer](https://github.com/chenguokai/ra2viewer) 项目启发而成立，再次感谢该项目的作者提供的思路。
 
-## 相关设置
+### 基础功能
 
-### 快捷键
+- 显示对战玩家基本信息（金钱、电量、国家、颜色、单位数量、建造队列）
+- 显示玩家经济情况，下方显示总消费数量和卡钱指示条
+- 支持原版和尤复双版本，双版本共有的单位图标可以区别显示
+- 支持战网/CNC/兰博三个平台（虽然兰博有自己的观战插件）兰博的回放也支持
+- 暂时隐藏观战插件、设置透明比分栏
+- 适配各种分辨率的屏幕，可以切换需要显示的显示器
 
-```
-全局热键
+### 使用指南
 
-Ctrl Alt H 隐藏观战界面
-Ctrl Alt PageUp 使比分栏更清晰
-Ctrl Alt PageDown 使比分栏更透明
-Ctrl Alt J 隐藏下方经济情况栏
+下载 Release 中的压缩包并解压，打开 open_ra2ob_qt6.exe
 
-界面快捷键
+战网玩家请在设置中将显示补丁设为 8: GDI，选择你显示器的分辨率，并且勾选无边框窗口模式
 
-Ctrl S 切换观战屏幕
-```
+CNC玩家选择你显示器的分辨率，并且勾选无边框窗口模式
 
+兰博玩家选择你显示器的分辨率，并且选择无边框窗口或者拉伸全屏即可
 
+如果上面的设置没有完成将无法正常使用本工具
 
-### 单位显示顺序
+设置完成后以观战身份进入游戏，观战界面将会自动显示
 
-```
-Index=1
-	Soviet War Factory
-	Allied War Factory
-	Yuri War Factory
-Index=2
-	War Miner
-	Chrono Miner
-	Slave Miner
-Index=3
-	Rhino Tank
-	Grizzly Battle Tank
-	Lasher Tank
-Index=4
-	Soviet Attack Dog
-	Allied Attack Dog
-	Brute
-Index=5
-	Conscript
-	GI
-	Initiate
-Index=6
-	Soviet Engineer
-	Allied Engineer
-	Yuri Engineer
-Index=7
-	Desolator
-	Rocketeer
-Index=8
-	Harrier
-	Black Eagle
-Index=9
-	Typhoon Attack Submarine
-	Destroyer
-	Yuri Amphibious Transport
-Index=10
-	Dreadnought
-	Aircraft Carrier
-Index=11
-	Grand Cannon
-```
+## 注意事项
 
-
+- 如果你在使用中出现了各种各样的问题或者有什么意见和建议，请在软件的“关于”页面点击意见反馈。
+- 本项目为开源项目，遵循 AGPL-3.0 开源协议
+- 如果你想参与开发或测试，可以加入qq 群 945693007
 
 ## 项目进度
 
@@ -79,32 +43,12 @@ Index=11
 
 - 20230916：此前的主菜单、ob 覆盖界面背景已经创建完毕；Ra2ob 能正常显示玩家的信息以及单位数量
 - 20231122：Open_Ra2ob_qt6 可以正常显示玩家信息和单位数量
-- 2024011x：实现建造队列的显示；支持尤复版本；增加底部经济情况分析
+- 20240113：实现建造队列的显示；支持尤复版本；增加底部经济情况分析；完善菜单和持久化设置存储
 
-## Todo List
+## 项目相关资料和安排
 
-Ra2ob 相关：
+[我的 Notion](https://glib-mahogany-8be.notion.site/Open_Ra2_qt6-7c0b95c9b6e54cc1bbd68dda9e7a2193?pvs=74)
 
-- [x] 建造队列显示 
-- [x] 检测是否为玩家(安全性设置)
-- [x] 科技建筑数量显示(单位加血显示)
-- [ ] 游戏版本检测
-- [ ] 整局游戏的检测(如果可以的话加入赛后总结)
+## 进一步的开发指南
 
-GUI 相关：
-
-- [ ] 不同分辨率下的适配(目前实现了1k和2k)
-- [x] 控制显示器的切换
-- [ ] 计分板
-- [x] 控制观战界面的透明度、显示与否
-- [ ] 多语言适配
-
-综合：
-
-- [x] 全局快捷键
-- [x] 卡钱条显示
-- [x] 安全性设置
-- [ ] 文档和主页建立
-- [ ] 布局参数说明图
-- [ ] 菜单栏的编写
-- [ ] 项目打包设置(管理员权限)
+待更新......

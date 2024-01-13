@@ -5,6 +5,7 @@
 #include <QSystemTrayIcon>
 
 #include "./configmanager.h"
+#include "./globalsetting.h"
 #include "./ob.h"
 #include "./tray.h"
 
@@ -20,13 +21,17 @@ class MainWindow : public QMainWindow {
 public:
     explicit MainWindow(QWidget *parent = nullptr, ConfigManager *cfgm = nullptr);
     void detectShortcutStatus();
+    void changeOpacityPreview();
+    void drawPreview(QWidget *widget);
     ~MainWindow();
 
 private:
     Ui::MainWindow *ui;
+    bool eventFilter(QObject *watched, QEvent *event) override;
     ConfigManager *_cfgm;
     Tray *tray;
     Ob *ob;
+    Globalsetting *gls;
 
     bool forceHideOb = false;
 
@@ -35,6 +40,7 @@ private slots:
     void onRbEnglishClicked();
     void onRbChineseClicked();
     void onBtnReloadClicked();
+    void onOpacityChanged(int opacity);
     void showSetting();
     void quit();
 

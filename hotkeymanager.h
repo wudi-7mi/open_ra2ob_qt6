@@ -24,7 +24,9 @@ public:
     HotkeyManager();
 
     void registerHotkey(const NEFilter& filter);
+    void releaseHotkey();
     bool registerSingle(const quint32& mod, const quint32& kc);
+    bool releaseSingle(const quint32& mod, const quint32& kc);
 };
 
 #endif  // HOTKEYMANAGER_H

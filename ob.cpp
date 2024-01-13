@@ -536,7 +536,12 @@ void Ob::toggleOb() {
         return;
     }
 
-    if (g->_gameInfo.valid && (g->_gameInfo.isObserver || Ra2ob::GOODINTENTION)) {
+    if (!(g->_gameInfo.isObserver || Ra2ob::GOODINTENTION)) {
+        this->hide();
+        return;
+    }
+
+    if (g->_gameInfo.valid) {
         this->show();
         return;
     }

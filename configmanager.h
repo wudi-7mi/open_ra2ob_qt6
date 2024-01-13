@@ -15,8 +15,11 @@ public:
 
     bool checkConfig();
     bool verifyConfig();
+    bool writeConfig(const QJsonObject &jsonobj);
     bool setLanguage(QString language);
     QString getLanguage();
+    bool setOpacity(float opacity);
+    float getOpacity();
 };
 
 #endif  // CONFIGMANAGER_H
