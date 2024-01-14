@@ -21,6 +21,8 @@
 
 下载 Release 中的压缩包并解压，打开 open_ra2ob_qt6.exe
 
+也可以百度云下载：[链接](https://pan.baidu.com/s/1lsvh4Wa37kpqbljs12ZgVQ?pwd=r70r) 提取码：r70r 
+
 战网玩家请在设置中将显示补丁设为 8: GDI，选择你显示器的分辨率，并且勾选无边框窗口模式
 
 CNC玩家选择你显示器的分辨率，并且勾选无边框窗口模式
