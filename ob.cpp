@@ -500,6 +500,7 @@ int Ob::getValidPlayerIndex(std::vector<int> *vpi) {
 
 void Ob::detectGame() {
     if (g->_gameInfo.isGameOver || g->_gameInfo.currentFrame < 5) {
+        initIfBar();
         return;
     }
     if (g->_gameInfo.valid && (g->_gameInfo.isObserver || Ra2ob::GOODINTENTION)) {
@@ -508,9 +509,6 @@ void Ob::detectGame() {
         refreshProducingBlock();
         setPlayerColor();
         this->update();
-    } else {
-        // Todo: initialize
-        initIfBar();
     }
 }
 

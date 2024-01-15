@@ -81,6 +81,7 @@ public:
     Reader r;
     Viewer viewer;
     Version version = Version::Yr;
+    bool isReplay   = false;
 
 private:
     Game();
@@ -214,6 +215,12 @@ inline void Game::getHandle() {
         }
     }
 
+    if (iniData["Settings"].isKeyExist("RecordFile")) {
+        isReplay = true;
+    } else {
+        isReplay = false;
+    }
+
     if (pHandle == nullptr) {
         std::cerr << "Could not open process\n";
         r = Reader(nullptr);
@@ -235,9 +242,8 @@ inline void Game::initAddrs() {
     uint32_t classBaseArray     = r.getAddr(CLASSBASEARRAYOFFSET);
     uint32_t playerBaseArrayPtr = fixed + PLAYERBASEARRAYPTROFFSET;
 
-    bool isObserverFlag   = true;
-    bool isAllControlable = true;
-    bool isThisGameOver   = false;
+    bool isObserverFlag = true;
+    bool isThisGameOver = false;
 
     for (int i = 0; i < MAXPLAYER; i++, playerBaseArrayPtr += 4) {
         uint32_t playerBase = r.getAddr(playerBaseArrayPtr);
@@ -251,8 +257,6 @@ inline void Game::initAddrs() {
             std::string cur_s = r.getString(realPlayerBase + STRNAMEOFFSET);
             if (cur) {
                 isObserverFlag = false;
-            } else {
-                isAllControlable = false;
             }
 
             bool isDefeated = r.getBool(realPlayerBase + ISDEFEATEDOFFSET);
@@ -280,7 +284,7 @@ inline void Game::initAddrs() {
         }
     }
 
-    _gameInfo.isObserver = isObserverFlag || isAllControlable;
+    _gameInfo.isObserver = isObserverFlag || isReplay;
     _gameInfo.isGameOver = isThisGameOver;
 }
 
