@@ -20,6 +20,8 @@ public:
     QString getLanguage();
     bool setOpacity(float opacity);
     float getOpacity();
+    bool setSidepanelColor(QColor qc);
+    QColor getSidepanelColor();
 };
 
 #endif  // CONFIGMANAGER_H

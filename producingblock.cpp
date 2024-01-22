@@ -74,7 +74,7 @@ void ProducingBlock::paintEvent(QPaintEvent *) {
     while (i < complete) {
         painter.fillRect(QRect(layout::PRODUCING_PROGRESS_X + i, layout::PRODUCING_PROGRESS_Y, 1,
                                layout::PRODUCING_PROGRESS_H),
-                         gls->c.producing_stripe);
+                         gls->c.producing_stripe_color);
         i++;
     }
 

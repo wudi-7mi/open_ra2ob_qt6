@@ -87,3 +87,23 @@ float ConfigManager::getOpacity() {
 
     return 0.0;
 }
+
+bool ConfigManager::setSidepanelColor(QColor qc) {
+    _config_json["Sidepanel Color"] = qc.name();
+    return writeConfig(_config_json);
+}
+
+QColor ConfigManager::getSidepanelColor() {
+    if (_config_json.contains("Sidepanel Color")) {
+        QJsonValue sidepanelColor = _config_json["Sidepanel Color"];
+
+        if (sidepanelColor.isString()) {
+            QColor c;
+
+            c.setNamedColor(sidepanelColor.toString());
+            return c;
+        }
+    }
+
+    return QColor("midnightblue");
+}

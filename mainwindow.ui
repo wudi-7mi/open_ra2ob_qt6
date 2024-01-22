@@ -392,6 +392,45 @@
        <string/>
       </property>
      </widget>
+     <widget class="QLabel" name="lb_opacity_2">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>100</y>
+        <width>131</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Sidepanel Color:</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_sidebar">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>100</y>
+        <width>71</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Choose</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_sidebar_reset">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>100</y>
+        <width>71</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Reset</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="About">
      <attribute name="title">

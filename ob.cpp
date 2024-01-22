@@ -101,7 +101,7 @@ void Ob::paintTopPanel(QPainter *painter, int offsetX, int offsetY, int pWidth, 
 }
 
 void Ob::paintRightPanel(QPainter *painter, int offsetX, int offsetY) {
-    QColor fill(QColor("midnightblue"));
+    QColor fill(gls->c.sidepanel_color);
     painter->fillRect(
         QRect(offsetX + gls->l.right_x, offsetY + 0, layout::RIGHT_W, layout::RIGHT_HEADER_H),
         fill);
@@ -136,7 +136,7 @@ void Ob::paintBottomPanel(QPainter *painter) {
         return;
     }
 
-    QColor f_bg(QColor("midnightblue"));
+    QColor f_bg(gls->c.sidepanel_color);
     QColor f_g(QColor("green"));
     QColor f_r(QColor("red"));
     int w    = 5;
@@ -245,9 +245,11 @@ void Ob::initUnitblocks() {
     }
 }
 
-void Ob::initIfBar() {
-    insufficient_fund_bar_1.clear();
-    insufficient_fund_bar_2.clear();
+void Ob::initIfBar(bool clean) {
+    if (clean) {
+        insufficient_fund_bar_1.clear();
+        insufficient_fund_bar_2.clear();
+    }
 
     if (credit_1 == nullptr) {
         credit_1 = new QOutlineLabel(this);
@@ -565,6 +567,6 @@ void Ob::switchScreen() {
 
     setPanelByScreen();
     initUnitblocks();
-    initIfBar();
+    initIfBar(false);
     setUnitblocksByScreen();
 }

@@ -35,7 +35,7 @@ private:
 
     void initPanel();
     void initUnitblocks();
-    void initIfBar();
+    void initIfBar(bool clean = true);
     void refreshUbs();
 
     void setPanelByScreen();

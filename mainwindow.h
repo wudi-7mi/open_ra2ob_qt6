@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QColorDialog>
 #include <QMainWindow>
 #include <QSystemTrayIcon>
 
@@ -21,7 +22,6 @@ class MainWindow : public QMainWindow {
 public:
     explicit MainWindow(QWidget *parent = nullptr, ConfigManager *cfgm = nullptr);
     void detectShortcutStatus();
-    void changeOpacityPreview();
     void drawPreview(QWidget *widget);
     ~MainWindow();
 
@@ -32,6 +32,7 @@ private:
     Tray *tray;
     Ob *ob;
     Globalsetting *gls;
+    QColorDialog *cd;
 
     bool forceHideOb = false;
 
@@ -41,6 +42,9 @@ private slots:
     void onRbChineseClicked();
     void onBtnReloadClicked();
     void onOpacityChanged(int opacity);
+    void onSidebarButtonClicked();
+    void onSidebarResetButtonClicked();
+    void onColorChanged(const QColor &color);
     void showSetting();
     void quit();
 

@@ -28,8 +28,10 @@ struct Layout {
 };
 
 struct Colors {
-    float top_panel_opacity = 1;
-    QColor producing_stripe = QColor(30, 30, 30);
+    float top_panel_opacity       = 1;
+    QColor producing_stripe_color = QColor(30, 30, 30);
+    QColor sidepanel_color        = QColor(25, 25, 112);
+    QColor preview_color          = QColor("red");
 };
 
 struct Status {

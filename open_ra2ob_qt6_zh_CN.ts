@@ -128,10 +128,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>Version: 0.1.0 alpha</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Author: wudi7mi@gmail.com</source>
         <translation></translation>
     </message>
@@ -174,6 +170,22 @@
     <message>
         <source>My bilibili</source>
         <translation>我的b站</translation>
+    </message>
+    <message>
+        <source>Sidepanel Color:</source>
+        <translation>侧边面板颜色：</translation>
+    </message>
+    <message>
+        <source>Choose</source>
+        <translation>选择</translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation>重置</translation>
+    </message>
+    <message>
+        <source>Version: 0.1.3 alpha</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
