@@ -9,6 +9,7 @@ namespace Ra2ob {
 // Basic game information
 
 constexpr int MAXPLAYER    = 8;
+constexpr int GAMESPEED    = 59;
 constexpr int INVALIDCLASS = 0xffffffffu;
 
 // Memory size

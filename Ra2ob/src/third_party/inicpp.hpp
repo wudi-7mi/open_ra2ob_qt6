@@ -93,7 +93,7 @@ public:
         _sectionMap.insert(sec._sectionMap.begin(), sec._sectionMap.end());
     }
 
-    bool isKeyExist(const std::string &Key) { return !_sectionMap.count(Key) ? false : true; }
+    bool isKeyExist(const std::string &Key) { return _sectionMap.count(Key); }
 
     int getEndSection() {
         int line = -1;

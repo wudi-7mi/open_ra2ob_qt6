@@ -59,8 +59,9 @@ private:
     QVector<ProducingBlock *> pb_2;
     QVector<int> insufficient_fund_bar_1;
     QVector<int> insufficient_fund_bar_2;
-    QOutlineLabel *credit_1 = nullptr;
-    QOutlineLabel *credit_2 = nullptr;
+    QOutlineLabel *credit_1   = nullptr;
+    QOutlineLabel *credit_2   = nullptr;
+    QOutlineLabel *lb_mapname = nullptr;
 
     bool forceHideOb = false;
 

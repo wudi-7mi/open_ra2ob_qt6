@@ -123,7 +123,6 @@ void Ob::paintRightPanel(QPainter *painter, int offsetX, int offsetY) {
     painter->setPen(border);
     painter->drawRect(
         QRect(offsetX + gls->l.map_x, offsetY + gls->l.map_y, layout::MAP_W, layout::MAP_H));
-
     return;
 }
 
@@ -209,6 +208,30 @@ void Ob::paintBottomPanel(QPainter *painter) {
 
     credit_1->setText(res_1);
     credit_2->setText(res_2);
+
+    // paint map name
+    if (lb_mapname == nullptr) {
+        lb_mapname = new QOutlineLabel(this);
+        lb_mapname->setFont(QFont(layout::OPPO_M, 12));
+        lb_mapname->setStyleSheet("color: white");
+    }
+
+    QString mapName = QString::fromUtf8(g->_gameInfo.mapNameUtf);
+
+    lb_mapname->setText(mapName);
+    lb_mapname->adjustSize();
+
+    int tw = lb_mapname->width();
+    int px = 0;
+    int py = gls->l.bottom_y - 28 - 1;
+
+    painter->setOpacity(gls->c.top_panel_opacity);
+    painter->fillRect(QRect(px, py, tw + 10, 28), gls->c.sidepanel_color);
+    painter->setOpacity(1);
+
+    lb_mapname->setGeometry(px + 5, py - 7, tw, 28);
+    lb_mapname->show();
+    return;
 }
 
 void Ob::initPanel() {

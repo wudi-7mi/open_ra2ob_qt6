@@ -78,6 +78,8 @@ struct tagGameInfo {
     bool isGameOver         = false;
     std::string gameVersion = "Yr";
     int currentFrame        = 0;
+    std::string mapName     = "";
+    std::string mapNameUtf  = "";
     std::array<tagPlayer, MAXPLAYER> players{};
     tagDebugInfo debug;
 };

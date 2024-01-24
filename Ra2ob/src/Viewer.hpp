@@ -38,11 +38,30 @@ inline json Viewer::exportJson(tagGameInfo gi, int mode) {
         j["debug"]["tankBase"]     = vecToHex(gi.debug.tankBase);
         j["debug"]["aircraftBase"] = vecToHex(gi.debug.aircraftBase);
         j["debug"]["houseType"]    = vecToHex(gi.debug.houseType);
+
+        return j;
     }
 
     if (!(GOODINTENTION || gi.isObserver)) {
+        j["status"] = "Not Observer";
         return j;
     }
+
+    if (gi.currentFrame < 5) {
+        j["status"] = "Preparing";
+        return j;
+    }
+
+    if (gi.isGameOver) {
+        j["status"] = "Gameover";
+        return j;
+    }
+
+    j["status"] = "Running";
+
+    j["game"]["version"]      = gi.gameVersion == "Yr" ? "Yr" : "Ra2";
+    j["game"]["mapName"]      = gi.mapName;
+    j["game"]["currentFrame"] = gi.currentFrame;
 
     for (auto& p : gi.players) {
         json jp;
@@ -58,6 +77,9 @@ inline json Viewer::exportJson(tagGameInfo gi, int mode) {
         jp["panel"]["powerOutput"] = p.panel.powerOutput;
         jp["panel"]["color"]       = "#" + p.panel.color;
         jp["panel"]["country"]     = p.panel.country;
+
+        jp["status"]["infantrySelfHeal"] = p.status.infantrySelfHeal;
+        jp["status"]["unitSelfHeal"]     = p.status.unitSelfHeal;
 
         for (auto& u : p.units.units) {
             json ju;
@@ -84,17 +106,20 @@ inline json Viewer::exportJson(tagGameInfo gi, int mode) {
             json jb;
 
             for (auto& b : p.building.list) {
-                jb["name"]     = b.name;
-                jb["progress"] = b.progress;
-                if (b.progress == 54) {
-                    jb["status"] = "Ready";
-                } else if (b.status == 1) {
-                    jb["status"] = "On Hold";
-                } else {
-                    jb["status"] = "Building";
-                }
-            }
+                json bl;
 
+                bl["name"]     = b.name;
+                bl["progress"] = b.progress;
+                bl["number"]   = b.number;
+                if (b.progress == 54) {
+                    bl["status"] = "Ready";
+                } else if (b.status == 1) {
+                    bl["status"] = "On Hold";
+                } else {
+                    bl["status"] = "Building";
+                }
+                jb["producingList"].push_back(bl);
+            }
             jp["producingList"] = jb;
         }
 
@@ -143,7 +168,10 @@ inline void Viewer::print(tagGameInfo gi, int mode, int indent) {
     } else {
         std::cout << "Ra2. | ";
     }
-    std::cout << "Game Frame: " << gi.currentFrame << "\n";
+
+    std::cout << "Map Name: " << gi.mapName << " | ";
+
+    std::cout << "Game Time: " << convertFrameToTimeString(gi.currentFrame, GAMESPEED) << "\n";
 
     for (auto& p : gi.players) {
         if (mode == 0 && !p.valid) {

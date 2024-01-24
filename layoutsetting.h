@@ -10,6 +10,7 @@ constexpr int RIGHT_LEFTBORDER_W   = 12;
 constexpr int RIGHT_RIGHTBORDER_W  = 15;
 constexpr int RIGHT_RIGHTBORDER_X  = 153;
 constexpr int RIGHT_BORDER_H       = 110;
+constexpr int RIGHT_MAPNAME_H      = 12;
 constexpr int MAP_W                = 142;
 constexpr int MAP_H                = 111;
 constexpr int TOP_W                = 920;

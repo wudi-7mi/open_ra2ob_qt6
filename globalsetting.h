@@ -2,6 +2,7 @@
 #define GLOBALSETTING_H
 
 #include <QColor>
+#include <string>
 
 struct Layout {
     int w;
@@ -46,6 +47,13 @@ struct Status {
     bool sc_ctrl_s            = true;
 };
 
+struct ScoreBoard {
+    std::string p1_name, p1_nickname;
+    std::string p2_name, p2_nickname;
+    int p1_score;
+    int p2_score;
+};
+
 class Globalsetting {
 public:
     static Globalsetting &getInstance();
@@ -59,6 +67,7 @@ public:
     Layout l;
     Colors c;
     Status s;
+    ScoreBoard sb;
 
 protected:
     Globalsetting()  = default;
