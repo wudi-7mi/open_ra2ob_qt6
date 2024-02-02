@@ -11,12 +11,18 @@ Unitblock::Unitblock(QWidget *parent) : QWidget(parent), ui(new Ui::Unitblock) {
     ui->setupUi(this);
     lb_num = new QOutlineLabel(this);
 
+    gls = &Globalsetting::getInstance();
+
     QFont font;
-    font.setFamily("OPlusSans 3.0 Medium");
-    font.setPointSize(11);
+    font.setFamily(layout::OPPO_M);
+    font.setPointSize(11 / gls->l.ratio);
     lb_num->setFont(font);
     lb_num->setOutline(Qt::white, QColor(30, 27, 24), 2, true);
-    lb_num->setGeometry(0, layout::UNITBLOCK_Y, 0, 0);
+    lb_num->setGeometry(0, gls->l.unitblock_y, 0, 0);
+
+    ui->bg->setGeometry(0, gls->l.unit_bg_y, gls->l.unit_w, gls->l.unit_bg_h);
+    ui->border->setGeometry(0, 0, gls->l.unit_w, gls->l.unit_h);
+    ui->img->setGeometry(0, 0, gls->l.unit_w, gls->l.unit_h);
 }
 
 Unitblock::~Unitblock() {
@@ -39,25 +45,38 @@ void Unitblock::setImage(QString name) {
 
     QFile qf(img_str);
 
+    int w = gls->l.unit_w;
+    int h = gls->l.unit_h;
+
     if (!qf.exists()) {
-        ui->img->setPixmap(QPixmap(":/obicons/assets/obicons/unit_placeholder_trans.png"));
+        QPixmap p = QPixmap(":/obicons/assets/obicons/unit_placeholder_trans.png");
+        p         = p.scaled(w, h);
+        ui->img->setPixmap(p);
+        ui->img->setGeometry(0, 0, w, h);
         return;
     }
 
-    ui->img->setPixmap(getRadius(QPixmap(img_str), 8));
+    QPixmap p = QPixmap(img_str);
+    p         = p.scaled(w, h);
+    ui->img->setPixmap(getRadius(p, 8 / gls->l.ratio));
+    ui->img->setGeometry(0, 0, w, h);
 }
 
 QPixmap Unitblock::getRadius(QPixmap src, int radius) {
-    QPixmap dest(src.width(), src.height());
+    int w = src.width();
+    int h = src.height();
+
+    QPixmap dest(w, h);
     dest.fill(Qt::transparent);
 
     QPainter painter(&dest);
 
     QPainterPath path;
-    QRect rect(0, 0, src.width(), src.height());
+    QRect rect(0, 0, w, h);
+    QRect rect_2(0, 0, w + 1, h + 1);
     path.addRoundedRect(rect, radius, radius);
     painter.setClipPath(path);
-    painter.drawPixmap(0, 0, src.width(), src.height(), src);
+    painter.drawPixmap(0, 0, w, h, src);
 
     painter.end();
 
@@ -77,8 +96,12 @@ void Unitblock::setNumber(int n) {
 void Unitblock::setColor(std::string color) {
     QString q_color = QString::fromStdString("#" + color);
 
-    ui->bg->setStyleSheet("background-color: " + q_color + ";" + layout::BOTTOM_RADIUS_8);
-    ui->border->setStyleSheet("border: 1px solid " + q_color + ";" + layout::RADIUS_8);
+    QString rad = QString::number(8 / gls->l.ratio);
+
+    ui->bg->setStyleSheet("background-color: " + q_color + ";" + "border-bottom-left-radius:" +
+                          rad + "px;border-bottom-right-radius:" + rad + "px;");
+    ui->border->setStyleSheet("border: 1px solid " + q_color + ";" + "border-radius: " + rad +
+                              "px;");
 }
 
 void Unitblock::setEmpty() {

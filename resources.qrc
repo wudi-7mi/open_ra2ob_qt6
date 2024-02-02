@@ -14,13 +14,15 @@
         <file>open_ra2ob_qt6_zh_CN.qm</file>
     </qresource>
     <qresource prefix="/panels">
-        <file alias="right_panel">assets/panels/right_panel.png</file>
         <file>assets/panels/balance.png</file>
         <file>assets/panels/credit.png</file>
         <file>assets/panels/balance_w.png</file>
         <file>assets/panels/credit_w.png</file>
         <file>assets/panels/power.png</file>
         <file>assets/panels/power_w.png</file>
+        <file>assets/panels/infantry_autorepair.png</file>
+        <file>assets/panels/unit_autorepair.png</file>
+        <file>assets/panels/exchange.png</file>
     </qresource>
     <qresource prefix="/obicons">
         <file>assets/obicons/Aegis Cruiser.png</file>
@@ -226,6 +228,6 @@
     </qresource>
     <qresource prefix="/fonts">
         <file>assets/fonts/OPlusSans3-Medium.ttf</file>
-        <file>assets/fonts/OPlusSans3-Regular.ttf</file>
+        <file>assets/fonts/OPlusSans3-Bold.ttf</file>
     </qresource>
 </RCC>

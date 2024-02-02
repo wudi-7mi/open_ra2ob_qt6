@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="Help">
      <attribute name="title">
@@ -283,17 +283,30 @@
        <string>Status</string>
       </property>
      </widget>
-     <widget class="QLabel" name="lb_intro_4">
+     <widget class="QLabel" name="lb_gamestatus">
       <property name="geometry">
        <rect>
         <x>20</x>
         <y>80</y>
-        <width>431</width>
+        <width>81</width>
         <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>Please use GDI renderer and borderless windowed mode.</string>
+       <string>Game Status: </string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lb_running">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>80</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Not running</string>
       </property>
      </widget>
     </widget>
@@ -431,6 +444,65 @@
        <string>Reset</string>
       </property>
      </widget>
+     <widget class="QLabel" name="lb_scoreboard">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>150</y>
+        <width>81</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Scoreboard:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lb_p1">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>150</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Player 1 </string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="sb_p1score">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>150</y>
+        <width>42</width>
+        <height>24</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lb_p2">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>190</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Player 2</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="sb_p2score">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>190</y>
+        <width>42</width>
+        <height>24</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="About">
      <attribute name="title">
@@ -464,13 +536,6 @@
         <height>41</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <family>OPlusSans 3.0</family>
-        <pointsize>16</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
       <property name="text">
        <string>Open_Ra2ob_qt6</string>
       </property>
@@ -484,15 +549,8 @@
         <height>16</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <family>OPlusSans 3.0</family>
-        <pointsize>10</pointsize>
-        <bold>false</bold>
-       </font>
-      </property>
       <property name="text">
-       <string>Version: 0.1.4 alpha</string>
+       <string>Version: 0.1.5 alpha</string>
       </property>
      </widget>
      <widget class="QLabel" name="lb_author">
@@ -503,12 +561,6 @@
         <width>191</width>
         <height>16</height>
        </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>OPlusSans 3.0</family>
-        <pointsize>10</pointsize>
-       </font>
       </property>
       <property name="text">
        <string>Author: wudi7mi@gmail.com</string>
@@ -522,12 +574,6 @@
         <width>71</width>
         <height>16</height>
        </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>OPlusSans 3.0</family>
-        <pointsize>10</pointsize>
-       </font>
       </property>
       <property name="text">
        <string>feedback</string>
@@ -545,12 +591,6 @@
         <height>16</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <family>OPlusSans 3.0</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
       <property name="text">
        <string>bilibili</string>
       </property>
@@ -566,12 +606,6 @@
         <width>71</width>
         <height>16</height>
        </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>OPlusSans 3.0</family>
-        <pointsize>10</pointsize>
-       </font>
       </property>
       <property name="text">
        <string>github</string>

@@ -27,28 +27,33 @@ public:
 private:
     Ui::Ob *ui;
     void paintEvent(QPaintEvent *);
-    void paintTopPanel(QPainter *painter, int offsetX = 0, int offsetY = 0, int pWidth = 1000,
-                       int pHeight = 100);
-    void paintRightPanel(QPainter *painter, int offsetX = 0, int offsetY = 0);
+    void paintTopPanel(QPainter *painter);
+    void paintRightPanel(QPainter *painter);
     void paintLeftPanel(QPainter *painter);
     void paintBottomPanel(QPainter *painter);
 
     void initPanel();
     void initUnitblocks();
     void initIfBar(bool clean = true);
-    void refreshUbs();
 
-    void setPanelByScreen();
-    void setUnitblocksByScreen();
+    void refreshUbs();
+    void refreshPlayerStatus();
     void refreshPanel();
     void refreshProducingBlock();
 
     void setPlayerColor();
-
+    void setPanelByScreen();
     void setLayoutByScreen();
 
-    int getValidPlayerIndex(std::vector<int> *vpi);
+    bool checkEqual(const std::string &p1, const std::string &p2, const std::string &p1prev,
+                    const std::string &p2prev);
 
+    bool eventFilter(QObject *watched, QEvent *event);
+
+    QVector<int> playersIndex;
+    int playersNumber;
+    int p1_index = -1;
+    int p2_index = -1;
     QVector<Unitblock *> ubs_p1;
     QVector<Unitblock *> ubs_p2;
     PlayerInfo *pi_1;
@@ -62,13 +67,18 @@ private:
     QOutlineLabel *credit_1   = nullptr;
     QOutlineLabel *credit_2   = nullptr;
     QOutlineLabel *lb_mapname = nullptr;
+    QLabel *lb_time           = nullptr;
+    QLabel *lb_p1_score       = nullptr;
+    QLabel *lb_p2_score       = nullptr;
+    QLabel *lb_score_col      = nullptr;
+    QLabel *lb_exchange       = nullptr;
 
     bool forceHideOb = false;
 
     int rightOffset    = 0;
     int topPanelOffset = 0;
-    int topPanelWidth  = layout::SC1K_TOP_W;
-    int topPanelHeight = layout::SC1K_TOP_H;
+    int topPanelWidth  = layout::TOP_W;
+    int topPanelHeight = layout::TOP_H;
     QVector<int> player_list;
     Ra2ob::Game *g;
     Globalsetting *gls;

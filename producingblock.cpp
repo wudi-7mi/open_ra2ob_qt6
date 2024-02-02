@@ -4,26 +4,31 @@
 #include <QPainter>
 #include <QRect>
 
-#include "./globalsetting.h"
 #include "./layoutsetting.h"
 #include "./ui_producingblock.h"
 
 ProducingBlock::ProducingBlock(QWidget *parent) : QWidget(parent), ui(new Ui::ProducingBlock) {
     ui->setupUi(this);
 
+    gls = &Globalsetting::getInstance();
+
     lb_status = new QOutlineLabel(this);
     lb_number = new QOutlineLabel(this);
 
     QFont font;
-    font.setFamily("OPlusSans 3.0 Medium");
-    font.setPointSize(10);
+    font.setFamily(layout::OPPO_M);
+    font.setPointSize(10 / gls->l.ratio);
 
     lb_status->setFont(font);
     lb_status->setOutline(Qt::white, QColor(30, 27, 24), 3, true);
 
-    font.setPointSize(9);
+    font.setPointSize(9 / gls->l.ratio);
     lb_number->setFont(font);
     lb_number->setOutline(Qt::white, QColor(30, 27, 24), 3, true);
+
+    this->setGeometry(0, 0, gls->l.producingblock_wh, gls->l.producingblock_wh);
+    ui->lb_img->setGeometry(gls->l.producing_img_x, gls->l.producing_img_y, gls->l.producing_img_w,
+                            gls->l.producing_img_h);
 }
 
 ProducingBlock::~ProducingBlock() {
@@ -34,8 +39,6 @@ ProducingBlock::~ProducingBlock() {
 
 void ProducingBlock::paintEvent(QPaintEvent *) {
     QPainter painter(this);
-
-    Globalsetting *gls = &Globalsetting::getInstance();
 
     if (clean) {
         const QRect &rect = this->rect();
@@ -52,7 +55,7 @@ void ProducingBlock::paintEvent(QPaintEvent *) {
     t->setText(blockStatus);
     t->adjustSize();
     int childX = (this->width() - t->width()) / 2;
-    t->setGeometry(childX - 1, layout::PRODUCING_STATUS_Y, t->width() + 2, t->height());
+    t->setGeometry(childX - 1, gls->l.producing_status_y, t->width() + 2, t->height());
     t->show();
 
     if (blockNumber > 1) {
@@ -60,20 +63,20 @@ void ProducingBlock::paintEvent(QPaintEvent *) {
         t->setText(QString::number(blockNumber));
         t->adjustSize();
         childX = (this->width() - t->width()) / 2;
-        t->setGeometry(childX - 1, layout::PRODUCING_NUMBER_Y, t->width() + 2, t->height());
+        t->setGeometry(childX - 1, gls->l.producing_number_y, t->width() + 2, t->height());
         t->show();
     }
 
     int i = 0;
-    while (i < blockProgress) {
-        painter.fillRect(QRect(layout::PRODUCING_PROGRESS_X + i, layout::PRODUCING_PROGRESS_Y, 1,
-                               layout::PRODUCING_PROGRESS_H),
+    while (i < blockProgress / gls->l.ratio) {
+        painter.fillRect(QRect(gls->l.producing_progress_x + i, gls->l.producing_progress_y, 1,
+                               gls->l.producing_progress_h),
                          getDarkerColor(blockColor));
         i++;
     }
-    while (i < complete) {
-        painter.fillRect(QRect(layout::PRODUCING_PROGRESS_X + i, layout::PRODUCING_PROGRESS_Y, 1,
-                               layout::PRODUCING_PROGRESS_H),
+    while (i < complete / gls->l.ratio) {
+        painter.fillRect(QRect(gls->l.producing_progress_x + i, gls->l.producing_progress_y, 1,
+                               gls->l.producing_progress_h),
                          gls->c.producing_stripe_color);
         i++;
     }

@@ -13,8 +13,25 @@ constexpr int RIGHT_BORDER_H       = 110;
 constexpr int RIGHT_MAPNAME_H      = 12;
 constexpr int MAP_W                = 142;
 constexpr int MAP_H                = 111;
-constexpr int TOP_W                = 920;
+constexpr int TOP_W                = 900;
 constexpr int TOP_H                = 80;
+constexpr int TOP_PLAYERNAME_Y     = 18;
+constexpr int TOP_COUNTRY_X        = 295;
+constexpr int TOP_COUNTRY_Y        = 30;
+constexpr int TOP_COUNTRY_W        = 30;
+constexpr int TOP_COUNTRY_H        = 20;
+constexpr int TOP_I_X              = 350;
+constexpr int TOP_I_WH             = 20;
+constexpr int TOP_IBALANCE_Y       = 16;
+constexpr int TOP_IPOWER_Y         = 46;
+constexpr int TOP_BALANCE_X        = 376;
+constexpr int TOP_BALANCE_Y        = 18;
+constexpr int TOP_BALANCE_W        = 61;
+constexpr int TOP_BALANCE_H        = 18;
+constexpr int TOP_POWER_X          = 377;
+constexpr int TOP_POWER_Y          = 49;
+constexpr int TOP_POWER_W          = 30;
+constexpr int TOP_POWER_H          = 12;
 constexpr int IF_BAR_H             = 16;
 constexpr int BOTTOM_HS            = 14;
 constexpr int BOTTOM_FILL_H        = 12;
@@ -25,6 +42,7 @@ constexpr int UNIT_W               = 69;
 constexpr int UNIT_WS              = 74;
 constexpr int UNIT_H               = 55;
 constexpr int UNIT_HS              = 61;
+constexpr int UNIT_BG_H            = 16;
 constexpr int UNITBLOCK_Y          = 32;
 constexpr int PRODUCINGBLOCK_X     = 20;
 constexpr int PRODUCINGBLOCK_WS    = 75;
@@ -36,63 +54,9 @@ constexpr int PRODUCING_PROGRESS_X = 8;
 constexpr int PRODUCING_PROGRESS_Y = 57;
 constexpr int PRODUCING_PROGRESS_H = 8;
 
-// 1920*1080 Screen
-constexpr int SC1K_W                = 1920;
-constexpr int SC1K_H                = 1080;
-constexpr int SC1K_M                = SC1K_W / 2;
-constexpr int SC1K_RIGHT_X          = SC1K_W - RIGHT_W;
-constexpr int SC1K_MAP_X            = SC1K_W - RIGHT_W + RIGHT_LEFTBORDER_W - 1;
-constexpr int SC1K_MAP_Y            = RIGHT_HEADER_H - 1;
-constexpr int SC1K_RIGHT_BOTTOM_H   = SC1K_H - MAP_H - SC1K_MAP_Y;
-constexpr int SC1K_UNITBLOCKS       = SC1K_RIGHT_BOTTOM_H / UNIT_HS;
-constexpr int SC1K_TOP_M            = SC1K_RIGHT_X / 2;
-constexpr int SC1K_TOP_H            = 80;
-constexpr int SC1K_TOP_W            = 920;
-constexpr int SC1K_UNIT_X           = SC1K_RIGHT_X + 11;
-constexpr int SC1K_UNIT_Y           = RIGHT_HEADER_H + MAP_H + 6;
-constexpr int SC1K_ICON_SIDE        = 64;
-constexpr int SC1K_BOTTOM_Y         = SC1K_H - 32;
-constexpr int SC1K_BOTTOM_Y1        = SC1K_BOTTOM_Y;
-constexpr int SC1K_BOTTOM_Y2        = SC1K_BOTTOM_Y + BOTTOM_HS + 3;
-constexpr int SC1K_BOTTOM_FILL_Y1   = SC1K_BOTTOM_Y1 + 1;
-constexpr int SC1K_BOTTOM_FILL_Y2   = SC1K_BOTTOM_Y2 + 1;
-constexpr int SC1K_BOTTOM_CREDIT_Y1 = SC1K_BOTTOM_Y1;
-constexpr int SC1K_BOTTOM_CREDIT_Y2 = SC1K_BOTTOM_Y2;
-
-// 2560*1440 Screen
-constexpr int SC2K_W                = 2560;
-constexpr int SC2K_H                = 1440;
-constexpr int SC2K_M                = SC2K_W / 2;
-constexpr int SC2K_RIGHT_X          = SC2K_W - RIGHT_W;
-constexpr int SC2K_MAP_X            = SC2K_W - RIGHT_W + RIGHT_LEFTBORDER_W - 1;
-constexpr int SC2K_MAP_Y            = RIGHT_HEADER_H - 1;
-constexpr int SC2K_RIGHT_BOTTOM_H   = SC2K_H - MAP_H - SC2K_MAP_Y;
-constexpr int SC2K_UNITBLOCKS       = SC2K_RIGHT_BOTTOM_H / UNIT_HS;
-constexpr int SC2K_TOP_M            = SC2K_RIGHT_X / 2;
-constexpr int SC2K_TOP_H            = 80;
-constexpr int SC2K_TOP_W            = 920;
-constexpr int SC2K_UNIT_X           = SC2K_RIGHT_X + 11;
-constexpr int SC2K_UNIT_Y           = RIGHT_HEADER_H + MAP_H + 6;
-constexpr int SC2K_ICON_SIDE        = 64;
-constexpr int SC2K_BOTTOM_Y         = SC2K_H - 32;
-constexpr int SC2K_BOTTOM_Y1        = SC2K_BOTTOM_Y;
-constexpr int SC2K_BOTTOM_Y2        = SC2K_BOTTOM_Y + BOTTOM_HS + 3;
-constexpr int SC2K_BOTTOM_FILL_Y1   = SC2K_BOTTOM_Y1 + 1;
-constexpr int SC2K_BOTTOM_FILL_Y2   = SC2K_BOTTOM_Y2 + 1;
-constexpr int SC2K_BOTTOM_CREDIT_Y1 = SC2K_BOTTOM_Y1;
-constexpr int SC2K_BOTTOM_CREDIT_Y2 = SC2K_BOTTOM_Y2;
-
-// Style
-constexpr char BOTTOM_RADIUS_6[] =
-    "border-bottom-left-radius: 6px;border-bottom-right-radius: 6px;";
-constexpr char RADIUS_6[] = "border-radius: 6px;";
-constexpr char BOTTOM_RADIUS_8[] =
-    "border-bottom-left-radius: 8px;border-bottom-right-radius: 8px;";
-constexpr char RADIUS_8[] = "border-radius: 8px;";
-
 // Font
+constexpr char OPPO_B[] = "OPlusSans 3.0";
 constexpr char OPPO_M[] = "OPlusSans 3.0 Medium";
-constexpr char OPPO[]   = "OPlusSans 3.0";
 
 // Color
 constexpr char COLOR_DEFAULT[] = "262728";

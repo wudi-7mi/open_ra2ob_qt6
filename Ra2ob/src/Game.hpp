@@ -81,6 +81,7 @@ public:
     Reader r;
     Viewer viewer;
     Version version        = Version::Yr;
+    Launcher launcher      = Launcher::Lbw;
     bool isReplay          = false;
     std::string mapName    = "";
     std::string mapNameUtf = "";
@@ -230,9 +231,11 @@ inline void Game::getHandle() {
     }
 
     if (inifile.isItemExist(lbMapName)) {
-        mapName = inifile.getItem(lbMapName);
+        mapName  = inifile.getItem(lbMapName);
+        launcher = Launcher::Lbw;
     } else if (inifile.isItemExist(uiMapName)) {
-        mapName = inifile.getItem(uiMapName);
+        mapName  = inifile.getItem(uiMapName);
+        launcher = Launcher::Zhan;
     }
 
     mapNameUtf = utf16ToUtf8(gbkToUtf16(mapName.c_str()).c_str());
@@ -268,10 +271,8 @@ inline void Game::initAddrs() {
 
         if (playerBase != INVALIDCLASS) {
             uint32_t realPlayerBase = r.getAddr(playerBase * 4 + classBaseArray);
+            int cur_c               = r.getInt(realPlayerBase + CURRENTPLAYEROFFSET);
 
-            bool cur          = r.getBool(realPlayerBase + CURRENTPLAYEROFFSET);
-            int cur_c         = r.getInt(realPlayerBase + CURRENTPLAYEROFFSET);
-            std::string cur_s = r.getString(realPlayerBase + STRNAMEOFFSET);
             if (cur_c == 0x1010000 || cur_c == 0x101) {
                 isObserverFlag = false;
             }

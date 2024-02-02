@@ -48,6 +48,14 @@ MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     ui->hs_opacity->setValue((_cfgm->getOpacity() * 10) / 1);
     connect(ui->hs_opacity, SIGNAL(valueChanged(int)), this, SLOT(onOpacityChanged(int)));
 
+    QFont f(layout::OPPO_M, 10);
+    ui->lb_author->setFont(f);
+    ui->lb_bilibili->setFont(f);
+    ui->lb_feedback->setFont(f);
+    ui->lb_github->setFont(f);
+    ui->lb_name->setFont(f);
+    ui->lb_version->setFont(f);
+
     cd = new QColorDialog();
     cd->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::MSWindowsFixedSizeDialogHint);
     gls->c.sidepanel_color = _cfgm->getSidepanelColor();

@@ -5,27 +5,81 @@
 #include <string>
 
 struct Layout {
+    float ratio;
     int w;
     int h;
-    int unitblocks;
     int m;
     int right_x;
+    int right_w;
+    int right_header_h;
+    int right_leftborder_w;
+    int right_rightborder_w;
+    int right_rightborder_x;
+    int right_border_h;
+    int right_mapname_h;
     int map_x;
     int map_y;
+    int map_w;
+    int map_h;
     int right_bottom_h;
     int top_m;
-    int top_h;
     int top_w;
+    int top_h;
+    int top_playername_y;
+    int top_country_x;
+    int top_country_y;
+    int top_country_w;
+    int top_country_h;
+    int top_i_x;
+    int top_i_wh;
+    int top_ibalance_y;
+    int top_ipower_y;
+    int top_balance_x;
+    int top_balance_y;
+    int top_balance_w;
+    int top_balance_h;
+    int top_power_x;
+    int top_power_y;
+    int top_power_w;
+    int top_power_h;
+    int if_bar_h;
     int unit_x;
     int unit_y;
+    int unit_w;
+    int unit_ws;
+    int unit_h;
+    int unit_hs;
+    int unit_bg_y;
+    int unit_bg_h;
+    int unitblocks;
+    int unitblock_y;
     int icon_side;
     int bottom_y;
     int bottom_y1;
     int bottom_y2;
+    int bottom_hs;
     int bottom_fill_y1;
     int bottom_fill_y2;
+    int bottom_fill_h;
+    int bottom_credit_x;
     int bottom_credit_y1;
     int bottom_credit_y2;
+    int bottom_credit_w;
+    int bottom_credit_h;
+    int producingblock_x;
+    int producingblock_wh;
+    int producingblock_ws;
+    int producingblock_y1;
+    int producingblock_y2;
+    int producing_img_x;
+    int producing_img_y;
+    int producing_img_w;
+    int producing_img_h;
+    int producing_status_y;
+    int producing_number_y;
+    int producing_progress_x;
+    int producing_progress_y;
+    int producing_progress_h;
 };
 
 struct Colors {
@@ -50,8 +104,8 @@ struct Status {
 struct ScoreBoard {
     std::string p1_name, p1_nickname;
     std::string p2_name, p2_nickname;
-    int p1_score;
-    int p2_score;
+    int p1_score = 0;
+    int p2_score = 0;
 };
 
 class Globalsetting {
@@ -61,8 +115,7 @@ public:
     Globalsetting(const Globalsetting &)            = delete;
     Globalsetting &operator=(const Globalsetting &) = delete;
 
-    void loadLayoutSetting(int preset = 1, int width = 0, int height = 0);
-    void dumpLayout();
+    void loadLayoutSetting(int width = 0, int height = 0, float ratio = 1);
 
     Layout l;
     Colors c;
