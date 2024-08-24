@@ -45,6 +45,8 @@ private slots:
     void onSidebarButtonClicked();
     void onSidebarResetButtonClicked();
     void onColorChanged(const QColor &color);
+    void onBtnUpdatePlayerClicked();
+    void updatePlayername();
     void showSetting();
     void quit();
 

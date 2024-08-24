@@ -83,10 +83,13 @@ private:
     Ra2ob::Game *g;
     Globalsetting *gls;
 
-private slots:
+public slots:
     void detectGame();
     void toggleOb();
     void switchScreen();
+
+signals:
+    void playernameNeedsUpdate();
 };
 
 #endif  // OB_H

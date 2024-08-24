@@ -41,6 +41,10 @@ MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     connect(ui->rb_Chinese, &QRadioButton::toggled, this, &MainWindow::onRbChineseClicked);
     connect(ui->btn_reload, &QPushButton::clicked, this, &MainWindow::onBtnReloadClicked);
 
+    _cfgm->giveValueToGlobalsetting();
+    connect(ui->btn_updateplayer, &QPushButton::clicked, this,
+            &MainWindow::onBtnUpdatePlayerClicked);
+
     ui->hs_opacity->setMaximum(10);
     ui->hs_opacity->setMinimum(0);
     ui->hs_opacity->setSingleStep(1);
@@ -70,6 +74,9 @@ MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     tray->setupTray();
 
     ob = new Ob();
+    connect(ob, &Ob::playernameNeedsUpdate, this, &MainWindow::updatePlayername);
+    ui->le_p1nickname->setPlaceholderText(tr("Match not started."));
+    ui->le_p2nickname->setPlaceholderText(tr("Match not started."));
 }
 
 void MainWindow::detectShortcutStatus() {
@@ -123,7 +130,7 @@ void MainWindow::drawPreview(QWidget *widget) {
     painter.fillRect(r, gls->c.preview_color);
     painter.setOpacity(1);
 
-    QRect r_bottom(px, py + ph, pw * 2 + 1, 26);
+    QRect r_bottom(px, py + ph, pw * 2 + 1, 20);
     painter.fillRect(r_bottom, gls->c.sidepanel_color);
     update();
 }
@@ -183,6 +190,39 @@ void MainWindow::onColorChanged(const QColor &color) {
 void MainWindow::showSetting() {
     this->showNormal();
     this->activateWindow();
+}
+
+void MainWindow::onBtnUpdatePlayerClicked() {
+    QString p1_nickname   = ui->le_p1nickname->text();
+    QString p1_playername = ui->le_p1playername->text();
+    QString p2_nickname   = ui->le_p2nickname->text();
+    QString p2_playername = ui->le_p2playername->text();
+
+    if (!p1_playername.isEmpty()) {
+        _cfgm->updatePlayer(p1_nickname, p1_playername);
+    }
+    if (!p2_playername.isEmpty()) {
+        _cfgm->updatePlayer(p2_nickname, p2_playername);
+    }
+
+    int p1_s = ui->sb_p1score->value();
+    int p2_s = ui->sb_p2score->value();
+
+    gls->sb.p1_score = p1_s;
+    gls->sb.p2_score = p2_s;
+}
+
+void MainWindow::updatePlayername() {
+    QString p1_nickname   = gls->sb.p1_nickname;
+    QString p2_nickname   = gls->sb.p2_nickname;
+    QString p1_playername = gls->findNameByNickname(p1_nickname);
+    QString p2_playername = gls->findNameByNickname(p2_nickname);
+
+    ui->le_p1nickname->setText(p1_nickname);
+    ui->le_p2nickname->setText(p2_nickname);
+
+    ui->le_p1playername->setText(p1_playername);
+    ui->le_p2playername->setText(p2_playername);
 }
 
 void MainWindow::quit() { qApp->quit(); }

@@ -2,7 +2,8 @@
 #define GLOBALSETTING_H
 
 #include <QColor>
-#include <string>
+#include <QJsonArray>
+#include <QJsonObject>
 
 struct Layout {
     float ratio;
@@ -102,10 +103,17 @@ struct Status {
 };
 
 struct ScoreBoard {
-    std::string p1_name, p1_nickname;
-    std::string p2_name, p2_nickname;
+    QString p1_nickname, p1_playername;
+    QString p2_nickname, p2_playername;
     int p1_score = 0;
     int p2_score = 0;
+};
+
+struct GameLog {
+    int game_index;
+    QString p1_nickname, p2_nickname;
+    int game_duration;
+    int game_start_time;
 };
 
 class Globalsetting {
@@ -116,11 +124,17 @@ public:
     Globalsetting &operator=(const Globalsetting &) = delete;
 
     void loadLayoutSetting(int width = 0, int height = 0, float ratio = 1);
+    QString findNameByNickname(QString nickname);
 
     Layout l;
     Colors c;
     Status s;
     ScoreBoard sb;
+    QJsonArray player_list;
+    int game_numbers = 0;
+    bool game_start  = false;
+    bool game_end    = false;
+    QList<GameLog> game_log;
 
 protected:
     Globalsetting()  = default;

@@ -47,8 +47,15 @@ void PlayerInfo::setAll(int index) {
 
 void PlayerInfo::setPlayerNameByIndex(int index) {
     std::string name = g->_gameInfo.players[index].panel.playerNameUtf;
+    QString nickname = QString::fromUtf8(name);
 
-    ui->lb_playerName->setText(QString::fromUtf8(name));
+    QString playername = gls->findNameByNickname(nickname);
+    if (!playername.isEmpty()) {
+        ui->lb_playerName->setText(playername);
+    } else {
+        ui->lb_playerName->setText(nickname);
+    }
+
     ui->lb_playerName->adjustSize();
 
     int c_x = ui->lb_country->x();
@@ -103,6 +110,15 @@ void PlayerInfo::setPowerByIndex(int index) {
         return;
     }
 
+    if (powerDrain > 0 && powerOutput == 0) {
+        ui->pb_power->setMaximum(1);
+        ui->pb_power->setValue(1);
+        ui->pb_power->setStyleSheet(
+            "QProgressBar { background-color : grey; } QProgressBar::chunk { background-color: "
+            "red; }");
+        return;
+    }
+
     ui->pb_power->setMaximum(powerOutput);
     ui->pb_power->setValue(powerDrain);
     if (powerOutput > powerDrain && powerOutput * 0.85 < powerDrain) {
@@ -137,7 +153,7 @@ void PlayerInfo::rearrange() {
 
 int PlayerInfo::getInsufficientFund(int index) {
     int num = g->_gameInfo.players[index].panel.balance;
-    if (num < 20) {
+    if (num < 50) {
         return 0;
     }
     return 1;

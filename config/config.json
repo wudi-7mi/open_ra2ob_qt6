@@ -1,5 +1,15 @@
 {
     "Language": "zh_CN",
+    "Players": [
+        {
+            "nickname": "1412_",
+            "playername": "神六"
+        },
+        {
+            "nickname": "WalkDead",
+            "playername": "85"
+        }
+    ],
     "Scoreboard Opacity": 0.800000011920929,
     "Sidepanel Color": "#191970"
 }

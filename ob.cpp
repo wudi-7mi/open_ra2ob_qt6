@@ -107,15 +107,30 @@ void Ob::paintTopPanel(QPainter *painter) {
     QString p1_score = QString::number(gls->sb.p1_score);
     QString p2_score = QString::number(gls->sb.p2_score);
 
+    //    std::string p1_name = g->_gameInfo.players[p1_index].panel.playerNameUtf;
+    //    QString p1_nickname = QString::fromUtf8(p1_name);
+
+    //    std::string p2_name = g->_gameInfo.players[p2_index].panel.playerNameUtf;
+    //    QString p2_nickname = QString::fromUtf8(p2_name);
+
+    //    if (QString::compare(p1_nickname, gls->sb.p2_nickname) == 0
+    //        && QString::compare(p2_nickname, gls->sb.p1_nickname) == 0) {
+    //        p1_score = QString::number(gls->sb.p2_score);
+    //        p2_score = QString::number(gls->sb.p1_score);
+    //    }
+
+    int fscsize = 32;
+
     if (gls->sb.p1_score >= 10 && gls->sb.p2_score < 10) {
         p2_score = "0" + p2_score;
+        fscsize  = 32;
     }
     if (gls->sb.p2_score >= 10 && gls->sb.p1_score < 10) {
         p1_score = "0" + p1_score;
+        fscsize  = 32;
     }
 
-    int fscsize = 22;
-    QFont fsc   = QFont(layout::OPPO_B, fscsize);
+    QFont fsc = QFont(layout::OPPO_B, fscsize);
     fsc.setBold(true);
 
     if (lb_p1_score == nullptr) {
@@ -124,14 +139,20 @@ void Ob::paintTopPanel(QPainter *painter) {
         lb_p1_score->setStyleSheet("color: #ffffff;");
         lb_p1_score->show();
         lb_p1_score->installEventFilter(this);
+    } else {
+        lb_p1_score->setFont(fsc);
     }
+
     if (lb_p2_score == nullptr) {
         lb_p2_score = new QLabel(this);
         lb_p2_score->setFont(fsc);
         lb_p2_score->setStyleSheet("color: #ffffff;");
         lb_p2_score->show();
         lb_p2_score->installEventFilter(this);
+    } else {
+        lb_p2_score->setFont(fsc);
     }
+
     if (lb_score_col == nullptr) {
         lb_score_col = new QLabel(this);
         lb_score_col->setFont(fsc);
@@ -139,9 +160,12 @@ void Ob::paintTopPanel(QPainter *painter) {
         lb_score_col->setText(":");
         lb_score_col->adjustSize();
     }
+    { lb_score_col->setFont(fsc); }
 
-    int x = wCenter - lb_score_col->width() / 2;
-    int y = (gls->l.top_h - lb_score_col->height() - 6) / 2;
+    int yoffset   = 0;
+    int coloffset = 6;
+    int x         = wCenter - lb_score_col->width() / 2;
+    int y         = (gls->l.top_h - lb_score_col->height()) / 2 - yoffset - 2;
     lb_score_col->setGeometry(x, y, lb_score_col->width(), lb_score_col->height());
     lb_score_col->show();
 
@@ -149,13 +173,14 @@ void Ob::paintTopPanel(QPainter *painter) {
 
     lb_p1_score->setText(p1_score);
     lb_p1_score->adjustSize();
-    int x1  = lb_score_col->x() - lb_p1_score->width() - 2;
-    y_score = (gls->l.top_h - lb_p1_score->height()) / 2;
-    lb_p1_score->setGeometry(x1, y_score, lb_p1_score->width(), lb_p1_score->height());
-
+    int x1 = lb_score_col->x() - lb_p1_score->width() - 2;
     lb_p2_score->setText(p2_score);
     lb_p2_score->adjustSize();
     int x2 = lb_score_col->x() + lb_score_col->width() + 2;
+
+    y_score = (gls->l.top_h - lb_p1_score->height()) / 2 - yoffset;
+
+    lb_p1_score->setGeometry(x1, y_score, lb_p1_score->width(), lb_p1_score->height());
     lb_p2_score->setGeometry(x2, y_score, lb_p2_score->width(), lb_p2_score->height());
 
     // Draw exchange icon
@@ -163,6 +188,7 @@ void Ob::paintTopPanel(QPainter *painter) {
         lb_exchange = new QLabel(this);
         QPixmap p;
         p.load(QString(":/panels/assets/panels/exchange.png"));
+        p.scaled(14, 14, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         lb_exchange->setPixmap(p);
         lb_exchange->installEventFilter(this);
     }
@@ -480,6 +506,15 @@ void Ob::refreshPanel() {
     pi_1->setAll(p1_index);
     pi_2->setAll(p2_index);
 
+    std::string p1_name = g->_gameInfo.players[p1_index].panel.playerNameUtf;
+    QString p1_nickname = QString::fromUtf8(p1_name);
+
+    std::string p2_name = g->_gameInfo.players[p2_index].panel.playerNameUtf;
+    QString p2_nickname = QString::fromUtf8(p2_name);
+
+    gls->sb.p1_nickname = p1_nickname;
+    gls->sb.p2_nickname = p2_nickname;
+
     int p_if_1 = pi_1->getInsufficientFund(p1_index);
     int p_if_2 = pi_2->getInsufficientFund(p2_index);
 
@@ -619,16 +654,33 @@ bool Ob::eventFilter(QObject *watched, QEvent *event) {
 }
 
 void Ob::detectGame() {
+    if (g->_gameInfo.valid && (g->_gameInfo.isObserver || Ra2ob::GOODINTENTION)) {
+        gls->game_start = true;
+    }
+
+    if (!g->_gameInfo.valid) {
+        gls->game_end = true;
+    }
+
     if (g->_gameInfo.isGameOver || g->_gameInfo.currentFrame < 5) {
         initIfBar();
         return;
     }
+
     if (g->_gameInfo.valid && (g->_gameInfo.isObserver || Ra2ob::GOODINTENTION)) {
         refreshPlayerStatus();
         refreshUbs();
         refreshPanel();
         refreshProducingBlock();
         setPlayerColor();
+        if (gls->game_start && gls->game_end) {
+            gls->game_start = false;
+            gls->game_end   = false;
+            gls->game_numbers++;
+            std::cout << "te\n" << std::endl;
+            emit playernameNeedsUpdate();
+        }
+        // This this->update is used to refresh panel's transparency.
         this->update();
     }
 }
@@ -656,6 +708,11 @@ void Ob::toggleOb() {
     }
 
     if (!(g->_gameInfo.isObserver || Ra2ob::GOODINTENTION)) {
+        this->hide();
+        return;
+    }
+
+    if (g->_gameInfo.isGamePaused) {
         this->hide();
         return;
     }

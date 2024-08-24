@@ -1,6 +1,0 @@
-#ifndef RA2OB_HPP_
-#define RA2OB_HPP_
-
-#include "src/Game.hpp"
-
-#endif  // RA2OB_HPP_

@@ -163,3 +163,20 @@ void Globalsetting::loadLayoutSetting(int width, int height, float ratio) {
     l.producing_progress_h /= ratio;
     return;
 }
+
+QString Globalsetting::findNameByNickname(QString nickname) {
+    QString name;
+    const QJsonArray& c_player_list = player_list;
+    for (auto it : c_player_list) {
+        if (it.type() == QJsonValue::Object) {
+            QJsonObject p       = it.toObject();
+            QString jnickname   = p.value("nickname").toString();
+            QString jplayername = p.value("playername").toString();
+
+            if (QString::compare(nickname, jnickname) == 0) {
+                name = jplayername;
+            }
+        }
+    }
+    return name;
+}

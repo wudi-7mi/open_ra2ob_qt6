@@ -8,6 +8,7 @@
 
 ConfigManager::ConfigManager(QObject *parent) : QObject(parent) {
     _config_path = "./config/config.json";
+    gls          = &Globalsetting::getInstance();
 }
 
 bool ConfigManager::checkConfig() {
@@ -106,4 +107,80 @@ QColor ConfigManager::getSidepanelColor() {
     }
 
     return QColor("midnightblue");
+}
+
+QJsonArray ConfigManager::getPlayernameList() {
+    if (_config_json.contains("Players")) {
+        QJsonValue player_json = _config_json["Players"];
+
+        if (player_json.type() == QJsonValue::Array) {
+            QJsonArray player_list = player_json.toArray();
+
+            return player_list;
+        }
+    }
+    return QJsonArray();
+}
+
+QString ConfigManager::findNameByNickname(QString nickname) {
+    QJsonArray player_list = getPlayernameList();
+    QString name;
+    for (auto it : player_list) {
+        if (it.type() == QJsonValue::Object) {
+            QJsonObject p       = it.toObject();
+            QString jnickname   = p.value("nickname").toString();
+            QString jplayername = p.value("playername").toString();
+
+            if (QString::compare(nickname, jnickname) == 0) {
+                name = jplayername;
+            }
+        }
+    }
+    return name;
+}
+
+void ConfigManager::giveValueToGlobalsetting() { gls->player_list = getPlayernameList(); }
+
+bool ConfigManager::insertPlayer(QString nickname, QString playername) {
+    QJsonArray player_list = getPlayernameList();
+    QJsonObject p;
+
+    p.insert("nickname", nickname);
+    p.insert("playername", playername);
+
+    player_list.append(p);
+    _config_json["Players"] = player_list;
+    giveValueToGlobalsetting();
+    return writeConfig(_config_json);
+}
+
+bool ConfigManager::overwritePlayer(QString nickname, QString playername) {
+    QJsonArray player_list = getPlayernameList();
+    QJsonObject p;
+
+    p.insert("nickname", nickname);
+    p.insert("playername", playername);
+
+    for (int i = 0; i < player_list.size(); ++i) {
+        QJsonObject obj   = player_list[i].toObject();
+        QString jnickname = obj.value("nickname").toString();
+        if (QString::compare(jnickname, nickname) == 0) {
+            player_list.removeAt(i);
+            player_list.insert(i, p);
+            break;
+        }
+    }
+
+    _config_json["Players"] = player_list;
+    giveValueToGlobalsetting();
+    return writeConfig(_config_json);
+}
+
+bool ConfigManager::updatePlayer(QString nickname, QString playername) {
+    QString found = findNameByNickname(nickname);
+
+    if (found.isEmpty()) {
+        return insertPlayer(nickname, playername);
+    }
+    return overwritePlayer(nickname, playername);
 }
