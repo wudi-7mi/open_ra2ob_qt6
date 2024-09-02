@@ -55,6 +55,7 @@ struct Layout {
     int unitblocks;
     int unitblock_y;
     int icon_side;
+    int bottom_h;
     int bottom_y;
     int bottom_y1;
     int bottom_y2;
@@ -80,6 +81,7 @@ struct Layout {
     int producing_number_y;
     int producing_progress_x;
     int producing_progress_y;
+    int producing_progress_w;
     int producing_progress_h;
 };
 
@@ -135,6 +137,7 @@ public:
     bool game_start  = false;
     bool game_end    = false;
     QList<GameLog> game_log;
+    QString buildingQueuePosition = "Left";
 
 protected:
     Globalsetting()  = default;

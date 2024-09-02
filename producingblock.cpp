@@ -17,12 +17,12 @@ ProducingBlock::ProducingBlock(QWidget *parent) : QWidget(parent), ui(new Ui::Pr
 
     QFont font;
     font.setFamily(layout::OPPO_M);
-    font.setPointSize(10 / gls->l.ratio);
+    font.setPointSize(10);
 
     lb_status->setFont(font);
     lb_status->setOutline(Qt::white, QColor(30, 27, 24), 3, true);
 
-    font.setPointSize(9 / gls->l.ratio);
+    font.setPointSize(9);
     lb_number->setFont(font);
     lb_number->setOutline(Qt::white, QColor(30, 27, 24), 3, true);
 
@@ -67,15 +67,18 @@ void ProducingBlock::paintEvent(QPaintEvent *) {
         t->show();
     }
 
-    int i = 0;
-    while (i < blockProgress / gls->l.ratio) {
-        painter.fillRect(QRect(gls->l.producing_progress_x + i, gls->l.producing_progress_y, 1,
+    int i       = 0;
+    qreal ratio = gls->l.producing_progress_w * 1.0 / complete;
+    while (i < blockProgress) {
+        int tick = i * ratio;
+        painter.fillRect(QRect(gls->l.producing_progress_x + tick, gls->l.producing_progress_y, 1,
                                gls->l.producing_progress_h),
                          getDarkerColor(blockColor));
         i++;
     }
-    while (i < complete / gls->l.ratio) {
-        painter.fillRect(QRect(gls->l.producing_progress_x + i, gls->l.producing_progress_y, 1,
+    while (i < complete) {
+        int tick = i * ratio;
+        painter.fillRect(QRect(gls->l.producing_progress_x + tick, gls->l.producing_progress_y, 1,
                                gls->l.producing_progress_h),
                          gls->c.producing_stripe_color);
         i++;
@@ -114,6 +117,7 @@ void ProducingBlock::setImage(QString name) {
     }
 
     ui->lb_img->setPixmap(QPixmap(img_str));
+    ui->lb_img->setScaledContents(true);
 }
 
 void ProducingBlock::setcolor(std::string color) {

@@ -21,6 +21,8 @@ class MainWindow : public QMainWindow {
 
 public:
     explicit MainWindow(QWidget *parent = nullptr, ConfigManager *cfgm = nullptr);
+    void initLanguage(QString language);
+    void initPosition(QString position);
     void detectShortcutStatus();
     void drawPreview(QWidget *widget);
     ~MainWindow();
@@ -37,7 +39,7 @@ private:
     bool forceHideOb = false;
 
 private slots:
-    void initLanguage(QString language);
+
     void onRbEnglishClicked();
     void onRbChineseClicked();
     void onBtnReloadClicked();
@@ -46,6 +48,8 @@ private slots:
     void onSidebarResetButtonClicked();
     void onColorChanged(const QColor &color);
     void onBtnUpdatePlayerClicked();
+    void onRbLeftClicked();
+    void onRbRightClicked();
     void updatePlayername();
     void showSetting();
     void quit();

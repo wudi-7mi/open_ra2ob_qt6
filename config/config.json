@@ -1,4 +1,5 @@
 {
+    "Building Queue Position": "Left",
     "Language": "zh_CN",
     "Players": [
         {
@@ -8,6 +9,38 @@
         {
             "nickname": "WalkDead",
             "playername": "85"
+        },
+        {
+            "nickname": "可爱大蚂蚁",
+            "playername": "蚂蚁"
+        },
+        {
+            "nickname": "宇智波一打七",
+            "playername": "藏龙"
+        },
+        {
+            "nickname": "最好的男人",
+            "playername": "战鹰"
+        },
+        {
+            "nickname": "212121313",
+            "playername": "85"
+        },
+        {
+            "nickname": "cIsky",
+            "playername": "大胖"
+        },
+        {
+            "nickname": "梦行云",
+            "playername": "神六"
+        },
+        {
+            "nickname": "Hg_082",
+            "playername": "p1"
+        },
+        {
+            "nickname": "osman217",
+            "playername": "p2"
         }
     ],
     "Scoreboard Opacity": 0.800000011920929,

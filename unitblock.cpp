@@ -18,11 +18,8 @@ Unitblock::Unitblock(QWidget *parent) : QWidget(parent), ui(new Ui::Unitblock) {
     font.setPointSize(11 / gls->l.ratio);
     lb_num->setFont(font);
     lb_num->setOutline(Qt::white, QColor(30, 27, 24), 2, true);
-    lb_num->setGeometry(0, gls->l.unitblock_y, 0, 0);
 
-    ui->bg->setGeometry(0, gls->l.unit_bg_y, gls->l.unit_w, gls->l.unit_bg_h);
-    ui->border->setGeometry(0, 0, gls->l.unit_w, gls->l.unit_h);
-    ui->img->setGeometry(0, 0, gls->l.unit_w, gls->l.unit_h);
+    rearrange();
 }
 
 Unitblock::~Unitblock() {
@@ -73,7 +70,6 @@ QPixmap Unitblock::getRadius(QPixmap src, int radius) {
 
     QPainterPath path;
     QRect rect(0, 0, w, h);
-    QRect rect_2(0, 0, w + 1, h + 1);
     path.addRoundedRect(rect, radius, radius);
     painter.setClipPath(path);
     painter.drawPixmap(0, 0, w, h, src);
@@ -87,7 +83,8 @@ void Unitblock::setNumber(int n) {
     lb_num->setText(QString::number(n));
     lb_num->adjustSize();
     int cX = (this->width() - lb_num->width()) / 2;
-    lb_num->setGeometry(cX - 1, lb_num->y(), lb_num->width() + 2, lb_num->height());
+    int cY = gls->l.unit_bg_y + gls->l.unit_bg_h - lb_num->height();
+    lb_num->setGeometry(cX, cY - 2, lb_num->width(), lb_num->height());
     lb_num->show();
 
     ui->bg->show();
@@ -111,4 +108,10 @@ void Unitblock::setEmpty() {
 
     lb_num->hide();
     ui->bg->hide();
+}
+
+void Unitblock::rearrange() {
+    ui->bg->setGeometry(0, gls->l.unit_bg_y, gls->l.unit_w, gls->l.unit_bg_h);
+    ui->border->setGeometry(0, 0, gls->l.unit_w, gls->l.unit_h);
+    ui->img->setGeometry(0, 0, gls->l.unit_w, gls->l.unit_h);
 }

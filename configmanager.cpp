@@ -109,6 +109,28 @@ QColor ConfigManager::getSidepanelColor() {
     return QColor("midnightblue");
 }
 
+QString ConfigManager::getBuildingqueuePosition() {
+    if (_config_json.contains("Building Queue Position")) {
+        QJsonValue position = _config_json["Building Queue Position"];
+
+        if (position.isString()) {
+            QString p = position.toString();
+            return p;
+        }
+    }
+
+    return QString("Left");
+}
+
+bool ConfigManager::setBuildingqueuePosition(QString position) {
+    _config_json["Building Queue Position"] = position;
+    return writeConfig(_config_json);
+}
+
+void ConfigManager::givePositionToGlobalsetting() {
+    gls->buildingQueuePosition = getBuildingqueuePosition();
+}
+
 QJsonArray ConfigManager::getPlayernameList() {
     if (_config_json.contains("Players")) {
         QJsonValue player_json = _config_json["Players"];
@@ -123,8 +145,13 @@ QJsonArray ConfigManager::getPlayernameList() {
 }
 
 QString ConfigManager::findNameByNickname(QString nickname) {
-    QJsonArray player_list = getPlayernameList();
     QString name;
+
+    if (nickname.isEmpty()) {
+        return name;
+    }
+
+    QJsonArray player_list = getPlayernameList();
     for (auto it : player_list) {
         if (it.type() == QJsonValue::Object) {
             QJsonObject p       = it.toObject();

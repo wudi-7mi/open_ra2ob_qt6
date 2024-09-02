@@ -23,9 +23,9 @@ Ob::Ob(QWidget *parent) : QWidget(parent), ui(new Ui::Ob) {
     this->setGeometry(screen->geometry());
 
     gls = &Globalsetting::getInstance();
-    setLayoutByScreen();
+    g   = &Ra2ob::Game::getInstance();
 
-    g = &Ra2ob::Game::getInstance();
+    setLayoutByScreen();
 
     initPanel();
     initUnitblocks();
@@ -50,7 +50,7 @@ void Ob::paintEvent(QPaintEvent *) {
 
     paintTopPanel(painter);
     paintRightPanel(painter);
-    // paintLeftPanel(painter);
+    //    paintLeftPanel(painter);
     paintBottomPanel(painter);
 
     painter->end();
@@ -234,7 +234,21 @@ void Ob::paintRightPanel(QPainter *painter) {
     return;
 }
 
-void Ob::paintLeftPanel(QPainter *painter) { return; }
+void Ob::paintLeftPanel(QPainter *painter) {
+    QColor fill(gls->c.sidepanel_color);
+    QColor redfill(QColor(255, 0, 0));
+    painter->fillRect(QRect(0, 0, 100, 100), fill);
+    painter->fillRect(QRect(200, 200, 100, 100), fill);
+
+    qreal ratio = this->screen()->devicePixelRatio();
+    int w       = this->screen()->geometry().width() * ratio;
+    int h       = this->screen()->geometry().height() * ratio;
+    int wg      = this->screen()->geometry().width();
+    int hg      = this->screen()->geometry().height();
+
+    //    std::cout << w << " " << h << " " << wg << " " << hg << " " << std::endl;
+    return;
+}
 
 void Ob::paintBottomPanel(QPainter *painter) {
     if (!gls->s.show_bottom_panel) {
@@ -256,7 +270,7 @@ void Ob::paintBottomPanel(QPainter *painter) {
     QColor lColor = QColor(qs_l);
     QColor rColor = QColor(qs_r);
 
-    painter->fillRect(QRect(0, gls->l.bottom_y, gls->l.right_x, 32), f_bg);
+    painter->fillRect(QRect(0, gls->l.bottom_y, gls->l.right_x, gls->l.bottom_h), f_bg);
 
     painter->fillRect(QRect(0, gls->l.bottom_y1, sx, gls->l.bottom_credit_h), lColor);
     painter->fillRect(QRect(0, gls->l.bottom_y2, sx, gls->l.bottom_credit_h), rColor);
@@ -312,6 +326,11 @@ void Ob::paintBottomPanel(QPainter *painter) {
     credit_1->setText(res_1);
     credit_2->setText(res_2);
 
+    credit_1->setGeometry(gls->l.bottom_credit_x, gls->l.bottom_credit_y1, gls->l.bottom_credit_w,
+                          gls->l.bottom_credit_h);
+    credit_2->setGeometry(gls->l.bottom_credit_x, gls->l.bottom_credit_y2, gls->l.bottom_credit_w,
+                          gls->l.bottom_credit_h);
+
     // paint map name
     if (lb_mapname == nullptr) {
         lb_mapname = new QOutlineLabel(this);
@@ -343,7 +362,6 @@ void Ob::paintBottomPanel(QPainter *painter) {
 void Ob::initPanel() {
     this->pi_1 = new PlayerInfo(this);
     this->pi_2 = new PlayerInfo(this);
-    pi_2->setMirror();
 }
 
 void Ob::initUnitblocks() {
@@ -362,8 +380,8 @@ void Ob::initUnitblocks() {
         ub->initUnit("null");
         ub->setColor(qs_1);
         ub->setEmpty();
-        ub->setGeometry(gls->l.unit_x + rightOffset, gls->l.unit_y + i * gls->l.unit_hs,
-                        gls->l.unit_w, gls->l.unit_h);
+        ub->setGeometry(gls->l.unit_x, gls->l.unit_y + i * gls->l.unit_hs, gls->l.unit_w,
+                        gls->l.unit_h);
         ub->show();
         ubs_p1.push_back(ub);
     }
@@ -373,8 +391,8 @@ void Ob::initUnitblocks() {
         ub->initUnit("null");
         ub->setColor(qs_2);
         ub->setEmpty();
-        ub->setGeometry(gls->l.unit_x + gls->l.unit_ws + rightOffset,
-                        gls->l.unit_y + i * gls->l.unit_hs, gls->l.unit_w, gls->l.unit_h);
+        ub->setGeometry(gls->l.unit_x + gls->l.unit_ws, gls->l.unit_y + i * gls->l.unit_hs,
+                        gls->l.unit_w, gls->l.unit_h);
         ub->show();
         ubs_p2.push_back(ub);
     }
@@ -470,6 +488,20 @@ void Ob::refreshUbs() {
         ubs_p2[j]->setColor(qs_2);
         j++;
     }
+
+    for (int i = 0; i < ubs_p1.length(); i++) {
+        Unitblock *ub = ubs_p1[i];
+        ub->setGeometry(gls->l.unit_x, gls->l.unit_y + i * gls->l.unit_hs, gls->l.unit_w,
+                        gls->l.unit_h);
+        ub->rearrange();
+    }
+
+    for (int i = 0; i < ubs_p2.length(); i++) {
+        Unitblock *ub = ubs_p2[i];
+        ub->setGeometry(gls->l.unit_x + gls->l.unit_ws, gls->l.unit_y + i * gls->l.unit_hs,
+                        gls->l.unit_w, gls->l.unit_h);
+        ub->rearrange();
+    }
 }
 
 void Ob::setPanelByScreen() {
@@ -564,18 +596,26 @@ void Ob::refreshProducingBlock() {
         pb_2.push_back(pb);
     }
 
-    int i = 0;
+    int i         = 0;
+    int pb_base_x = gls->l.producingblock_x;
+    int pb_base_y = 0;
+
+    if (gls->buildingQueuePosition == "Left") {
+        pb_base_x = 10;
+        pb_base_y = 80;
+    }
+
     for (auto &pb : pb_1) {
-        pb->setGeometry(gls->l.producingblock_x + gls->l.producingblock_ws * i,
-                        gls->l.producingblock_y1, pb->width(), pb->height());
+        pb->setGeometry(pb_base_x + gls->l.producingblock_ws * i,
+                        pb_base_y + gls->l.producingblock_y1, pb->width(), pb->height());
         pb->show();
         i++;
     }
 
     i = 0;
     for (auto &pb : pb_2) {
-        pb->setGeometry(gls->l.producingblock_x + gls->l.producingblock_ws * i,
-                        gls->l.producingblock_y2, pb->width(), pb->height());
+        pb->setGeometry(pb_base_x + gls->l.producingblock_ws * i,
+                        pb_base_y + gls->l.producingblock_y2, pb->width(), pb->height());
         pb->show();
         i++;
     }
@@ -600,11 +640,19 @@ void Ob::setPlayerColor() {
 }
 
 void Ob::setLayoutByScreen() {
-    qreal ratio = this->screen()->devicePixelRatio();
-    int w       = this->screen()->geometry().width() * ratio;
-    int h       = this->screen()->geometry().height() * ratio;
+    qreal ratio_screen = this->screen()->devicePixelRatio();
+    int gw             = g->_gameInfo.debug.setting.screenWidth;
+    int gh             = g->_gameInfo.debug.setting.screenHeight;
+    int sw             = this->screen()->size().width();
+    int sh             = this->screen()->size().height();
 
-    gls->loadLayoutSetting(w, h, ratio);
+    qreal ratio = 1.0;
+    if (gw != 0) {
+        ratio = sw * ratio_screen / gw;
+    }
+
+    std::cout << ratio_screen << " " << ratio << std::endl;
+    gls->loadLayoutSetting(sw, sh, ratio);
 }
 
 bool Ob::checkEqual(const std::string &p1, const std::string &p2, const std::string &p1prev,
@@ -668,6 +716,8 @@ void Ob::detectGame() {
     }
 
     if (g->_gameInfo.valid && (g->_gameInfo.isObserver || Ra2ob::GOODINTENTION)) {
+        setLayoutByScreen();
+        setPanelByScreen();
         refreshPlayerStatus();
         refreshUbs();
         refreshPanel();

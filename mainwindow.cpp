@@ -68,6 +68,11 @@ MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     connect(ui->btn_sidebar_reset, &QPushButton::clicked, this,
             &MainWindow::onSidebarResetButtonClicked);
 
+    initPosition(_cfgm->getBuildingqueuePosition());
+    connect(ui->rb_left, &QRadioButton::toggled, this, &MainWindow::onRbLeftClicked);
+    connect(ui->rb_right, &QRadioButton::toggled, this, &MainWindow::onRbRightClicked);
+    _cfgm->givePositionToGlobalsetting();
+
     tray = new Tray(this);
     connect(tray, SIGNAL(showSetting()), this, SLOT(showSetting()));
     connect(tray, SIGNAL(quit()), this, SLOT(quit()));
@@ -153,6 +158,14 @@ void MainWindow::initLanguage(QString language) {
     ui->rb_English->setChecked(true);
 }
 
+void MainWindow::initPosition(QString position) {
+    if (position == "Left") {
+        ui->rb_left->setChecked(true);
+        return;
+    }
+    ui->rb_right->setChecked(true);
+}
+
 void MainWindow::onRbEnglishClicked() {
     ui->btn_reload->show();
     _cfgm->setLanguage("en_US");
@@ -210,6 +223,16 @@ void MainWindow::onBtnUpdatePlayerClicked() {
 
     gls->sb.p1_score = p1_s;
     gls->sb.p2_score = p2_s;
+}
+
+void MainWindow::onRbLeftClicked() {
+    _cfgm->setBuildingqueuePosition("Left");
+    _cfgm->givePositionToGlobalsetting();
+}
+
+void MainWindow::onRbRightClicked() {
+    _cfgm->setBuildingqueuePosition("Right");
+    _cfgm->givePositionToGlobalsetting();
 }
 
 void MainWindow::updatePlayername() {

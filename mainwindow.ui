@@ -370,9 +370,9 @@
       <property name="geometry">
        <rect>
         <x>170</x>
-        <y>64</y>
+        <y>50</y>
         <width>151</width>
-        <height>16</height>
+        <height>20</height>
        </rect>
       </property>
       <property name="orientation">
@@ -383,7 +383,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>60</y>
+        <y>50</y>
         <width>131</width>
         <height>21</height>
        </rect>
@@ -409,7 +409,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>100</y>
+        <y>80</y>
         <width>131</width>
         <height>21</height>
        </rect>
@@ -422,7 +422,7 @@
       <property name="geometry">
        <rect>
         <x>170</x>
-        <y>100</y>
+        <y>80</y>
         <width>71</width>
         <height>21</height>
        </rect>
@@ -435,7 +435,7 @@
       <property name="geometry">
        <rect>
         <x>250</x>
-        <y>100</y>
+        <y>80</y>
         <width>71</width>
         <height>21</height>
        </rect>
@@ -578,6 +578,61 @@
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
+     <widget class="QLabel" name="lb_bqposition">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>110</y>
+        <width>151</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Building Queue Position:</string>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>100</y>
+        <width>161</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QGroupBox { border: 0px; margin-top: 0.5em; }</string>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <widget class="QRadioButton" name="rb_right">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>10</y>
+         <width>71</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Right</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="rb_left">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>71</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Left</string>
+       </property>
+      </widget>
+     </widget>
     </widget>
     <widget class="QWidget" name="About">
      <attribute name="title">
@@ -624,8 +679,11 @@
         <height>16</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string notr="true"/>
+      </property>
       <property name="text">
-       <string>Version: 0.1.6 alpha</string>
+       <string>Version: 0.1.7 alpha</string>
       </property>
      </widget>
      <widget class="QLabel" name="lb_author">
@@ -720,7 +778,7 @@
      <x>0</x>
      <y>0</y>
      <width>525</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

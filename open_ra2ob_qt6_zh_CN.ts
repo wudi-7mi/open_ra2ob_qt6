@@ -200,10 +200,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>Version: 0.1.5 alpha</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Author: wudi7mi@gmail.com</source>
         <translation></translation>
     </message>
@@ -219,34 +215,50 @@
         <source>Match not started.</source>
         <translation>比赛还未开始。</translation>
     </message>
+    <message>
+        <source>Building Queue Position:</source>
+        <translation>建造队列位置：</translation>
+    </message>
+    <message>
+        <source>Right</source>
+        <translation>右侧</translation>
+    </message>
+    <message>
+        <source>Left</source>
+        <translation>左侧</translation>
+    </message>
+    <message>
+        <source>Version: 0.1.7 alpha</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>Ob</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>PlayerInfo</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#000000;&quot;&gt;Player Name&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#000000;&quot;&gt;Balance&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>ProducingBlock</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -280,14 +292,14 @@
     </message>
     <message>
         <source>Open_Ra2ob</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>Unitblock</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 </TS>

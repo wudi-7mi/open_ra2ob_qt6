@@ -28,6 +28,9 @@ public:
     float getOpacity();
     bool setSidepanelColor(QColor qc);
     QColor getSidepanelColor();
+    QString getBuildingqueuePosition();
+    void givePositionToGlobalsetting();
+    bool setBuildingqueuePosition(QString position);
     QJsonArray getPlayernameList();
     bool updatePlayer(QString nickname, QString playername);
     void giveValueToGlobalsetting();

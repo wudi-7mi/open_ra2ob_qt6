@@ -23,6 +23,7 @@ public:
     void setNumber(int n);
     void setColor(std::string color);
     void setEmpty();
+    void rearrange();
     QPixmap getRadius(QPixmap src, int radius);
 
     QString unit_name;
