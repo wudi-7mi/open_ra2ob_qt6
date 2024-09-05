@@ -4,6 +4,7 @@
 #include <QHideEvent>
 #include <QPainter>
 #include <QProcess>
+#include <QTimer>
 
 #include "./configmanager.h"
 #include "./ui_mainwindow.h"
@@ -82,6 +83,11 @@ MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     connect(ob, &Ob::playernameNeedsUpdate, this, &MainWindow::updatePlayername);
     ui->le_p1nickname->setPlaceholderText(tr("Match not started."));
     ui->le_p2nickname->setPlaceholderText(tr("Match not started."));
+
+    QTimer *mousetimer = new QTimer();
+    connect(mousetimer, SIGNAL(timeout()), this, SLOT(mouseReport()));
+    mousetimer->setInterval(500);
+    mousetimer->start();
 }
 
 void MainWindow::detectShortcutStatus() {
@@ -246,6 +252,16 @@ void MainWindow::updatePlayername() {
 
     ui->le_p1playername->setText(p1_playername);
     ui->le_p2playername->setText(p2_playername);
+}
+
+void MainWindow::mouseReport() {
+    QPoint globalMousePos = QCursor::pos();
+    QRect det             = ob->producingRect;
+    if (det.contains(globalMousePos)) {
+        gls->s.show_producing = false;
+    } else {
+        gls->s.show_producing = true;
+    }
 }
 
 void MainWindow::quit() { qApp->quit(); }

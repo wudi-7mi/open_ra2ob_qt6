@@ -23,6 +23,7 @@ class Ob : public QWidget {
 public:
     explicit Ob(QWidget *parent = nullptr);
     ~Ob();
+    QRect producingRect;
 
 private:
     Ui::Ob *ui;

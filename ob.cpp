@@ -613,20 +613,38 @@ void Ob::refreshProducingBlock() {
         pb_base_y = 80;
     }
 
+    int max_width_pb;
+    int max_height_pb;
+
+    bool show = gls->s.show_producing;
+
     for (auto &pb : pb_1) {
         pb->setGeometry(pb_base_x + gls->l.producingblock_ws * i,
                         pb_base_y + gls->l.producingblock_y1, pb->width(), pb->height());
-        pb->show();
+        if (!show) {
+            pb->hide();
+        } else {
+            pb->show();
+        }
         i++;
     }
+    max_width_pb = gls->l.producingblock_ws * i;
 
     i = 0;
     for (auto &pb : pb_2) {
         pb->setGeometry(pb_base_x + gls->l.producingblock_ws * i,
                         pb_base_y + gls->l.producingblock_y2, pb->width(), pb->height());
-        pb->show();
+        if (!show) {
+            pb->hide();
+        } else {
+            pb->show();
+        }
         i++;
     }
+    max_width_pb =
+        max_width_pb > gls->l.producingblock_ws * i ? max_width_pb : gls->l.producingblock_ws * i;
+    max_height_pb       = gls->l.producingblock_y2 + gls->l.producingblock_h;
+    this->producingRect = QRect(pb_base_x, pb_base_y, max_width_pb, max_height_pb);
 }
 
 void Ob::setPlayerColor() {
@@ -661,7 +679,7 @@ void Ob::setLayoutByScreen() {
         ratio = 1.0 / ratio_screen;
     }
 
-    std::cout << ratio_screen << " " << ratio << std::endl;
+    //    std::cout << ratio_screen << " " << ratio << std::endl;
     gls->loadLayoutSetting(sw, sh, ratio);
 }
 

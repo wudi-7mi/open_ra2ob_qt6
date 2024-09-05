@@ -52,6 +52,7 @@ private slots:
     void onRbRightClicked();
     void updatePlayername();
     void showSetting();
+    void mouseReport();
     void quit();
 
 protected:

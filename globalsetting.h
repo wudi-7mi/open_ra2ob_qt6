@@ -99,6 +99,7 @@ struct Status {
     bool show_all_panel    = true;
     bool show_top_panel    = true;
     bool show_bottom_panel = true;
+    bool show_producing    = true;
 
     bool sc_ctrl_alt_h        = true;
     bool sc_ctrl_alt_pageup   = true;
