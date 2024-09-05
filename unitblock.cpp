@@ -1,6 +1,7 @@
 #include "./unitblock.h"
 
 #include <QFile>
+#include <QFontMetrics>
 #include <QPainter>
 #include <QPainterPath>
 
@@ -13,12 +14,6 @@ Unitblock::Unitblock(QWidget *parent) : QWidget(parent), ui(new Ui::Unitblock) {
 
     gls = &Globalsetting::getInstance();
 
-    QFont font;
-    font.setFamily(layout::OPPO_M);
-    font.setPointSize(11 / gls->l.ratio);
-    lb_num->setFont(font);
-    lb_num->setOutline(Qt::white, QColor(30, 27, 24), 2, true);
-
     rearrange();
 }
 
@@ -30,6 +25,24 @@ Unitblock::~Unitblock() {
 void Unitblock::initUnit(QString name) {
     unit_name = name;
     setImage(name);
+}
+
+void Unitblock::paintEvent(QPaintEvent *) {
+    QPainter painter(this);
+
+    //    QPen lBorder(QColor(20,20,20));
+    //    lBorder.setWidth(2);
+    //    painter.setPen(lBorder);
+
+    //    QString text = lb_num->text();
+    //    QFont font = lb_num->font();
+
+    //    QFontMetrics fm(font);
+    //    QSize ts = fm.size(Qt::TextSingleLine, text);
+
+    //    painter.drawRect(QRect(lb_num->x(), lb_num->y() - 10, ts.width(), ts.height()));
+
+    painter.end();
 }
 
 void Unitblock::setName(QString name) {
@@ -54,8 +67,9 @@ void Unitblock::setImage(QString name) {
     }
 
     QPixmap p = QPixmap(img_str);
-    p         = p.scaled(w, h);
-    ui->img->setPixmap(getRadius(p, 8 / gls->l.ratio));
+
+    p = p.scaled(w, h);
+    ui->img->setPixmap(getRadius(p, 8 * gls->l.ratio));
     ui->img->setGeometry(0, 0, w, h);
 }
 
@@ -80,11 +94,18 @@ QPixmap Unitblock::getRadius(QPixmap src, int radius) {
 }
 
 void Unitblock::setNumber(int n) {
+    QFont font;
+    font.setFamily(layout::OPPO_M);
+    font.setPointSize(11 * gls->l.ratio);
+
+    lb_num->setFont(font);
+    lb_num->setOutline(Qt::white, QColor(30, 27, 24), 2, true);
     lb_num->setText(QString::number(n));
     lb_num->adjustSize();
     int cX = (this->width() - lb_num->width()) / 2;
     int cY = gls->l.unit_bg_y + gls->l.unit_bg_h - lb_num->height();
-    lb_num->setGeometry(cX, cY - 2, lb_num->width(), lb_num->height());
+
+    lb_num->setGeometry(cX, cY - 1, lb_num->width(), lb_num->height());
     lb_num->show();
 
     ui->bg->show();
@@ -93,7 +114,7 @@ void Unitblock::setNumber(int n) {
 void Unitblock::setColor(std::string color) {
     QString q_color = QString::fromStdString("#" + color);
 
-    QString rad = QString::number(8 / gls->l.ratio);
+    QString rad = QString::number(8 * gls->l.ratio);
 
     ui->bg->setStyleSheet("background-color: " + q_color + ";" + "border-bottom-left-radius:" +
                           rad + "px;border-bottom-right-radius:" + rad + "px;");

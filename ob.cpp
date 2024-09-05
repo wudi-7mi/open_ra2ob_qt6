@@ -326,6 +326,13 @@ void Ob::paintBottomPanel(QPainter *painter) {
     credit_1->setText(res_1);
     credit_2->setText(res_2);
 
+    QFont font;
+    font.setFamily(layout::OPPO_M);
+    font.setPointSize(10 * gls->l.ratio);
+
+    credit_1->setFont(font);
+    credit_2->setFont(font);
+
     credit_1->setGeometry(gls->l.bottom_credit_x, gls->l.bottom_credit_y1, gls->l.bottom_credit_w,
                           gls->l.bottom_credit_h);
     credit_2->setGeometry(gls->l.bottom_credit_x, gls->l.bottom_credit_y2, gls->l.bottom_credit_w,
@@ -334,7 +341,7 @@ void Ob::paintBottomPanel(QPainter *painter) {
     // paint map name
     if (lb_mapname == nullptr) {
         lb_mapname = new QOutlineLabel(this);
-        lb_mapname->setFont(QFont(layout::OPPO_M, 12));
+        lb_mapname->setFont(QFont(layout::OPPO_M, 12 * gls->l.ratio));
         lb_mapname->setStyleSheet("color: white");
     }
 
@@ -346,15 +353,16 @@ void Ob::paintBottomPanel(QPainter *painter) {
     lb_mapname->setText(mapName);
     lb_mapname->adjustSize();
 
-    int tw = lb_mapname->width();
+    int fw = lb_mapname->width();
+    int fh = lb_mapname->height();
     int px = 0;
-    int py = gls->l.bottom_y - 28 - 1;
+    int py = gls->l.bottom_y - fh - 2;
 
     painter->setOpacity(gls->c.top_panel_opacity);
-    painter->fillRect(QRect(px, py, tw + 10, 28), gls->c.sidepanel_color);
+    painter->fillRect(QRect(px, py, fw + 10, fh + 1), gls->c.sidepanel_color);
     painter->setOpacity(1);
 
-    lb_mapname->setGeometry(px + 5, py - 7, tw, 28);
+    lb_mapname->setGeometry(px + 5, py - 2, fw, fh);
     lb_mapname->show();
     return;
 }
@@ -646,9 +654,11 @@ void Ob::setLayoutByScreen() {
     int sw             = this->screen()->size().width();
     int sh             = this->screen()->size().height();
 
-    qreal ratio = 1.0;
+    qreal ratio;
     if (gw != 0) {
-        ratio = sw * ratio_screen / gw;
+        ratio = 1.0 * sw / gw;
+    } else {
+        ratio = 1.0 / ratio_screen;
     }
 
     std::cout << ratio_screen << " " << ratio << std::endl;

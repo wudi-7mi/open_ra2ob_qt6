@@ -69,10 +69,13 @@ struct Layout {
     int bottom_credit_w;
     int bottom_credit_h;
     int producingblock_x;
-    int producingblock_wh;
+    int producingblock_w;
+    int producingblock_h;
     int producingblock_ws;
+    int producingblock_hs;
     int producingblock_y1;
     int producingblock_y2;
+    int producingblock_space;
     int producing_img_x;
     int producing_img_y;
     int producing_img_w;

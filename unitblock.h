@@ -18,6 +18,7 @@ public:
     explicit Unitblock(QWidget *parent = nullptr);
     ~Unitblock();
     void initUnit(QString name);
+    void paintEvent(QPaintEvent *);
     void setName(QString name);
     void setImage(QString name);
     void setNumber(int n);

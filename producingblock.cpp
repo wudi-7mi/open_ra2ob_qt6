@@ -26,7 +26,7 @@ ProducingBlock::ProducingBlock(QWidget *parent) : QWidget(parent), ui(new Ui::Pr
     lb_number->setFont(font);
     lb_number->setOutline(Qt::white, QColor(30, 27, 24), 3, true);
 
-    this->setGeometry(0, 0, gls->l.producingblock_wh, gls->l.producingblock_wh);
+    this->setGeometry(0, 0, gls->l.producingblock_w, gls->l.producingblock_h);
     ui->lb_img->setGeometry(gls->l.producing_img_x, gls->l.producing_img_y, gls->l.producing_img_w,
                             gls->l.producing_img_h);
 }
@@ -69,20 +69,16 @@ void ProducingBlock::paintEvent(QPaintEvent *) {
 
     int i       = 0;
     qreal ratio = gls->l.producing_progress_w * 1.0 / complete;
-    while (i < blockProgress) {
-        int tick = i * ratio;
-        painter.fillRect(QRect(gls->l.producing_progress_x + tick, gls->l.producing_progress_y, 1,
-                               gls->l.producing_progress_h),
-                         getDarkerColor(blockColor));
-        i++;
-    }
-    while (i < complete) {
-        int tick = i * ratio;
-        painter.fillRect(QRect(gls->l.producing_progress_x + tick, gls->l.producing_progress_y, 1,
-                               gls->l.producing_progress_h),
-                         gls->c.producing_stripe_color);
-        i++;
-    }
+
+    int filled     = blockProgress * ratio;
+    int not_filled = gls->l.producing_progress_w - filled;
+
+    painter.fillRect(QRect(gls->l.producing_progress_x, gls->l.producing_progress_y, filled,
+                           gls->l.producing_progress_h),
+                     blockColor);
+    painter.fillRect(QRect(gls->l.producing_progress_x + filled, gls->l.producing_progress_y,
+                           not_filled, gls->l.producing_progress_h),
+                     gls->c.producing_stripe_color);
 
     painter.end();
 }
