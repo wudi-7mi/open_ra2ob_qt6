@@ -1,4 +1,7 @@
+#include <shlobj.h>
+
 #include <QApplication>
+#include <QFontDatabase>
 #include <QLocale>
 #include <QMessageBox>
 #include <QObject>
@@ -13,6 +16,9 @@
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
+
+    QFontDatabase::addApplicationFont(":/fonts/assets/fonts/OPlusSans3-Medium.ttf");
+    QFontDatabase::addApplicationFont(":/fonts/assets/fonts/OPlusSans3-Bold.ttf");
 
     NEFilter filter;
     a.installNativeEventFilter(&filter);
@@ -34,10 +40,18 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    BOOL isAdmin = IsUserAnAdmin();
+    if (!isAdmin) {
+        QMessageBox::information(NULL, QObject::tr("tips"),
+                                 QObject::tr("Please run this program as admin."));
+        qApp->quit();
+        return -1;
+    }
+
     static QSharedMemory *singleApp = new QSharedMemory("SingleApp");
     if (!singleApp->create(1)) {
         QMessageBox::information(NULL, QObject::tr("tips"),
-                                 QObject::tr("The program is already running"));
+                                 QObject::tr("The program is already running."));
         qApp->quit();
         return -1;
     }

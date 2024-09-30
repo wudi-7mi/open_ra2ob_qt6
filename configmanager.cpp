@@ -8,6 +8,7 @@
 
 ConfigManager::ConfigManager(QObject *parent) : QObject(parent) {
     _config_path = "./config/config.json";
+    gls          = &Globalsetting::getInstance();
 }
 
 bool ConfigManager::checkConfig() {
@@ -86,4 +87,127 @@ float ConfigManager::getOpacity() {
     }
 
     return 0.0;
+}
+
+bool ConfigManager::setSidepanelColor(QColor qc) {
+    _config_json["Sidepanel Color"] = qc.name();
+    return writeConfig(_config_json);
+}
+
+QColor ConfigManager::getSidepanelColor() {
+    if (_config_json.contains("Sidepanel Color")) {
+        QJsonValue sidepanelColor = _config_json["Sidepanel Color"];
+
+        if (sidepanelColor.isString()) {
+            QColor c;
+
+            c.setNamedColor(sidepanelColor.toString());
+            return c;
+        }
+    }
+
+    return QColor("midnightblue");
+}
+
+QString ConfigManager::getBuildingqueuePosition() {
+    if (_config_json.contains("Building Queue Position")) {
+        QJsonValue position = _config_json["Building Queue Position"];
+
+        if (position.isString()) {
+            QString p = position.toString();
+            return p;
+        }
+    }
+
+    return QString("Left");
+}
+
+bool ConfigManager::setBuildingqueuePosition(QString position) {
+    _config_json["Building Queue Position"] = position;
+    return writeConfig(_config_json);
+}
+
+void ConfigManager::givePositionToGlobalsetting() {
+    gls->buildingQueuePosition = getBuildingqueuePosition();
+}
+
+QJsonArray ConfigManager::getPlayernameList() {
+    if (_config_json.contains("Players")) {
+        QJsonValue player_json = _config_json["Players"];
+
+        if (player_json.type() == QJsonValue::Array) {
+            QJsonArray player_list = player_json.toArray();
+
+            return player_list;
+        }
+    }
+    return QJsonArray();
+}
+
+QString ConfigManager::findNameByNickname(QString nickname) {
+    QString name;
+
+    if (nickname.isEmpty()) {
+        return name;
+    }
+
+    QJsonArray player_list = getPlayernameList();
+    for (auto it : player_list) {
+        if (it.type() == QJsonValue::Object) {
+            QJsonObject p       = it.toObject();
+            QString jnickname   = p.value("nickname").toString();
+            QString jplayername = p.value("playername").toString();
+
+            if (QString::compare(nickname, jnickname) == 0) {
+                name = jplayername;
+            }
+        }
+    }
+    return name;
+}
+
+void ConfigManager::giveValueToGlobalsetting() { gls->player_list = getPlayernameList(); }
+
+bool ConfigManager::insertPlayer(QString nickname, QString playername) {
+    QJsonArray player_list = getPlayernameList();
+    QJsonObject p;
+
+    p.insert("nickname", nickname);
+    p.insert("playername", playername);
+
+    player_list.append(p);
+    _config_json["Players"] = player_list;
+    giveValueToGlobalsetting();
+    return writeConfig(_config_json);
+}
+
+bool ConfigManager::overwritePlayer(QString nickname, QString playername) {
+    QJsonArray player_list = getPlayernameList();
+    QJsonObject p;
+
+    p.insert("nickname", nickname);
+    p.insert("playername", playername);
+
+    for (int i = 0; i < player_list.size(); ++i) {
+        QJsonObject obj   = player_list[i].toObject();
+        QString jnickname = obj.value("nickname").toString();
+        if (QString::compare(jnickname, nickname) == 0) {
+            player_list.removeAt(i);
+            player_list.insert(i, p);
+            break;
+        }
+    }
+
+    _config_json["Players"] = player_list;
+    giveValueToGlobalsetting();
+    return writeConfig(_config_json);
+}
+
+bool ConfigManager::updatePlayer(QString nickname, QString playername) {
+    QString found = findNameByNickname(nickname);
+
+    if (found.isEmpty()) {
+        return insertPlayer(nickname, playername);
+    }
+    return overwritePlayer(nickname, playername);
 }

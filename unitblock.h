@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <string>
 
+#include "./globalsetting.h"
 #include "./qoutlinelabel.h"
 
 namespace Ui {
@@ -17,16 +18,20 @@ public:
     explicit Unitblock(QWidget *parent = nullptr);
     ~Unitblock();
     void initUnit(QString name);
+    void paintEvent(QPaintEvent *);
     void setName(QString name);
     void setImage(QString name);
     void setNumber(int n);
     void setColor(std::string color);
     void setEmpty();
+    void rearrange();
     QPixmap getRadius(QPixmap src, int radius);
 
     QString unit_name;
 
     QOutlineLabel *lb_num;
+
+    Globalsetting *gls;
 
 private:
     Ui::Unitblock *ui;

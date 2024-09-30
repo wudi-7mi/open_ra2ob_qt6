@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+#include "./globalsetting.h"
 #include "Ra2ob/Ra2ob"
 
 namespace Ui {
@@ -24,9 +25,12 @@ public:
     void setCountryByIndex(int index);
     void setPowerByIndex(int index);
 
+    void rearrange();
+
     int getInsufficientFund(int index);
 
     Ra2ob::Game *g;
+    Globalsetting *gls;
     bool mirrored = false;
 
 private:

@@ -4,6 +4,7 @@
 #include <QHideEvent>
 #include <QPainter>
 #include <QProcess>
+#include <QTimer>
 
 #include "./configmanager.h"
 #include "./ui_mainwindow.h"
@@ -27,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     ui->lb_bilibili->setText("<a href=\"https://space.bilibili.com/1361231649\">" +
                              tr("My bilibili") + "</a>");
 
+    gls = &Globalsetting::getInstance();
+
     _cfgm = cfgm;
     if (cfgm == nullptr) {
         _cfgm = new ConfigManager();
@@ -39,6 +42,10 @@ MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     connect(ui->rb_Chinese, &QRadioButton::toggled, this, &MainWindow::onRbChineseClicked);
     connect(ui->btn_reload, &QPushButton::clicked, this, &MainWindow::onBtnReloadClicked);
 
+    _cfgm->giveValueToGlobalsetting();
+    connect(ui->btn_updateplayer, &QPushButton::clicked, this,
+            &MainWindow::onBtnUpdatePlayerClicked);
+
     ui->hs_opacity->setMaximum(10);
     ui->hs_opacity->setMinimum(0);
     ui->hs_opacity->setSingleStep(1);
@@ -46,14 +53,41 @@ MainWindow::MainWindow(QWidget *parent, ConfigManager *cfgm)
     ui->hs_opacity->setValue((_cfgm->getOpacity() * 10) / 1);
     connect(ui->hs_opacity, SIGNAL(valueChanged(int)), this, SLOT(onOpacityChanged(int)));
 
+    QFont f(layout::OPPO_M, 10);
+    ui->lb_author->setFont(f);
+    ui->lb_bilibili->setFont(f);
+    ui->lb_feedback->setFont(f);
+    ui->lb_github->setFont(f);
+    ui->lb_name->setFont(f);
+    ui->lb_version->setFont(f);
+
+    cd = new QColorDialog();
+    cd->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::MSWindowsFixedSizeDialogHint);
+    gls->c.sidepanel_color = _cfgm->getSidepanelColor();
+    connect(cd, &QColorDialog::currentColorChanged, this, &MainWindow::onColorChanged);
+    connect(ui->btn_sidebar, &QPushButton::clicked, this, &MainWindow::onSidebarButtonClicked);
+    connect(ui->btn_sidebar_reset, &QPushButton::clicked, this,
+            &MainWindow::onSidebarResetButtonClicked);
+
+    initPosition(_cfgm->getBuildingqueuePosition());
+    connect(ui->rb_left, &QRadioButton::toggled, this, &MainWindow::onRbLeftClicked);
+    connect(ui->rb_right, &QRadioButton::toggled, this, &MainWindow::onRbRightClicked);
+    _cfgm->givePositionToGlobalsetting();
+
     tray = new Tray(this);
     connect(tray, SIGNAL(showSetting()), this, SLOT(showSetting()));
     connect(tray, SIGNAL(quit()), this, SLOT(quit()));
     tray->setupTray();
 
     ob = new Ob();
+    connect(ob, &Ob::playernameNeedsUpdate, this, &MainWindow::updatePlayername);
+    ui->le_p1nickname->setPlaceholderText(tr("Match not started."));
+    ui->le_p2nickname->setPlaceholderText(tr("Match not started."));
 
-    gls = &Globalsetting::getInstance();
+    QTimer *mousetimer = new QTimer();
+    connect(mousetimer, SIGNAL(timeout()), this, SLOT(mouseReport()));
+    mousetimer->setInterval(500);
+    mousetimer->start();
 }
 
 void MainWindow::detectShortcutStatus() {
@@ -92,8 +126,6 @@ void MainWindow::detectShortcutStatus() {
     }
 }
 
-void MainWindow::changeOpacityPreview() {}
-
 void MainWindow::drawPreview(QWidget *widget) {
     QPainter painter(widget);
 
@@ -106,8 +138,11 @@ void MainWindow::drawPreview(QWidget *widget) {
 
     QRect r(px, py, pw, ph);
     painter.setOpacity(gls->c.top_panel_opacity);
-    painter.fillRect(r, QColor("red"));
+    painter.fillRect(r, gls->c.preview_color);
     painter.setOpacity(1);
+
+    QRect r_bottom(px, py + ph, pw * 2 + 1, 20);
+    painter.fillRect(r_bottom, gls->c.sidepanel_color);
     update();
 }
 
@@ -129,6 +164,14 @@ void MainWindow::initLanguage(QString language) {
     ui->rb_English->setChecked(true);
 }
 
+void MainWindow::initPosition(QString position) {
+    if (position == "Left") {
+        ui->rb_left->setChecked(true);
+        return;
+    }
+    ui->rb_right->setChecked(true);
+}
+
 void MainWindow::onRbEnglishClicked() {
     ui->btn_reload->show();
     _cfgm->setLanguage("en_US");
@@ -142,15 +185,83 @@ void MainWindow::onRbChineseClicked() {
 void MainWindow::onBtnReloadClicked() { qApp->exit(773); }
 
 void MainWindow::onOpacityChanged(int opacity) {
-    changeOpacityPreview();
     float value = opacity * 1.0 / 10;
+
     _cfgm->setOpacity(value);
     gls->c.top_panel_opacity = value;
+}
+
+void MainWindow::onSidebarButtonClicked() { cd->show(); }
+
+void MainWindow::onSidebarResetButtonClicked() {
+    QColor color("midnightblue");
+    _cfgm->setSidepanelColor(color);
+    gls->c.sidepanel_color = color;
+    ui->btn_sidebar_reset->setDisabled(true);
+}
+
+void MainWindow::onColorChanged(const QColor &color) {
+    _cfgm->setSidepanelColor(color);
+    gls->c.sidepanel_color = color;
+    ui->btn_sidebar_reset->setDisabled(false);
 }
 
 void MainWindow::showSetting() {
     this->showNormal();
     this->activateWindow();
+}
+
+void MainWindow::onBtnUpdatePlayerClicked() {
+    QString p1_nickname   = ui->le_p1nickname->text();
+    QString p1_playername = ui->le_p1playername->text();
+    QString p2_nickname   = ui->le_p2nickname->text();
+    QString p2_playername = ui->le_p2playername->text();
+
+    if (!p1_playername.isEmpty()) {
+        _cfgm->updatePlayer(p1_nickname, p1_playername);
+    }
+    if (!p2_playername.isEmpty()) {
+        _cfgm->updatePlayer(p2_nickname, p2_playername);
+    }
+
+    int p1_s = ui->sb_p1score->value();
+    int p2_s = ui->sb_p2score->value();
+
+    gls->sb.p1_score = p1_s;
+    gls->sb.p2_score = p2_s;
+}
+
+void MainWindow::onRbLeftClicked() {
+    _cfgm->setBuildingqueuePosition("Left");
+    _cfgm->givePositionToGlobalsetting();
+}
+
+void MainWindow::onRbRightClicked() {
+    _cfgm->setBuildingqueuePosition("Right");
+    _cfgm->givePositionToGlobalsetting();
+}
+
+void MainWindow::updatePlayername() {
+    QString p1_nickname   = gls->sb.p1_nickname;
+    QString p2_nickname   = gls->sb.p2_nickname;
+    QString p1_playername = gls->findNameByNickname(p1_nickname);
+    QString p2_playername = gls->findNameByNickname(p2_nickname);
+
+    ui->le_p1nickname->setText(p1_nickname);
+    ui->le_p2nickname->setText(p2_nickname);
+
+    ui->le_p1playername->setText(p1_playername);
+    ui->le_p2playername->setText(p2_playername);
+}
+
+void MainWindow::mouseReport() {
+    QPoint globalMousePos = QCursor::pos();
+    QRect det             = ob->producingRect;
+    if (det.contains(globalMousePos)) {
+        gls->s.show_producing = false;
+    } else {
+        gls->s.show_producing = true;
+    }
 }
 
 void MainWindow::quit() { qApp->quit(); }

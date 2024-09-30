@@ -22,15 +22,9 @@ border-radius: 6px;}</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>69</width>
-     <height>55</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
      <width>60</width>
      <height>48</height>
-    </size>
+    </rect>
    </property>
    <property name="styleSheet">
     <string notr="true"/>

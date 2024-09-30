@@ -9,97 +9,112 @@ Globalsetting& Globalsetting::getInstance() {
     return instance;
 }
 
-void Globalsetting::loadLayoutSetting(int preset, int width, int height) {
-    if (preset == 0) {
-        l.w                = width;
-        l.h                = height;
-        l.right_bottom_h   = l.h - layout::MAP_H - layout::RIGHT_HEADER_H + 1;
-        l.m                = l.w / 2;
-        l.right_x          = l.w - layout::RIGHT_W;
-        l.map_x            = l.w - layout::RIGHT_W + layout::RIGHT_LEFTBORDER_W - 1;
-        l.map_y            = layout::RIGHT_HEADER_H - 1;
-        l.right_bottom_h   = l.h - layout::MAP_H - l.map_y;
-        l.unitblocks       = l.right_bottom_h / layout::UNIT_HS;
-        l.top_m            = l.right_x / 2;
-        l.top_h            = 90;
-        l.top_w            = 920;
-        l.unit_x           = l.right_x + 11;
-        l.unit_y           = layout::RIGHT_HEADER_H + layout::MAP_H + 6;
-        l.icon_side        = 64;
-        l.bottom_y         = l.h - 32;
-        l.bottom_y1        = l.bottom_y;
-        l.bottom_y2        = l.bottom_y + layout::BOTTOM_HS + 3;
-        l.bottom_fill_y1   = l.bottom_y1 + 1;
-        l.bottom_fill_y2   = l.bottom_y2 + 1;
-        l.bottom_credit_y1 = l.bottom_y1;
-        l.bottom_credit_y2 = l.bottom_y2;
-        return;
-    }
+void Globalsetting::loadLayoutSetting(int width, int height, float ratio) {
+    l.ratio = ratio;
 
-    if (preset == 1) {
-        l.w                = layout::SC1K_W;
-        l.h                = layout::SC1K_H;
-        l.m                = layout::SC1K_M;
-        l.right_x          = layout::SC1K_RIGHT_X;
-        l.map_x            = layout::SC1K_MAP_X;
-        l.map_y            = layout::SC1K_MAP_Y;
-        l.right_bottom_h   = layout::SC1K_RIGHT_BOTTOM_H;
-        l.unitblocks       = layout::SC1K_UNITBLOCKS;
-        l.top_m            = layout::SC1K_TOP_M;
-        l.top_h            = layout::SC1K_TOP_H;
-        l.top_w            = layout::SC1K_TOP_W;
-        l.unit_x           = layout::SC1K_UNIT_X;
-        l.unit_y           = layout::SC1K_UNIT_Y;
-        l.icon_side        = layout::SC1K_ICON_SIDE;
-        l.bottom_y         = layout::SC1K_BOTTOM_Y;
-        l.bottom_y1        = layout::SC1K_BOTTOM_Y1;
-        l.bottom_y2        = layout::SC1K_BOTTOM_Y2;
-        l.bottom_fill_y1   = layout::SC1K_BOTTOM_FILL_Y1;
-        l.bottom_fill_y2   = layout::SC1K_BOTTOM_FILL_Y2;
-        l.bottom_credit_y1 = layout::SC1K_BOTTOM_CREDIT_Y1;
-        l.bottom_credit_y2 = layout::SC1K_BOTTOM_CREDIT_Y2;
-    }
+    l.w                   = width;
+    l.h                   = height;
+    l.m                   = l.w / 2;
+    l.right_x             = l.w - layout::RIGHT_W * ratio;
+    l.right_w             = layout::RIGHT_W * ratio;
+    l.right_header_h      = layout::RIGHT_HEADER_H * ratio;
+    l.right_leftborder_w  = layout::RIGHT_LEFTBORDER_W * ratio;
+    l.right_rightborder_w = layout::RIGHT_RIGHTBORDER_W * ratio;
+    l.right_rightborder_x = layout::RIGHT_RIGHTBORDER_X * ratio;
+    l.right_border_h      = layout::RIGHT_BORDER_H * ratio;
+    l.right_mapname_h     = layout::RIGHT_MAPNAME_H * ratio;
+    l.map_x               = l.w - layout::RIGHT_W * ratio + layout::RIGHT_LEFTBORDER_W * ratio - 1;
+    l.map_y               = layout::RIGHT_HEADER_H * ratio - 1;
+    l.map_w               = layout::MAP_W * ratio;
+    l.map_h               = layout::MAP_H * ratio;
+    l.right_bottom_h      = l.h - layout::MAP_H * ratio - l.map_y;
+    l.top_m               = l.right_x / 2;
+    l.top_w               = 860;
+    l.top_h               = 76;
+    l.top_playername_y    = layout::TOP_PLAYERNAME_Y;
+    l.top_country_x       = layout::TOP_COUNTRY_X;
+    l.top_country_y       = layout::TOP_COUNTRY_Y;
+    l.top_country_w       = layout::TOP_COUNTRY_W;
+    l.top_country_h       = layout::TOP_COUNTRY_H;
+    l.top_i_x             = layout::TOP_I_X;
+    l.top_i_wh            = layout::TOP_I_WH;
+    l.top_ibalance_y      = layout::TOP_IBALANCE_Y;
+    l.top_ipower_y        = layout::TOP_IPOWER_Y;
+    l.top_balance_x       = layout::TOP_BALANCE_X;
+    l.top_balance_y       = layout::TOP_BALANCE_Y;
+    l.top_balance_w       = layout::TOP_BALANCE_W;
+    l.top_balance_h       = layout::TOP_BALANCE_H;
+    l.top_power_x         = layout::TOP_POWER_X;
+    l.top_power_y         = layout::TOP_POWER_Y;
+    l.top_power_w         = layout::TOP_POWER_W;
+    l.top_power_h         = layout::TOP_POWER_H;
+    l.if_bar_h            = layout::IF_BAR_H * ratio;
+    l.unit_x              = l.right_x + 11 * ratio;
+    l.unit_y              = layout::RIGHT_HEADER_H * ratio + layout::MAP_H * ratio + 6 * ratio;
+    l.unit_w              = layout::UNIT_W * ratio;
+    l.unit_ws             = layout::UNIT_WS * ratio;
+    l.unit_h              = layout::UNIT_H * ratio;
+    l.unit_hs             = layout::UNIT_HS * ratio;
+    l.unit_bg_y           = 40 * ratio;
+    l.unit_bg_h           = layout::UNIT_BG_H * ratio;
+    l.unitblocks          = l.right_bottom_h / (layout::UNIT_HS * ratio);
+    l.unitblock_y         = layout::UNITBLOCK_Y;
+    l.icon_side           = 32 * ratio;
+    l.bottom_h            = layout::BOTTOM_H * ratio;
+    l.bottom_y            = l.h - l.bottom_h;
+    l.bottom_y1           = l.bottom_y;
+    l.bottom_y2           = l.bottom_y + (layout::BOTTOM_HS + 3) * ratio;
+    l.bottom_hs           = layout::BOTTOM_HS * ratio;
+    l.bottom_fill_y1      = l.bottom_y1 + 1;
+    l.bottom_fill_y2      = l.bottom_y2 + 1;
+    l.bottom_fill_h       = layout::BOTTOM_FILL_H * ratio;
+    l.bottom_credit_x     = layout::BOTTOM_CREDIT_X;
+    l.bottom_credit_y1    = l.bottom_y1;
+    l.bottom_credit_y2    = l.bottom_y2;
+    l.bottom_credit_w     = layout::BOTTOM_CREDIT_W * ratio;
+    l.bottom_credit_h     = layout::BOTTOM_CREDIT_H * ratio;
 
-    if (preset == 2) {
-        l.w                = layout::SC2K_W;
-        l.h                = layout::SC2K_H;
-        l.m                = layout::SC2K_M;
-        l.right_x          = layout::SC2K_RIGHT_X;
-        l.map_x            = layout::SC2K_MAP_X;
-        l.map_y            = layout::SC2K_MAP_Y;
-        l.right_bottom_h   = layout::SC2K_RIGHT_BOTTOM_H;
-        l.unitblocks       = layout::SC2K_UNITBLOCKS;
-        l.top_m            = layout::SC2K_TOP_M;
-        l.top_h            = layout::SC2K_TOP_H;
-        l.top_w            = layout::SC2K_TOP_W;
-        l.unit_x           = layout::SC2K_UNIT_X;
-        l.unit_y           = layout::SC2K_UNIT_Y;
-        l.icon_side        = layout::SC2K_ICON_SIDE;
-        l.bottom_y         = layout::SC2K_BOTTOM_Y;
-        l.bottom_y1        = layout::SC2K_BOTTOM_Y1;
-        l.bottom_y2        = layout::SC2K_BOTTOM_Y2;
-        l.bottom_fill_y1   = layout::SC2K_BOTTOM_FILL_Y1;
-        l.bottom_fill_y2   = layout::SC2K_BOTTOM_FILL_Y2;
-        l.bottom_credit_y1 = layout::SC2K_BOTTOM_CREDIT_Y1;
-        l.bottom_credit_y2 = layout::SC2K_BOTTOM_CREDIT_Y2;
-    }
+    l.producingblock_x = l.top_m + l.top_w / 2 + layout::PRODUCINGBLOCK_X;
 
-    dumpLayout();
+    l.producing_img_x      = layout::PRODUCING_IMG_X;
+    l.producing_img_y      = layout::PRODUCING_IMG_Y;
+    l.producing_img_w      = layout::PRODUCING_IMG_W;
+    l.producing_img_h      = layout::PRODUCING_IMG_H;
+    l.producing_status_y   = layout::PRODUCING_STATUS_Y;
+    l.producing_number_y   = layout::PRODUCING_NUMBER_Y;
+    l.producing_progress_x = l.producing_img_x;
+    l.producing_progress_y = l.producing_img_y + l.producing_img_h;
+    l.producing_progress_w = layout::PRODUCING_PROGRESS_W;
+    l.producing_progress_h = layout::PRODUCING_PROGRESS_H;
+
+    l.producingblock_space = layout::PRODUCINGBLOCK_SPACE;
+    l.producingblock_w     = l.producing_img_x * 2 + l.producing_img_w;
+    l.producingblock_h     = l.producing_img_y * 2 + l.producing_img_h + l.producing_progress_h;
+    l.producingblock_y1    = layout::PRODUCINGBLOCK_Y;
+    l.producingblock_y2    = l.producingblock_y1 + l.producingblock_h + l.producingblock_space;
+    l.producingblock_ws    = l.producingblock_w + l.producingblock_space;
+    l.producingblock_hs    = l.producingblock_h + l.producingblock_space;
+    return;
 }
 
-void Globalsetting::dumpLayout() {
-    std::cout << "\nw              : " << l.w;
-    std::cout << "\nh              : " << l.h;
-    std::cout << "\nunitblocks     : " << l.unitblocks;
-    std::cout << "\nm              : " << l.m;
-    std::cout << "\nright_x        : " << l.right_x;
-    std::cout << "\nmap_x          : " << l.map_x;
-    std::cout << "\nmap_y          : " << l.map_y;
-    std::cout << "\nright_bottom_h : " << l.right_bottom_h;
-    std::cout << "\ntop_m          : " << l.top_m;
-    std::cout << "\ntop_h          : " << l.top_h;
-    std::cout << "\ntop_w          : " << l.top_w;
-    std::cout << "\nunit_x         : " << l.unit_x;
-    std::cout << "\nunit_y         : " << l.unit_y;
-    std::cout << "\nicon_side      : " << l.icon_side;
+QString Globalsetting::findNameByNickname(QString nickname) {
+    QString name;
+
+    if (nickname.isEmpty()) {
+        return name;
+    }
+
+    const QJsonArray& c_player_list = player_list;
+    for (auto it : c_player_list) {
+        if (it.type() == QJsonValue::Object) {
+            QJsonObject p       = it.toObject();
+            QString jnickname   = p.value("nickname").toString();
+            QString jplayername = p.value("playername").toString();
+
+            if (QString::compare(nickname, jnickname) == 0) {
+                name = jplayername;
+            }
+        }
+    }
+    return name;
 }

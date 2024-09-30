@@ -57,43 +57,23 @@
     </message>
     <message>
         <source>This is an open source spectator tool for Red Alert 2.</source>
-        <translation>这是一个开源的红警2观战插件</translation>
+        <translation>这是一个开源的红警2观战插件。</translation>
     </message>
     <message>
         <source>You can now close this window, this will run in the background.</source>
-        <translation>你现在可以关闭这个窗口，软件会在后台运行</translation>
+        <translation>你现在可以关闭这个窗口，软件会在后台运行。</translation>
     </message>
     <message>
         <source>When you are spectating, the spectator UI will automatically appear.</source>
-        <translation>当你开始观战时，观战界面会自动显示</translation>
+        <translation>当你开始观战时，观战界面会自动显示。</translation>
     </message>
     <message>
         <source>Shortcuts</source>
         <translation>快捷键</translation>
     </message>
     <message>
-        <source>Ctrl+Alt+H</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Hide spectating UI</source>
         <translation>隐藏/显示观战界面</translation>
-    </message>
-    <message>
-        <source>Ctrl+Alt+PageUp</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Ctrl+Alt+PageDown</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Ctrl+Alt+J</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Ctrl+S</source>
-        <translation></translation>
     </message>
     <message>
         <source>Make the score panel clearer</source>
@@ -116,36 +96,8 @@
         <translation>状态</translation>
     </message>
     <message>
-        <source>简体中文</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>English</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Open_Ra2ob_qt6</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Version: 0.1.0 alpha</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Author: wudi7mi@gmail.com</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>feedback</source>
         <translation>意见反馈</translation>
-    </message>
-    <message>
-        <source>bilibili</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>github</source>
-        <translation></translation>
     </message>
     <message>
         <source>Normal</source>
@@ -157,7 +109,7 @@
     </message>
     <message>
         <source>Please use GDI renderer and borderless windowed mode.</source>
-        <translation>战网和CNC使用GDI补丁并选择无边框窗口；兰博平台选择拉伸全屏或无边框窗口</translation>
+        <translation type="vanished">战网和CNC使用GDI补丁并选择无边框窗口；兰博平台选择拉伸全屏或无边框窗口</translation>
     </message>
     <message>
         <source>Scoreboard Opacity:</source>
@@ -174,6 +126,110 @@
     <message>
         <source>My bilibili</source>
         <translation>我的b站</translation>
+    </message>
+    <message>
+        <source>Sidepanel Color:</source>
+        <translation>侧边面板颜色：</translation>
+    </message>
+    <message>
+        <source>Choose</source>
+        <translation>选择</translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation>重置</translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+H</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+PageUp</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+PageDown</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Ctrl+Alt+J</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Ctrl+S</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Game Status: </source>
+        <translation>游戏状态： </translation>
+    </message>
+    <message>
+        <source>Not running</source>
+        <translation>未运行</translation>
+    </message>
+    <message>
+        <source>简体中文</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>English</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Scoreboard:</source>
+        <translation>计分板：</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>更新</translation>
+    </message>
+    <message>
+        <source>Nickname</source>
+        <translation>平台昵称</translation>
+    </message>
+    <message>
+        <source>Playername</source>
+        <translation>玩家名称</translation>
+    </message>
+    <message>
+        <source>Score</source>
+        <translation>分数</translation>
+    </message>
+    <message>
+        <source>Open_Ra2ob_qt6</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Author: wudi7mi@gmail.com</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>bilibili</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>github</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Match not started.</source>
+        <translation>比赛还未开始。</translation>
+    </message>
+    <message>
+        <source>Building Queue Position:</source>
+        <translation>建造队列位置：</translation>
+    </message>
+    <message>
+        <source>Right</source>
+        <translation>右侧</translation>
+    </message>
+    <message>
+        <source>Left</source>
+        <translation>左侧</translation>
+    </message>
+    <message>
+        <source>Version: 0.1.7 alpha</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -213,7 +269,15 @@
     </message>
     <message>
         <source>The program is already running</source>
-        <translation>程序已经运行</translation>
+        <translation type="vanished">程序已经运行</translation>
+    </message>
+    <message>
+        <source>Please run this program as admin.</source>
+        <translation>请用管理员身份运行。</translation>
+    </message>
+    <message>
+        <source>The program is already running.</source>
+        <translation>程序已经运行。</translation>
     </message>
 </context>
 <context>

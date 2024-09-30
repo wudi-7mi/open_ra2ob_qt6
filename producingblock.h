@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <string>
 
+#include "./globalsetting.h"
 #include "./qoutlinelabel.h"
 
 namespace Ui {
@@ -36,6 +37,8 @@ public:
 
     QOutlineLabel *lb_status;
     QOutlineLabel *lb_number;
+
+    Globalsetting *gls;
 
 private:
     Ui::ProducingBlock *ui;

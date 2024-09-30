@@ -4,22 +4,27 @@
 #include <QString>
 #include <string>
 
+#include "./layoutsetting.h"
 #include "./ui_playerinfo.h"
 
 PlayerInfo::PlayerInfo(QWidget* parent) : QWidget(parent), ui(new Ui::PlayerInfo) {
     ui->setupUi(this);
 
-    g = &Ra2ob::Game::getInstance();
+    g   = &Ra2ob::Game::getInstance();
+    gls = &Globalsetting::getInstance();
 
     ui->lb_playerName->setStyleSheet("color: #ffffff;");
-    QFont f = ui->lb_playerName->font();
+    QFont f = QFont(layout::OPPO_B, 22);
+    f.setBold(true);
     f.setStyleStrategy(QFont::PreferAntialias);
     ui->lb_playerName->setFont(f);
 
     ui->lb_balance->setStyleSheet("color: #ffffff;");
-    f = ui->lb_balance->font();
+    f = QFont(layout::OPPO_M, 10);
     f.setStyleStrategy(QFont::PreferAntialias);
     ui->lb_balance->setFont(f);
+
+    rearrange();
 }
 
 PlayerInfo::~PlayerInfo() { delete ui; }
@@ -42,8 +47,15 @@ void PlayerInfo::setAll(int index) {
 
 void PlayerInfo::setPlayerNameByIndex(int index) {
     std::string name = g->_gameInfo.players[index].panel.playerNameUtf;
+    QString nickname = QString::fromUtf8(name);
 
-    ui->lb_playerName->setText(QString::fromUtf8(name));
+    QString playername = gls->findNameByNickname(nickname);
+    if (!playername.isEmpty()) {
+        ui->lb_playerName->setText(playername);
+    } else {
+        ui->lb_playerName->setText(nickname);
+    }
+
     ui->lb_playerName->adjustSize();
 
     int c_x = ui->lb_country->x();
@@ -98,9 +110,22 @@ void PlayerInfo::setPowerByIndex(int index) {
         return;
     }
 
+    if (powerDrain > 0 && powerOutput == 0) {
+        ui->pb_power->setMaximum(1);
+        ui->pb_power->setValue(1);
+        ui->pb_power->setStyleSheet(
+            "QProgressBar { background-color : grey; } QProgressBar::chunk { background-color: "
+            "red; }");
+        return;
+    }
+
     ui->pb_power->setMaximum(powerOutput);
     ui->pb_power->setValue(powerDrain);
-    if (powerOutput > powerDrain) {
+    if (powerOutput > powerDrain && powerOutput * 0.85 < powerDrain) {
+        ui->pb_power->setStyleSheet(
+            "QProgressBar { background-color : grey; } QProgressBar::chunk { background-color: "
+            "yellow; }");
+    } else if (powerOutput > powerDrain) {
         ui->pb_power->setStyleSheet(
             "QProgressBar { background-color : grey; } QProgressBar::chunk { background-color: "
             "green; }");
@@ -112,9 +137,23 @@ void PlayerInfo::setPowerByIndex(int index) {
     }
 }
 
+void PlayerInfo::rearrange() {
+    ui->lb_playerName->setGeometry(0, gls->l.top_playername_y, gls->l.top_w / 2, gls->l.top_h);
+    ui->lb_country->setGeometry(gls->l.top_country_x, gls->l.top_country_y, gls->l.top_country_w,
+                                gls->l.top_country_h);
+    ui->lb_img_balance->setGeometry(gls->l.top_i_x, gls->l.top_ibalance_y, gls->l.top_i_wh,
+                                    gls->l.top_i_wh);
+    ui->lb_img_power->setGeometry(gls->l.top_i_x, gls->l.top_ipower_y, gls->l.top_i_wh,
+                                  gls->l.top_i_wh);
+    ui->lb_balance->setGeometry(gls->l.top_balance_x, gls->l.top_balance_y, gls->l.top_balance_w,
+                                gls->l.top_balance_h);
+    ui->pb_power->setGeometry(gls->l.top_power_x, gls->l.top_power_y, gls->l.top_power_w,
+                              gls->l.top_power_h);
+}
+
 int PlayerInfo::getInsufficientFund(int index) {
     int num = g->_gameInfo.players[index].panel.balance;
-    if (num < 20) {
+    if (num < 50) {
         return 0;
     }
     return 1;
